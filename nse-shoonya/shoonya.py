@@ -81,8 +81,9 @@ def set_data(**kv):
 
 def secret_summary(sec):
     """What is safe to print about the secret: never the value."""
-    return "length %d, brackets %s, whitespace %s, quotes %s" % (
-        len(sec), any(c in sec for c in "<>"), any(c.isspace() for c in sec), any(c in sec for c in "\"'"))
+    return "length %d, brackets %s, whitespace %s, quotes %s, leading x/* %d" % (
+        len(sec), any(c in sec for c in "<>"), any(c.isspace() for c in sec), any(c in sec for c in "\"'"),
+        len(sec) - len(sec.lstrip("xX*")))
 
 
 def exchange_with_diagnosis(code, cid, sec, uid):
@@ -90,6 +91,10 @@ def exchange_with_diagnosis(code, cid, sec, uid):
     the Java SDK's {code, checksum, uid}, and the client id without the _U suffix in the checksum."""
     raw = os.environ.get("SHOONYA_SECRET") or ""
     print("Secret check  : %s" % secret_summary(raw))
+    masked = len(raw) - len(raw.lstrip("xX*"))
+    if masked >= 8:
+        raise Err("SHOONYA_SECRET starts with %d masking characters (x or *): it was copied while hidden on the "
+                  "API page. Click the eye icon to show the real secret, copy that, and set it again" % masked)
     if raw != raw.strip() or any(c in raw for c in "<>\"'"):
         raise Err("SHOONYA_SECRET has brackets, quotes or spaces in it: set it again with\n"
                   "  $env:SHOONYA_SECRET = (Read-Host \"Secret\").Trim()")
