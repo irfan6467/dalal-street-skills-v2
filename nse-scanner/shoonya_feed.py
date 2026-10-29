@@ -221,9 +221,14 @@ def call(route, values, token=None, mode=None, throttle_key=None, need_auth=True
         body = js.encode("utf-8")
         headers = {"Content-Type": "application/json", "Authorization": "Bearer %s" % token, "User-Agent": UA}
     else:
-        form = "jData=" + urllib.parse.quote(js, safe="")
+        # Noren reads jData as raw JSON (the official SDK sends it unencoded); only a trading symbol is
+        # percent-encoded inside it, as the SDK does, so an "&" (M&M) cannot split the form.
+        if "tsym" in values:
+            values = dict(values, tsym=urllib.parse.quote_plus(str(values["tsym"])))
+            js = json.dumps(values, separators=(",", ":"))
+        form = "jData=" + js
         if need_auth:
-            form += "&jKey=" + urllib.parse.quote(str(token), safe="")
+            form += "&jKey=" + str(token)
         body = form.encode("utf-8")
         headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Agent": UA}
     text = _http(url, body, headers)
