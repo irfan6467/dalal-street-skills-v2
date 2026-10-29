@@ -78,6 +78,46 @@ def set_data(**kv):
 
 # ---------------------------------------------------------------- commands
 
+
+def secret_summary(sec):
+    """What is safe to print about the secret: never the value."""
+    return "length %d, brackets %s, whitespace %s, quotes %s" % (
+        len(sec), any(c in sec for c in "<>"), any(c.isspace() for c in sec), any(c in sec for c in "\"'"))
+
+
+def exchange_with_diagnosis(code, cid, sec, uid):
+    """Token exchange, trying Shoonya's documented variants on INVALID_VERIFIER: the web docs' {code, checksum},
+    the Java SDK's {code, checksum, uid}, and the client id without the _U suffix in the checksum."""
+    raw = os.environ.get("SHOONYA_SECRET") or ""
+    print("Secret check  : %s" % secret_summary(raw))
+    if raw != raw.strip() or any(c in raw for c in "<>\"'"):
+        raise Err("SHOONYA_SECRET has brackets, quotes or spaces in it: set it again with\n"
+                  "  $env:SHOONYA_SECRET = (Read-Host \"Secret\").Trim()")
+    c = F.code_from_redirect(code)
+    variants = [("docs", cid, False), ("sdk+uid", cid, True)]
+    if cid.upper().endswith("_U"):
+        variants.append(("id-no-_U", cid[:-2], True))
+    last = None
+    for name, key, with_uid in variants:
+        vals = {"code": c, "checksum": F.checksum(key, sec, c)}
+        if with_uid:
+            vals["uid"] = uid
+        try:
+            doc = F.call("GenAcsTok", vals, need_auth=False)
+        except Err as e:
+            last = e
+            print("Variant %-9s: %s" % (name, e))
+            if "VERIFIER" not in str(e).upper():
+                raise
+            continue
+        tok = doc.get("susertoken") or doc.get("access_token") or doc.get("accesstoken")
+        if not tok:
+            raise Err("Shoonya's token answer had no token (fields: %s)" % ", ".join(sorted(doc)))
+        print("Variant %-9s: OK" % name)
+        return doc, tok
+    raise Err("every documented variant was refused (%s). With a clean secret this means the secret on the API "
+              "page is not the one in SHOONYA_SECRET: copy it again after clicking Update" % last)
+
 def cmd_login(a):
     uid = env("SHOONYA_UID")
     cid = env("SHOONYA_CLIENT_ID")
@@ -92,7 +132,7 @@ def cmd_login(a):
             print("Then run:  python3 shoonya.py login --code '<the address>'")
             return 0
         code = input("3. Paste the address here: ").strip()
-    doc, tok = F.exchange_code(code, cid, sec, uid=uid)
+    doc, tok = exchange_with_diagnosis(code, cid, sec, uid)
     F.save_session(doc.get("actid") or doc.get("USERID") or uid, tok,
                    {"name": doc.get("uname"), "exchanges": doc.get("exarr")})
     print("Logged in as %s. Session saved to %s (owner-only), valid today."
