@@ -246,9 +246,8 @@ def call(route, values, token=None, mode=None, throttle_key=None, need_auth=True
 
 def exchange_code(code, client_id, secret, uid=None):
     """OAuth step 2: the redirect's code -> session token."""
+    # exactly the documented body: {"code", "checksum"} (shoonya.com/api-documentation/manual-authentication-oauth)
     vals = {"code": code_from_redirect(code), "checksum": checksum(client_id, secret, code_from_redirect(code))}
-    if uid:
-        vals["uid"] = uid
     doc = call("GenAcsTok", vals, need_auth=False)
     tok = doc.get("susertoken") or doc.get("access_token") or doc.get("accesstoken")
     if not tok:
