@@ -489,8 +489,9 @@ def lakh_crore(x):
 
 
 # ---------------------------------------------------------------- ticks
-# NSE tick sizes are 0.05 for most stocks, 0.01 for some low-priced ones.
-# 0.05 multiples are valid either way, so rounding to 0.05 is always safe.
+# NSE tick sizes differ by stock and price band: 0.01, 0.05, 0.10 and more (RELIANCE is 0.10 in Shoonya's
+# master, 2026-10-29). TICK is only the fallback; symbol_tick() gives a stock's real tick, and a price that is
+# not a whole number of it is rejected by the exchange.
 
 TICK = 0.05
 
@@ -507,6 +508,30 @@ def tick_down(x, tick=TICK):
 def tick_up(x, tick=TICK):
     import math
     return round(math.ceil(_q(x, tick)) * tick, 2) + 0.0
+
+
+def symbol_tick(sym, exch="NSE", cfg=None):
+    """The stock's own tick size: "ticks" in nse/config.json, else Shoonya's symbol master (when Shoonya is the
+    data provider or its master is cached), else 0.05. NSE ticks differ by stock (RELIANCE is 0.10), and a price
+    off the tick is rejected by the exchange."""
+    t = ((cfg or {}).get("ticks") or {}).get(str(sym).upper())
+    if t:
+        return float(t)
+    feed = _shoonya_feed()
+    if feed is not None:
+        try:
+            cached = os.path.exists(os.path.join(feed.CACHE_DIR, "%s_symbols.txt" % exch))
+            if cached or feed.provider() == "shoonya":
+                return float(feed.resolve(str(sym).upper() + (".BO" if exch == "BSE" else ".NS"))[3])
+        except Exception:
+            pass
+    return TICK
+
+
+def on_tick(x, tick):
+    """Is x a whole number of ticks (within float noise)?"""
+    q = x / tick
+    return abs(q - round(q)) < 1e-6
 
 
 def r2(x):
@@ -1310,7 +1335,8 @@ def r_shoonya(order, n, L, cfg=None):
                 return None, None, ["Shoonya has no SL-M order: a stop is an SL-LMT with a limit below the trigger. "
                                     "Set shoonya.sl_limit_buffer_pct in nse/config.json (your choice: how far below "
                                     "the trigger you accept being filled) before this stop can be sent."]
-            prc = tick_down(trg * (1 - float(buf) / 100.0))
+            tk = float(order.get("tick") or symbol_tick(n["sym"], n["exch"], cfg))
+            prc = tick_down(trg * (1 - float(buf) / 100.0), tk)
             notes.append("Stop as SL-LMT: trigger %s, limit %s (%.2f%% below). In a fast fall the price can skip the "
                          "limit and the stop stays UNFILLED: watch it." % (_s(trg), _s(prc), float(buf)))
     tsym = n["sym"] + ("-EQ" if n["exch"] == "NSE" else "")

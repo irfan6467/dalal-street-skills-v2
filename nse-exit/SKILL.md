@@ -5,7 +5,7 @@ description: >-
   so you know when to get out. Reads the entry from nse-entry (or a price you
   give), puts the stop at the opening-range midpoint by default (or the range
   low, your price, a percent, or a multiple of the ATR), rounds it down to the
-  0.05 tick, and sets the target at 2R (or 1R, or your price). Shows the
+  stock's own tick, and sets the target at 2R (or 1R, or your price). Shows the
   round-trip charges (brokerage, STT, GST, stamp duty) and reward:risk after
   them. Refuses a stop at or above the entry, a target at or below it, or a
   stop too tight to survive the spread, and says why. Carries the product (MIS
@@ -78,6 +78,7 @@ level`, `--offline FILE` (a saved Yahoo chart JSON for an ATR stop), `--qty N`
   "stop_detail": "(₹1,192.00 + ₹1,175.30) / 2 = ₹1,183.65",
   "created_at": "2026-10-26T04:31:00Z",
   "note": "A stop is a plan, not a guarantee: ...",
+  "tick": 0.05,
   "atr": 3.2182, "atr_bars": 9
 }
 ```
@@ -87,7 +88,10 @@ level`, `--offline FILE` (a saved Yahoo chart JSON for an ATR stop), `--qty N`
   for an `atr:K` stop. `opening_range` is null when no range was given.
 - `symbol` is the trading symbol (`RELIANCE`), `exchange` is `NSE` or `BSE`,
   `yahoo` is the chart symbol (`RELIANCE.NS`). `product` is `MIS` or `CNC`.
-- Prices are rupees as plain numbers, all on the 0.05 tick. `risk_per_share`
+- Prices are rupees as plain numbers, all on the stock's own tick, saved as
+  `tick` (from `"ticks"` in the config, else Shoonya's symbol master when
+  Shoonya is connected, else 0.05). NSE ticks differ by stock: RELIANCE is
+  0.10, and a price off the tick is rejected by the exchange. `risk_per_share`
   is entry minus stop. `reward_risk` is price geometry only; `reward_risk_net`
   takes the charges off the reward and adds them to the risk.
 - `flat_by` is IST `HH:MM`, always present. For MIS it is the time you must be
@@ -113,8 +117,8 @@ level`, `--offline FILE` (a saved Yahoo chart JSON for an ATR stop), `--qty N`
 
 A level setup has no opening range to lean on, so it needs a stop you name.
 
-- **Rounding (tick 0.05).** The entry rounds UP, the stop rounds DOWN (away
-  from the entry) and the target rounds DOWN, all to the 0.05 tick. Risk =
+- **Rounding (the stock's tick).** The entry rounds UP, the stop rounds DOWN
+  (away from the entry) and the target rounds DOWN, all to the stock's tick. Risk =
   entry minus stop. Target = entry + R x risk. `2R` by default; `1R`, `1.5R`
   or `price:X` also work.
 - **Refused, with the reason.** A stop at or above the entry. A target at or

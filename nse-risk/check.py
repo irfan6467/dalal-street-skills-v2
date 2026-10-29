@@ -514,8 +514,9 @@ def lakh_crore(x):
 
 
 # ---------------------------------------------------------------- ticks
-# NSE tick sizes are 0.05 for most stocks, 0.01 for some low-priced ones.
-# 0.05 multiples are valid either way, so rounding to 0.05 is always safe.
+# NSE tick sizes differ by stock and price band: 0.01, 0.05, 0.10 and more (RELIANCE is 0.10 in Shoonya's
+# master, 2026-10-29). TICK is only the fallback; symbol_tick() gives a stock's real tick, and a price that is
+# not a whole number of it is rejected by the exchange.
 
 TICK = 0.05
 
@@ -532,6 +533,30 @@ def tick_down(x, tick=TICK):
 def tick_up(x, tick=TICK):
     import math
     return round(math.ceil(_q(x, tick)) * tick, 2) + 0.0
+
+
+def symbol_tick(sym, exch="NSE", cfg=None):
+    """The stock's own tick size: "ticks" in nse/config.json, else Shoonya's symbol master (when Shoonya is the
+    data provider or its master is cached), else 0.05. NSE ticks differ by stock (RELIANCE is 0.10), and a price
+    off the tick is rejected by the exchange."""
+    t = ((cfg or {}).get("ticks") or {}).get(str(sym).upper())
+    if t:
+        return float(t)
+    feed = _shoonya_feed()
+    if feed is not None:
+        try:
+            cached = os.path.exists(os.path.join(feed.CACHE_DIR, "%s_symbols.txt" % exch))
+            if cached or feed.provider() == "shoonya":
+                return float(feed.resolve(str(sym).upper() + (".BO" if exch == "BSE" else ".NS"))[3])
+        except Exception:
+            pass
+    return TICK
+
+
+def on_tick(x, tick):
+    """Is x a whole number of ticks (within float noise)?"""
+    q = x / tick
+    return abs(q - round(q)) < 1e-6
 
 
 def r2(x):
@@ -1326,6 +1351,17 @@ def check(orders, cfg, portfolio=None, prices=None, state=None, today=None, now=
             warns.append("%s sec_list remark: %s" % (sym, info_sec["remarks"]))
         if series in ("SM", "ST"):
             warns.append("%s is an SME stock (series %s): thin trading and big lots; many brokers refuse MIS" % (sym, series))
+
+        # tick size: every price must be a whole number of the stock's tick, or the exchange rejects it
+        if sym and SYMBOL.match(sym) and exch in ("NSE", "BSE"):
+            tk = symbol_tick(sym, exch, c)
+            for label, val in (("entry price", e.get("price")), ("entry trigger", e.get("trigger_price")),
+                               ("stop trigger", (sleg or {}).get("trigger_price")),
+                               ("target", (o.get("target") or {}).get("price"))):
+                v = _f(val)
+                if v and not on_tick(v, tk):
+                    reasons.append("tick: the %s %s is not a multiple of %s's tick %s; the exchange would reject it"
+                                   % (label, _p(v), sym, _p(tk)))
 
         # validated strategies only (opt-in): a live entry must come from a strategy that passed nse-validate
         if kind == "entry" and c.get("require_validated") and not c.get("paper", True):

@@ -327,3 +327,51 @@ class TestEverySkillHasTheHook(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTodaysBar(Base):
+    """Shoonya's EOD series lacks the session in progress; it is built from the live quote, carefully."""
+
+    def setUp(self):
+        super().setUp()
+        self.login()
+        self.days = [datetime.date(2026, 10, d) for d in (22, 23, 26, 27, 28)]   # up to Wed 28 Oct
+        self.q = {"stat": "Ok", "o": "1160.0", "h": "1175.5", "l": "1155.2", "lp": "1170.4", "v": "4200000"}
+        self.F.TRANSPORT = FakeShoonya({"EODChartData": lambda b, h: eod_rows(self.days),
+                                        "GetQuotes": lambda b, h: self.q})
+
+    def at(self, y, m, d, hh, mm):
+        self.F.NOW = datetime.datetime(y, m, d, hh, mm, tzinfo=IST).astimezone(datetime.timezone.utc)
+        self.login()                                   # a session lasts one day: log in on the test's day
+
+    def test_session_in_progress_gets_todays_bar(self):
+        self.at(2026, 10, 29, 13, 18)                                      # Thu, market open
+        _e, _t, _s, bars = self.F.daily_with_today("RELIANCE.NS", 30)
+        last = bars[-1]
+        self.assertEqual(self.F._ist_date(last["t"]), datetime.date(2026, 10, 29))
+        self.assertEqual((last["o"], last["h"], last["l"], last["c"], last["v"]), (1160.0, 1175.5, 1155.2, 1170.4, 4200000))
+        self.assertTrue(last["partial"])
+        doc = self.F.answer_chart("RELIANCE.NS", "5d", "1d")
+        r = doc["chart"]["result"][0]
+        self.assertEqual(len(r["timestamp"]), 5)
+        self.assertEqual(r["indicators"]["quote"][0]["close"][-1], 1170.4)
+
+    def test_no_bar_before_open_or_on_weekends(self):
+        self.at(2026, 10, 29, 9, 0)
+        self.assertIsNone(self.F.todays_bar("RELIANCE.NS", self.F.bars_from_rows(eod_rows(self.days), True)))
+        self.at(2026, 10, 31, 12, 0)                                       # Saturday
+        self.assertIsNone(self.F.todays_bar("RELIANCE.NS", self.F.bars_from_rows(eod_rows(self.days), True)))
+
+    def test_holiday_quote_repeating_yesterday_is_ignored(self):
+        self.at(2026, 10, 29, 12, 0)
+        daily = self.F.bars_from_rows(eod_rows(self.days), True)
+        last = daily[-1]
+        self.q = {"stat": "Ok", "o": str(last["o"]), "h": str(last["h"]), "l": str(last["l"]), "lp": str(last["c"]), "v": "1"}
+        self.assertIsNone(self.F.todays_bar("RELIANCE.NS", daily))
+
+    def test_quote_dated_another_day_is_ignored(self):
+        self.at(2026, 10, 29, 12, 0)
+        self.q = dict(self.q, ltd="28-10-2026")
+        self.assertIsNone(self.F.todays_bar("RELIANCE.NS", self.F.bars_from_rows(eod_rows(self.days), True)))
+        self.q = dict(self.q, ltd="29-10-2026")
+        self.assertIsNotNone(self.F.todays_bar("RELIANCE.NS", self.F.bars_from_rows(eod_rows(self.days), True)))

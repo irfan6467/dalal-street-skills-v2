@@ -475,6 +475,49 @@ def quote(ysym):
                throttle_key=(exch, token, "q"))
     return doc
 
+def todays_bar(ysym, daily):
+    """Shoonya's EOD series has no bar for the session in progress. Build it from GetQuotes (open, high, low,
+    last, volume) when it is a weekday after 09:15 IST and the quote is really today's: its last-trade date,
+    when Shoonya sends one, must be today, and it must differ from the last daily bar (a holiday quote repeats
+    the previous session). Returns the bar or None."""
+    now = now_utc().astimezone(IST)
+    if now.weekday() >= 5 or now.time() < datetime.time(9, 15):
+        return None
+    today = now.date()
+    if daily and _ist_date(daily[-1]["t"]) >= today:
+        return None
+    try:
+        q = quote(ysym)
+    except ShoonyaError:
+        return None
+    o, h, lo, c = (_num(q, k) for k in ("o", "h", "l", "lp"))
+    if None in (o, h, lo, c) or min(o, h, lo, c) <= 0:
+        return None
+    ltd = q.get("ltd") or q.get("ltt_date")
+    if ltd:
+        try:
+            if _ist_date(parse_time(ltd, daily=True)) != today:
+                return None
+        except ShoonyaError:
+            pass
+    if daily:
+        last = daily[-1]
+        if (o, h, lo, c) == (last["o"], last["h"], last["l"], last["c"]):
+            return None
+    t = int(datetime.datetime.combine(today, datetime.time(9, 15), IST).timestamp())
+    return {"t": t, "o": o, "h": max(h, o, c), "l": min(lo, o, c), "c": c, "v": int(_num(q, "v") or 0),
+            "partial": True}
+
+
+def daily_with_today(ysym, sessions):
+    """Daily bars including the session in progress (from the live quote), like Yahoo's daily chart."""
+    e, tok, tsym, bars = fetch_daily(ysym, sessions)
+    tb = todays_bar(ysym, bars)
+    if tb:
+        bars = (bars + [tb])[-sessions:] if sessions else bars + [tb]
+    return e, tok, tsym, bars
+
+
 
 # ---------------------------------------------------------------- Yahoo shapes
 
@@ -520,7 +563,7 @@ def answer_chart(ysym, rng, interval):
     if sessions is None:
         return None
     if interval in DAILY_INTERVALS:
-        _e, _tok, tsym, bars = fetch_daily(ysym, sessions + 1)
+        _e, _tok, tsym, bars = daily_with_today(ysym, sessions + 1)
         prev = bars[-sessions - 1]["c"] if len(bars) > sessions else None
         bars = bars[-sessions:]
         return chart_doc(ysym, interval, bars, prev_close=prev, tsym=tsym)

@@ -620,7 +620,8 @@ def r_shoonya(order, n, L, cfg=None):
                 return None, None, ["Shoonya has no SL-M order: a stop is an SL-LMT with a limit below the trigger. "
                                     "Set shoonya.sl_limit_buffer_pct in nse/config.json (your choice: how far below "
                                     "the trigger you accept being filled) before this stop can be sent."]
-            prc = tick_down(trg * (1 - float(buf) / 100.0))
+            tk = float(order.get("tick") or symbol_tick(n["sym"], n["exch"], cfg))
+            prc = tick_down(trg * (1 - float(buf) / 100.0), tk)
             notes.append("Stop as SL-LMT: trigger %s, limit %s (%.2f%% below). In a fast fall the price can skip the "
                          "limit and the stop stays UNFILLED: watch it." % (_s(trg), _s(prc), float(buf)))
     tsym = n["sym"] + ("-EQ" if n["exch"] == "NSE" else "")

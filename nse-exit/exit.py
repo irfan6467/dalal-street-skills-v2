@@ -500,6 +500,30 @@ def tick_up(x, tick=TICK):
     return round(math.ceil(_q(x, tick)) * tick, 2) + 0.0
 
 
+def symbol_tick(sym, exch="NSE", cfg=None):
+    """The stock's own tick size: "ticks" in nse/config.json, else Shoonya's symbol master (when Shoonya is the
+    data provider or its master is cached), else 0.05. NSE ticks differ by stock (RELIANCE is 0.10), and a price
+    off the tick is rejected by the exchange."""
+    t = ((cfg or {}).get("ticks") or {}).get(str(sym).upper())
+    if t:
+        return float(t)
+    feed = _shoonya_feed()
+    if feed is not None:
+        try:
+            cached = os.path.exists(os.path.join(feed.CACHE_DIR, "%s_symbols.txt" % exch))
+            if cached or feed.provider() == "shoonya":
+                return float(feed.resolve(str(sym).upper() + (".BO" if exch == "BSE" else ".NS"))[3])
+        except Exception:
+            pass
+    return TICK
+
+
+def on_tick(x, tick):
+    """Is x a whole number of ticks (within float noise)?"""
+    q = x / tick
+    return abs(q - round(q)) < 1e-6
+
+
 def r2(x):
     return None if x is None else round(float(x), 2) + 0.0
 
@@ -861,12 +885,12 @@ def paise(x):
 
 
 def tick_floor(x):
-    """A long's stop and target: round down to the 0.05 tick."""
+    """A long's stop and target: round down to the stock's tick (DTICK, set per plan)."""
     return (D(x) / DTICK).to_integral_value(rounding=ROUND_FLOOR) * DTICK
 
 
 def tick_ceil(x):
-    """A long's entry limit: round up to the 0.05 tick."""
+    """A long's entry limit: round up to the stock's tick (DTICK, set per plan)."""
     return (D(x) / DTICK).to_integral_value(rounding=ROUND_CEILING) * DTICK
 
 
@@ -1303,6 +1327,9 @@ def build_plan(a, now_utc):
             raise PlanError("an atr stop needs at least 3 closed %s bars of %s on %s by the entry; found %d"
                             % (info["interval"], info["symbol"], day, len(bars)))
         atr, atr_n = atr_of(bars)
+    global DTICK
+    tick = symbol_tick(info["symbol"], info["exchange"], cfg)
+    DTICK = Decimal(str(tick))
     c = compute(info["entry"], stop_rule, stop_param, target_rule, target_param, info["or_high"], info["or_low"],
                 atr, atr_n)
     cas, cas_note = cas_status({"tradingsymbol": info["symbol"], "index": False}, day, offline=bool(a.offline),
@@ -1325,7 +1352,8 @@ def build_plan(a, now_utc):
             "reward_risk_net": ch["reward_risk_net"], "flat_by": flat_by,
             "cas_stock": bool(cas), "squareoff": squareoff, "broker": broker_key(cfg),
             "charges": dict(ch, basis=basis, note="round trip: buy at the entry, sell at the stop or the target"),
-            "stop_detail": c["stop_detail"], "created_at": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"), "note": NOTE}
+            "stop_detail": c["stop_detail"], "created_at": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"), "note": NOTE,
+            "tick": tick}
     if atr is not None:
         plan["atr"] = round(atr, 4)
         plan["atr_bars"] = atr_n

@@ -62,7 +62,8 @@
       "reward_risk": 1.71,
       "margin_needed": 28227.96,
       "flat_by": "15:07",
-      "why": "opening-range breakout on RELIANCE: 118 shares, bound by your \u20b91,000 max loss per trade (118 x 7.60 + \u20b997.02 charges = \u20b9993.82 at the stop)",
+      "why": "opening-range breakout on RELIANCE: 118 shares, bound by your ₹1,000 max loss per trade (118 x 7.60 + ₹97.02 charges = ₹993.82 at the stop)",
+      "tick": 0.05,
       "fingerprint": "cc96c39b7dfb85ed"
     }
   ]

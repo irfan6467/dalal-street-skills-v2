@@ -489,8 +489,9 @@ def lakh_crore(x):
 
 
 # ---------------------------------------------------------------- ticks
-# NSE tick sizes are 0.05 for most stocks, 0.01 for some low-priced ones.
-# 0.05 multiples are valid either way, so rounding to 0.05 is always safe.
+# NSE tick sizes differ by stock and price band: 0.01, 0.05, 0.10 and more (RELIANCE is 0.10 in Shoonya's
+# master, 2026-10-29). TICK is only the fallback; symbol_tick() gives a stock's real tick, and a price that is
+# not a whole number of it is rejected by the exchange.
 
 TICK = 0.05
 
@@ -507,6 +508,30 @@ def tick_down(x, tick=TICK):
 def tick_up(x, tick=TICK):
     import math
     return round(math.ceil(_q(x, tick)) * tick, 2) + 0.0
+
+
+def symbol_tick(sym, exch="NSE", cfg=None):
+    """The stock's own tick size: "ticks" in nse/config.json, else Shoonya's symbol master (when Shoonya is the
+    data provider or its master is cached), else 0.05. NSE ticks differ by stock (RELIANCE is 0.10), and a price
+    off the tick is rejected by the exchange."""
+    t = ((cfg or {}).get("ticks") or {}).get(str(sym).upper())
+    if t:
+        return float(t)
+    feed = _shoonya_feed()
+    if feed is not None:
+        try:
+            cached = os.path.exists(os.path.join(feed.CACHE_DIR, "%s_symbols.txt" % exch))
+            if cached or feed.provider() == "shoonya":
+                return float(feed.resolve(str(sym).upper() + (".BO" if exch == "BSE" else ".NS"))[3])
+        except Exception:
+            pass
+    return TICK
+
+
+def on_tick(x, tick):
+    """Is x a whole number of ticks (within float noise)?"""
+    q = x / tick
+    return abs(q - round(q)) < 1e-6
 
 
 def r2(x):
@@ -1117,13 +1142,14 @@ def size_trade(plan, cfg, budget=None, limit=None, price=None, cash=None, today=
     if lev < 1:
         raise SizeError("mis_leverage must be 1 or more")
 
+    tk = float(plan.get("tick") or symbol_tick(sym, plan.get("exchange") or "NSE", c))
     if limit is not None:
-        ref, ref_from = tick_up(limit), "limit"
-    elif price is not None and tick_up(price) > tick_up(entry_plan):
-        ref, ref_from = tick_up(price), "price"
+        ref, ref_from = tick_up(limit, tk), "limit"
+    elif price is not None and tick_up(price, tk) > tick_up(entry_plan, tk):
+        ref, ref_from = tick_up(price, tk), "price"
     else:
-        ref, ref_from = tick_up(entry_plan), "plan"
-    stop, target = tick_down(stop), tick_down(target)
+        ref, ref_from = tick_up(entry_plan, tk), "plan"
+    stop, target = tick_down(stop, tk), tick_down(target, tk)
     if stop >= ref:
         raise SizeError("the stop %s is not below the entry %s; a long trade needs its stop underneath"
                         % (_price(stop), _price(ref)))
@@ -1222,6 +1248,7 @@ def size_trade(plan, cfg, budget=None, limit=None, price=None, cash=None, today=
         "flat_by": flat_by, "squareoff": squareoff, "squareoff_note": squareoff_note, "cas_stock": bool(cas_stock),
         "refusal": refusal, "broker": broker_profile(c)["key"], "broker_name": broker_profile(c)["name"],
         "strategy": plan.get("strategy") if isinstance(plan.get("strategy"), dict) else None,
+        "tick": tk,
     }
 
 
@@ -1269,6 +1296,8 @@ def build_order(s, now_ist=None, last_price=None):
         "charges_at_target": s["charges_at_target"], "reward_risk": s["reward_risk"],
         "margin_needed": s["margin_needed"], "flat_by": s["flat_by"], "why": why,
     }
+    if s.get("tick"):
+        o["tick"] = s["tick"]               # the stock's tick, so the broker ticket rounds the same way
     if s.get("strategy"):
         o["strategy"] = s["strategy"]       # {"name", "run_id", "params_hash"} from an nse-backtest signal
     o["fingerprint"] = fingerprint(o)

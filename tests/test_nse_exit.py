@@ -526,7 +526,7 @@ class SkillDoc(unittest.TestCase):
         for must in ("on windows, use `py` in place of `python3`", "before the entry",
                      "a stop is a plan, not a guarantee", "day trading loses most people money", "/nse-timemachine",
                      "/nse-budget", "long side only", "₹1,183.65", "₹1,208.50", "₹9.95", "1213.50",
-                     "too tight to survive the spread", "0.05 tick", "nse/plan.json", "15:10", "mis", "cnc"):
+                     "too tight to survive the spread", "stock's own tick", "nse/plan.json", "15:10", "mis", "cnc"):
             self.assertIn(must, low)
         for never in ("—", "tick " + "by tick", "real " + "time", "pro" + "fit", "nyse", "new york", "alpaca"):
             self.assertNotIn(never, low)

@@ -589,6 +589,17 @@ def check(orders, cfg, portfolio=None, prices=None, state=None, today=None, now=
         if series in ("SM", "ST"):
             warns.append("%s is an SME stock (series %s): thin trading and big lots; many brokers refuse MIS" % (sym, series))
 
+        # tick size: every price must be a whole number of the stock's tick, or the exchange rejects it
+        if sym and SYMBOL.match(sym) and exch in ("NSE", "BSE"):
+            tk = symbol_tick(sym, exch, c)
+            for label, val in (("entry price", e.get("price")), ("entry trigger", e.get("trigger_price")),
+                               ("stop trigger", (sleg or {}).get("trigger_price")),
+                               ("target", (o.get("target") or {}).get("price"))):
+                v = _f(val)
+                if v and not on_tick(v, tk):
+                    reasons.append("tick: the %s %s is not a multiple of %s's tick %s; the exchange would reject it"
+                                   % (label, _p(v), sym, _p(tk)))
+
         # validated strategies only (opt-in): a live entry must come from a strategy that passed nse-validate
         if kind == "entry" and c.get("require_validated") and not c.get("paper", True):
             later.extend(validation_block(o))

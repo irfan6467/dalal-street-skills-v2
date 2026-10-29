@@ -222,9 +222,11 @@ def cmd_selftest(a):
     print("5m bars       : %d over %d sessions, last %s IST" % (
         len(intra), len({F._ist_date(b["t"]) for b in intra}),
         datetime.datetime.fromtimestamp(intra[-1]["t"], F.IST).strftime("%d-%b %H:%M") if intra else "-"))
-    _e, _t, _s, daily = F.fetch_daily(sym, 30)
+    _e, _t, _s, daily = F.daily_with_today(sym, 30)
     issues += check_bars(daily, "daily")
-    print("Daily bars    : %d, last %s" % (len(daily), F._ist_date(daily[-1]["t"]) if daily else "-"))
+    print("Daily bars    : %d, last %s%s" % (len(daily), F._ist_date(daily[-1]["t"]) if daily else "-",
+                                          " (today, built from the live quote)" if daily and daily[-1].get("partial")
+                                          else ""))
     if intra and daily and F._ist_date(intra[-1]["t"]) == F._ist_date(daily[-1]["t"]):
         dh = max(b["h"] for b in intra if F._ist_date(b["t"]) == F._ist_date(intra[-1]["t"]))
         if abs(dh - daily[-1]["h"]) / daily[-1]["h"] > 0.002:

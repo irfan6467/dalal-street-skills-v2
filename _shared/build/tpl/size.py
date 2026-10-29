@@ -379,13 +379,14 @@ def size_trade(plan, cfg, budget=None, limit=None, price=None, cash=None, today=
     if lev < 1:
         raise SizeError("mis_leverage must be 1 or more")
 
+    tk = float(plan.get("tick") or symbol_tick(sym, plan.get("exchange") or "NSE", c))
     if limit is not None:
-        ref, ref_from = tick_up(limit), "limit"
-    elif price is not None and tick_up(price) > tick_up(entry_plan):
-        ref, ref_from = tick_up(price), "price"
+        ref, ref_from = tick_up(limit, tk), "limit"
+    elif price is not None and tick_up(price, tk) > tick_up(entry_plan, tk):
+        ref, ref_from = tick_up(price, tk), "price"
     else:
-        ref, ref_from = tick_up(entry_plan), "plan"
-    stop, target = tick_down(stop), tick_down(target)
+        ref, ref_from = tick_up(entry_plan, tk), "plan"
+    stop, target = tick_down(stop, tk), tick_down(target, tk)
     if stop >= ref:
         raise SizeError("the stop %s is not below the entry %s; a long trade needs its stop underneath"
                         % (_price(stop), _price(ref)))
@@ -484,6 +485,7 @@ def size_trade(plan, cfg, budget=None, limit=None, price=None, cash=None, today=
         "flat_by": flat_by, "squareoff": squareoff, "squareoff_note": squareoff_note, "cas_stock": bool(cas_stock),
         "refusal": refusal, "broker": broker_profile(c)["key"], "broker_name": broker_profile(c)["name"],
         "strategy": plan.get("strategy") if isinstance(plan.get("strategy"), dict) else None,
+        "tick": tk,
     }
 
 
@@ -531,6 +533,8 @@ def build_order(s, now_ist=None, last_price=None):
         "charges_at_target": s["charges_at_target"], "reward_risk": s["reward_risk"],
         "margin_needed": s["margin_needed"], "flat_by": s["flat_by"], "why": why,
     }
+    if s.get("tick"):
+        o["tick"] = s["tick"]               # the stock's tick, so the broker ticket rounds the same way
     if s.get("strategy"):
         o["strategy"] = s["strategy"]       # {"name", "run_id", "params_hash"} from an nse-backtest signal
     o["fingerprint"] = fingerprint(o)
