@@ -589,6 +589,10 @@ def check(orders, cfg, portfolio=None, prices=None, state=None, today=None, now=
         if series in ("SM", "ST"):
             warns.append("%s is an SME stock (series %s): thin trading and big lots; many brokers refuse MIS" % (sym, series))
 
+        # validated strategies only (opt-in): a live entry must come from a strategy that passed nse-validate
+        if kind == "entry" and c.get("require_validated") and not c.get("paper", True):
+            later.extend(validation_block(o))
+
         # blocked list and size
         if sym in blocked:
             later.append("blocked: %s is on your blocked list" % sym)
@@ -909,6 +913,28 @@ def fetch_prev_close(yahoo, today):
         return None
     return prev_close_from_chart(doc, today)
 
+
+
+VALIDATE_DIR = os.path.join("nse", "validate")
+
+
+def validation_block(order):
+    """Reasons to block a live entry under "require_validated": none when its strategy passed nse-validate."""
+    st = order.get("strategy") if isinstance(order.get("strategy"), dict) else None
+    if not st or not st.get("params_hash"):
+        return ["validation: \"require_validated\" is on and this order has no strategy tag (it did not come from "
+                "an nse-backtest signal), so it cannot be a validated strategy"]
+    path = os.path.join(VALIDATE_DIR, "%s.json" % st["params_hash"])
+    try:
+        with open(path, encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (OSError, ValueError):
+        return ["validation: strategy %s (params %s) has no forward test: /nse-validate start --run %s"
+                % (st.get("name") or "?", st["params_hash"], st.get("run_id") or "<run id>")]
+    if doc.get("status") != "PASSED":
+        return ["validation: strategy %s (params %s) is %s in its forward test, not PASSED"
+                % (st.get("name") or doc.get("strategy"), st["params_hash"], doc.get("status"))]
+    return []
 
 def main(argv=None):
     utf8_stdout()

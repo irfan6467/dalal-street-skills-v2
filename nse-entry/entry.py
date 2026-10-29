@@ -365,7 +365,40 @@ def _open_url(url, timeout=20, accept="application/json"):
         return r.read().decode("utf-8", "replace")
 
 
+def _shoonya_feed():
+    """shoonya_feed.py from this script's folder, loaded once (None when absent)."""
+    mod = globals().get("_SHOONYA_FEED_MOD")
+    if mod is None:
+        import importlib.util
+        here = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(here, "shoonya_feed.py")
+        if not os.path.exists(path):
+            path = os.path.join(os.path.dirname(here), "_shared", "shoonya_feed.py")
+        if not os.path.exists(path):
+            return None
+        spec = importlib.util.spec_from_file_location("shoonya_feed_" + str(abs(hash(path))), path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        globals()["_SHOONYA_FEED_MOD"] = mod
+    return mod
+
+
 def yahoo_get(path):
+    """Price data for a Yahoo-style path. When nse/config.json picks Shoonya as the data provider the
+    chart and spark paths are answered from Shoonya's live exchange data (same JSON shape); anything
+    else, or the Yahoo provider, goes to Yahoo."""
+    feed = _shoonya_feed()
+    if feed is not None:
+        try:
+            hooked = feed.yahoo_hook(path)
+        except feed.ShoonyaError as e:
+            raise IndiaError(str(e))
+        if hooked is not None:
+            return hooked
+    return _yahoo_http(path)
+
+
+def _yahoo_http(path):
     """GET a Yahoo path: query2 first, query1 when query2 answers 429 or 5xx.
     An HTTP 429 gets one retry on the same host after BACKOFF seconds.
     A 404 body is returned: Yahoo says why (an unknown ticker) in it."""

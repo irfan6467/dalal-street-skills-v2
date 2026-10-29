@@ -28,7 +28,7 @@ jobs:
           HTTP_PROXY: http://127.0.0.1:9
           HTTPS_PROXY: http://127.0.0.1:9
           PYTHONIOENCODING: utf-8
-        run: python -m unittest discover -s tests -p "test_nse_*.py" -v
+        run: python -m unittest discover -s tests -p "test_*.py" -v
       - name: Generated scripts match the shared layer
         if: matrix.os == 'ubuntu-22.04' && matrix.python == '3.12'
         run: |

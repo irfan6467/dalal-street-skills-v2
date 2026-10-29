@@ -17,7 +17,7 @@
   "entry_buffer_min": 45,
   "mis_leverage": 5,
   "product": "MIS",
-  "_comment_broker": "pick one of: groww, zerodha, angelone, icicidirect, upstox, kotak, hdfcsky, dhan, sbi, motilal (sets the brokerage, DP charge and MIS square-off time; override any number in \"charges\" or \"squareoff\")",
+  "_comment_broker": "pick one of: groww, zerodha, angelone, icicidirect, upstox, kotak, hdfcsky, dhan, sbi, motilal, shoonya (shoonya: you must set its brokerage and DP charge in \"charges\"; others: sets the brokerage, DP charge and MIS square-off time; override any number in \"charges\" or \"squareoff\")",
   "broker": "zerodha",
   "paper": true,
   "blocked": [],

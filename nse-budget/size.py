@@ -367,7 +367,40 @@ def _open_url(url, timeout=20, accept="application/json"):
         return r.read().decode("utf-8", "replace")
 
 
+def _shoonya_feed():
+    """shoonya_feed.py from this script's folder, loaded once (None when absent)."""
+    mod = globals().get("_SHOONYA_FEED_MOD")
+    if mod is None:
+        import importlib.util
+        here = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(here, "shoonya_feed.py")
+        if not os.path.exists(path):
+            path = os.path.join(os.path.dirname(here), "_shared", "shoonya_feed.py")
+        if not os.path.exists(path):
+            return None
+        spec = importlib.util.spec_from_file_location("shoonya_feed_" + str(abs(hash(path))), path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        globals()["_SHOONYA_FEED_MOD"] = mod
+    return mod
+
+
 def yahoo_get(path):
+    """Price data for a Yahoo-style path. When nse/config.json picks Shoonya as the data provider the
+    chart and spark paths are answered from Shoonya's live exchange data (same JSON shape); anything
+    else, or the Yahoo provider, goes to Yahoo."""
+    feed = _shoonya_feed()
+    if feed is not None:
+        try:
+            hooked = feed.yahoo_hook(path)
+        except feed.ShoonyaError as e:
+            raise IndiaError(str(e))
+        if hooked is not None:
+            return hooked
+    return _yahoo_http(path)
+
+
+def _yahoo_http(path):
     """GET a Yahoo path: query2 first, query1 when query2 answers 429 or 5xx.
     An HTTP 429 gets one retry on the same host after BACKOFF seconds.
     A 404 body is returned: Yahoo says why (an unknown ticker) in it."""
@@ -576,11 +609,21 @@ BROKERS = {
         "stop_mis": "sl_leg", "stop_cnc": "gtt",
         "api": "Motilal Oswal API", "mcp": None, "paper": False,
     },
+    "shoonya": {
+        "name": "Shoonya (Finvasia)", "rank": 11,
+        # Brokerage and DP charge are NOT built in: Shoonya's pricing has changed over the years and was not
+        # verified here. charges_cfg() refuses to guess until the user sets them in nse/config.json "charges".
+        "brokerage_mis": None, "brokerage_cnc": None, "dp_charge": None,
+        "squareoff": dict(UNVERIFIED_SQUAREOFF), "verified": [],
+        "stop_mis": "sl_leg", "stop_cnc": "gtt",
+        "api": "Noren REST API (OAuth login, whitelisted IP, exchange Algo ID on every API order; no MKT orders)",
+        "mcp": None, "paper": False,
+    },
 }
 BROKER_ALIASES = {"angel": "angelone", "angel one": "angelone", "icici": "icicidirect", "kotak neo": "kotak",
                   "kotaksecurities": "kotak", "hdfc": "hdfcsky", "hdfc sky": "hdfcsky", "hdfcsec": "hdfcsky",
                   "sbisecurities": "sbi", "sbicap": "sbi", "motilaloswal": "motilal", "mosl": "motilal",
-                  "kite": "zerodha"}
+                  "kite": "zerodha", "finvasia": "shoonya", "noren": "shoonya"}
 DEFAULT_BROKER = "zerodha"
 SQUAREOFF_UNTIL = "2026-12-06"
 
@@ -658,12 +701,17 @@ def charges_cfg(cfg=None):
     c = dict(CHARGES)
     p = broker_profile(cfg)
     for m in ("mis", "cnc"):
-        pct, lo, cap = p["brokerage_" + m]
+        pct, lo, cap = p["brokerage_" + m] or (None, None, None)
         c["brokerage_pct_" + m], c["brokerage_min_" + m], c["brokerage_cap_" + m] = pct, lo, cap
     c["dp_charge_cnc_sell"] = p["dp_charge"]
     for k, v in ((cfg or {}).get("charges") or {}).items():
         if k in c:
             c[k] = float(v)
+    missing = sorted(k for k, v in c.items() if v is None)
+    if missing:
+        raise IndiaError("%s's brokerage is not built in, so charges cannot be computed. Set these from your "
+                         "broker's current price list in nse/config.json \"charges\" (percent, minimum and cap per "
+                         "order, 0 for none): %s" % (p["name"], ", ".join(missing)))
     return c
 
 
@@ -1173,6 +1221,7 @@ def size_trade(plan, cfg, budget=None, limit=None, price=None, cash=None, today=
         "charges_at_stop": ch_stop, "charges_at_target": ch_target, "charges_breakdown": breakdown,
         "flat_by": flat_by, "squareoff": squareoff, "squareoff_note": squareoff_note, "cas_stock": bool(cas_stock),
         "refusal": refusal, "broker": broker_profile(c)["key"], "broker_name": broker_profile(c)["name"],
+        "strategy": plan.get("strategy") if isinstance(plan.get("strategy"), dict) else None,
     }
 
 
@@ -1220,6 +1269,8 @@ def build_order(s, now_ist=None, last_price=None):
         "charges_at_target": s["charges_at_target"], "reward_risk": s["reward_risk"],
         "margin_needed": s["margin_needed"], "flat_by": s["flat_by"], "why": why,
     }
+    if s.get("strategy"):
+        o["strategy"] = s["strategy"]       # {"name", "run_id", "params_hash"} from an nse-backtest signal
     o["fingerprint"] = fingerprint(o)
     return o
 
@@ -1588,6 +1639,11 @@ def run_plan(a, cfg):
     today = now_ist.date().isoformat()
     note_cal = calendar_note(now_ist.date())
     plan = read_json(a.plan, "plan (run nse-exit first, or use --weights for an allocation)")
+    if getattr(a, "strategy_run", None):
+        run_path = os.path.join("nse", "backtest", a.strategy_run + ".json")
+        run_doc = read_json(run_path, "backtest run %s" % a.strategy_run)
+        plan["strategy"] = {"name": run_doc.get("strategy"), "run_id": a.strategy_run,
+                            "params_hash": run_doc.get("frozen_hash")}
     limit = None
     if a.limit is not None:
         if a.limit == "plan":
@@ -1671,6 +1727,8 @@ def main(argv=None):
     utf8_stdout()
     ap = argparse.ArgumentParser(description="Size a trade to your budget and max loss (nse-budget).")
     ap.add_argument("--plan", default="nse/plan.json", help="the trade plan (default nse/plan.json)")
+    ap.add_argument("--strategy-run", help="tag the order with this nse-backtest run (for nse-validate and "
+                                           "\"require_validated\" in nse-risk)")
     ap.add_argument("--config", default="nse/config.json", help="rules (default nse/config.json)")
     ap.add_argument("--budget", type=float, help="override the budget in the config (rupees)")
     ap.add_argument("--product", choices=["MIS", "CNC"], type=lambda s: s.upper(),

@@ -483,6 +483,7 @@ def size_trade(plan, cfg, budget=None, limit=None, price=None, cash=None, today=
         "charges_at_stop": ch_stop, "charges_at_target": ch_target, "charges_breakdown": breakdown,
         "flat_by": flat_by, "squareoff": squareoff, "squareoff_note": squareoff_note, "cas_stock": bool(cas_stock),
         "refusal": refusal, "broker": broker_profile(c)["key"], "broker_name": broker_profile(c)["name"],
+        "strategy": plan.get("strategy") if isinstance(plan.get("strategy"), dict) else None,
     }
 
 
@@ -530,6 +531,8 @@ def build_order(s, now_ist=None, last_price=None):
         "charges_at_target": s["charges_at_target"], "reward_risk": s["reward_risk"],
         "margin_needed": s["margin_needed"], "flat_by": s["flat_by"], "why": why,
     }
+    if s.get("strategy"):
+        o["strategy"] = s["strategy"]       # {"name", "run_id", "params_hash"} from an nse-backtest signal
     o["fingerprint"] = fingerprint(o)
     return o
 
@@ -898,6 +901,11 @@ def run_plan(a, cfg):
     today = now_ist.date().isoformat()
     note_cal = calendar_note(now_ist.date())
     plan = read_json(a.plan, "plan (run nse-exit first, or use --weights for an allocation)")
+    if getattr(a, "strategy_run", None):
+        run_path = os.path.join("nse", "backtest", a.strategy_run + ".json")
+        run_doc = read_json(run_path, "backtest run %s" % a.strategy_run)
+        plan["strategy"] = {"name": run_doc.get("strategy"), "run_id": a.strategy_run,
+                            "params_hash": run_doc.get("frozen_hash")}
     limit = None
     if a.limit is not None:
         if a.limit == "plan":
@@ -981,6 +989,8 @@ def main(argv=None):
     utf8_stdout()
     ap = argparse.ArgumentParser(description="Size a trade to your budget and max loss (nse-budget).")
     ap.add_argument("--plan", default="nse/plan.json", help="the trade plan (default nse/plan.json)")
+    ap.add_argument("--strategy-run", help="tag the order with this nse-backtest run (for nse-validate and "
+                                           "\"require_validated\" in nse-risk)")
     ap.add_argument("--config", default="nse/config.json", help="rules (default nse/config.json)")
     ap.add_argument("--budget", type=float, help="override the budget in the config (rupees)")
     ap.add_argument("--product", choices=["MIS", "CNC"], type=lambda s: s.upper(),

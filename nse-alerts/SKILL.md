@@ -1,22 +1,17 @@
 ---
 name: nse-alerts
 description: >-
-  Price Alerts and the NSE clock. Rings when a price, a stop, a circuit limit
-  or the opening bell hits. Turns the trade plan into alerts in one go (the
-  stop, the target, upper/lower circuit proximity and "flat by" at your MIS
-  flat-by time, default 15:10 IST), plus above / below / stop / target levels,
-  percent moves from the previous close, any time of day, and the 09:15
-  opening bell, each ringing once so you are not spammed. Knows NSE hours with
-  the 2026 holidays (Diwali, Dussehra, Holi...), weekends and special sessions
-  such as Diwali Muhurat trading, answers "is the market open", works out India
-  time itself, fetches free delayed quotes from Yahoo (RELIANCE.NS, TCS.NS,
-  RELIANCE.BO, Nifty) one ticker at a time, reads each stock's price band from
-  NSE's sec_list.csv, and writes nse/prices.json for sizing and the risk check.
-  Use when the user says "alert me when", "tell me if RELIANCE hits", "watch my
-  stop", "watch my trade", "remind me to square off by 3:10", "is the market
-  open", "is NSE open today", "when does the market open", "is it a holiday",
-  "is there Muhurat trading", "is it near the upper circuit", "get me a price",
-  or right after /nse-exit writes a plan.
+  Price Alerts and the NSE clock. Rings once when a price, stop, target,
+  circuit limit, percent move or the 09:15 opening bell hits, and reminds you
+  to be flat by your MIS flat-by time (default 15:10 IST). Turns the trade
+  plan into alerts in one go. Knows NSE hours, 2026 holidays, weekends and
+  Muhurat trading, answers "is the market open", reads price bands from NSE's
+  sec_list.csv, fetches quotes (Shoonya live when connected, else Yahoo) and
+  writes nse/prices.json for sizing and the risk check. Use when the user says
+  "alert me when", "tell me if RELIANCE hits", "watch my stop", "remind me to
+  square off", "is the market open", "is it a holiday", "is there Muhurat
+  trading", "is it near the upper circuit", "get me a price", or right after
+  /nse-exit writes a plan.
 argument-hint: "[ticker] [price]"
 ---
 

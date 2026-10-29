@@ -392,7 +392,40 @@ def _open_url(url, timeout=20, accept="application/json"):
         return r.read().decode("utf-8", "replace")
 
 
+def _shoonya_feed():
+    """shoonya_feed.py from this script's folder, loaded once (None when absent)."""
+    mod = globals().get("_SHOONYA_FEED_MOD")
+    if mod is None:
+        import importlib.util
+        here = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(here, "shoonya_feed.py")
+        if not os.path.exists(path):
+            path = os.path.join(os.path.dirname(here), "_shared", "shoonya_feed.py")
+        if not os.path.exists(path):
+            return None
+        spec = importlib.util.spec_from_file_location("shoonya_feed_" + str(abs(hash(path))), path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        globals()["_SHOONYA_FEED_MOD"] = mod
+    return mod
+
+
 def yahoo_get(path):
+    """Price data for a Yahoo-style path. When nse/config.json picks Shoonya as the data provider the
+    chart and spark paths are answered from Shoonya's live exchange data (same JSON shape); anything
+    else, or the Yahoo provider, goes to Yahoo."""
+    feed = _shoonya_feed()
+    if feed is not None:
+        try:
+            hooked = feed.yahoo_hook(path)
+        except feed.ShoonyaError as e:
+            raise IndiaError(str(e))
+        if hooked is not None:
+            return hooked
+    return _yahoo_http(path)
+
+
+def _yahoo_http(path):
     """GET a Yahoo path: query2 first, query1 when query2 answers 429 or 5xx.
     An HTTP 429 gets one retry on the same host after BACKOFF seconds.
     A 404 body is returned: Yahoo says why (an unknown ticker) in it."""
@@ -601,11 +634,21 @@ BROKERS = {
         "stop_mis": "sl_leg", "stop_cnc": "gtt",
         "api": "Motilal Oswal API", "mcp": None, "paper": False,
     },
+    "shoonya": {
+        "name": "Shoonya (Finvasia)", "rank": 11,
+        # Brokerage and DP charge are NOT built in: Shoonya's pricing has changed over the years and was not
+        # verified here. charges_cfg() refuses to guess until the user sets them in nse/config.json "charges".
+        "brokerage_mis": None, "brokerage_cnc": None, "dp_charge": None,
+        "squareoff": dict(UNVERIFIED_SQUAREOFF), "verified": [],
+        "stop_mis": "sl_leg", "stop_cnc": "gtt",
+        "api": "Noren REST API (OAuth login, whitelisted IP, exchange Algo ID on every API order; no MKT orders)",
+        "mcp": None, "paper": False,
+    },
 }
 BROKER_ALIASES = {"angel": "angelone", "angel one": "angelone", "icici": "icicidirect", "kotak neo": "kotak",
                   "kotaksecurities": "kotak", "hdfc": "hdfcsky", "hdfc sky": "hdfcsky", "hdfcsec": "hdfcsky",
                   "sbisecurities": "sbi", "sbicap": "sbi", "motilaloswal": "motilal", "mosl": "motilal",
-                  "kite": "zerodha"}
+                  "kite": "zerodha", "finvasia": "shoonya", "noren": "shoonya"}
 DEFAULT_BROKER = "zerodha"
 SQUAREOFF_UNTIL = "2026-12-06"
 
@@ -683,12 +726,17 @@ def charges_cfg(cfg=None):
     c = dict(CHARGES)
     p = broker_profile(cfg)
     for m in ("mis", "cnc"):
-        pct, lo, cap = p["brokerage_" + m]
+        pct, lo, cap = p["brokerage_" + m] or (None, None, None)
         c["brokerage_pct_" + m], c["brokerage_min_" + m], c["brokerage_cap_" + m] = pct, lo, cap
     c["dp_charge_cnc_sell"] = p["dp_charge"]
     for k, v in ((cfg or {}).get("charges") or {}).items():
         if k in c:
             c[k] = float(v)
+    missing = sorted(k for k, v in c.items() if v is None)
+    if missing:
+        raise IndiaError("%s's brokerage is not built in, so charges cannot be computed. Set these from your "
+                         "broker's current price list in nse/config.json \"charges\" (percent, minimum and cap per "
+                         "order, 0 for none): %s" % (p["name"], ", ".join(missing)))
     return c
 
 
@@ -1279,6 +1327,10 @@ def check(orders, cfg, portfolio=None, prices=None, state=None, today=None, now=
         if series in ("SM", "ST"):
             warns.append("%s is an SME stock (series %s): thin trading and big lots; many brokers refuse MIS" % (sym, series))
 
+        # validated strategies only (opt-in): a live entry must come from a strategy that passed nse-validate
+        if kind == "entry" and c.get("require_validated") and not c.get("paper", True):
+            later.extend(validation_block(o))
+
         # blocked list and size
         if sym in blocked:
             later.append("blocked: %s is on your blocked list" % sym)
@@ -1599,6 +1651,28 @@ def fetch_prev_close(yahoo, today):
         return None
     return prev_close_from_chart(doc, today)
 
+
+
+VALIDATE_DIR = os.path.join("nse", "validate")
+
+
+def validation_block(order):
+    """Reasons to block a live entry under "require_validated": none when its strategy passed nse-validate."""
+    st = order.get("strategy") if isinstance(order.get("strategy"), dict) else None
+    if not st or not st.get("params_hash"):
+        return ["validation: \"require_validated\" is on and this order has no strategy tag (it did not come from "
+                "an nse-backtest signal), so it cannot be a validated strategy"]
+    path = os.path.join(VALIDATE_DIR, "%s.json" % st["params_hash"])
+    try:
+        with open(path, encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (OSError, ValueError):
+        return ["validation: strategy %s (params %s) has no forward test: /nse-validate start --run %s"
+                % (st.get("name") or "?", st["params_hash"], st.get("run_id") or "<run id>")]
+    if doc.get("status") != "PASSED":
+        return ["validation: strategy %s (params %s) is %s in its forward test, not PASSED"
+                % (st.get("name") or doc.get("strategy"), st["params_hash"], doc.get("status"))]
+    return []
 
 def main(argv=None):
     utf8_stdout()

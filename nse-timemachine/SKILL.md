@@ -1,21 +1,17 @@
 ---
 name: nse-timemachine
 description: >-
-  Time Machine for NSE/BSE trades. Replays every possible outcome of a trade
-  before you risk a rupee: 10,000 simulated sessions plus every past time the
-  setup fired. Takes the plan from nse-exit (entry, stop, target, MIS or CNC),
-  rebuilds the rest of the day 10,000 times from the stock's own 5-minute
-  bars over the last 60 days (RELIANCE, TCS, INFY, HDFCBANK, any .NS or .BO
-  ticker), and re-runs the same rule on every past session. Results are in R
-  with the round-trip charges (STT, brokerage, exchange, SEBI, stamp, GST)
-  already inside, so a 1R target nets less than 1R. Prints the odds of target
-  first, stop first, or neither by the flat-by exit (default 15:10 IST), where
-  the price sits then, the average R, the history, and one honest verdict,
-  then hands off to /nse-budget. Use when the user says "run the time
-  machine", "replay this trade", "what are the odds", "simulate this trade",
-  "monte carlo", "backtest this setup", "how often does this hit the target",
-  "is this a coin flip", "will charges eat this", or after /nse-exit writes a
-  plan, before /nse-budget.
+  Time Machine for NSE/BSE trades. Replays a planned trade before you risk a
+  rupee: the rest of the day rebuilt 10,000 times from the stock's own
+  5-minute bars over the last 60 days, plus every past session where the same
+  rule fired. Results in R with round-trip charges inside: odds of target
+  first, stop first or neither by flat-by (default 15:10 IST), average R,
+  history and one honest verdict. It shows the spread of outcomes for one
+  setup; whether a rule has an edge across many trades is /nse-backtest's job.
+  Use when the user says "run the time machine", "replay this trade", "what
+  are the odds", "simulate this trade", "monte carlo", "how often does this
+  hit the target", "is this a coin flip", "will charges eat this", or after
+  /nse-exit, before /nse-budget.
 argument-hint: "[path to plan.json, or TICKER]"
 ---
 

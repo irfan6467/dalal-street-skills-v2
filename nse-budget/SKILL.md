@@ -1,21 +1,18 @@
 ---
 name: nse-budget
 description: >-
-  Budget Manager for NSE/BSE. Sizes every position to your capital and your
-  max loss per trade, charges included. Reads the trade plan from nse-exit
-  (entry, stop, target, MIS or CNC), finds the whole shares that fit inside
-  four limits (max loss at the stop INCLUDING round-trip STT, brokerage, GST
-  and stamp duty; position cap; max order; cash or MIS margin after your
-  buffer), says which limit decided it, and writes the order set to
-  nse/orders.json: an entry LIMIT plus an SL-M stop for MIS intraday, or an
-  entry plus a GTT OCO stop/target for CNC delivery. A stop too far for your
-  max loss is a plain refusal, not a smaller order. Also splits a CNC budget
-  (for example Rs 5 lakh) across Nifty names by weight. Nothing is placed.
-  Use when the user says "how many shares", "size this trade", "how much
-  should I buy", "I have 2 lakh", "I only want to risk Rs 1,000 a trade",
-  "set my rules", "keep 10% in cash", "how much margin", "allocate my
-  portfolio across Nifty stocks", or after /nse-exit writes a plan for
-  RELIANCE, TCS, HDFCBANK or any NSE stock.
+  Budget Manager for NSE/BSE. Sizes every position to your capital and max
+  loss per trade, charges included. Reads the plan from nse-exit, finds the
+  whole shares that fit four limits (loss at the stop including STT,
+  brokerage, GST and stamp; position cap; max order; cash or MIS margin after
+  your buffer), says which limit decided, and writes nse/orders.json: an entry
+  LIMIT plus SL-M stop for MIS, or entry plus GTT OCO for CNC. A stop too far
+  for your max loss is refused, not shrunk. Can tag the order with an nse-
+  backtest run (--strategy-run) for nse-validate. Also splits a CNC budget
+  across Nifty names by weight. Places nothing. Use when the user says "how
+  many shares", "size this trade", "I have 2 lakh", "risk Rs 1,000 a trade",
+  "set my rules", "how much margin", "allocate my portfolio", or after /nse-
+  exit.
 argument-hint: "[budget in rupees]"
 ---
 

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dalal-street/order-intent/v1",
+  "title": "Order intent",
+  "description": "Written by nse-broker for every order the user approves (paper or live), in nse/intents/<date>-<fingerprint>.json and one line per intent in nse/intents/intents.jsonl. Broker-neutral: an external execution system (a risk governor, an OMS) can consume it, re-check it against its own rules, and place it. The consuming system owns the final decision; this file is a request, never an instruction to bypass that system's checks.",
+  "type": "object",
+  "required": ["schema", "version", "intent_id", "created_ist", "source", "mode", "instrument", "side", "product", "quantity", "entry", "stop", "risk_check", "consent"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "dalal-street/order-intent"},
+    "version": {"const": 1},
+    "intent_id": {"type": "string", "description": "<YYYY-MM-DD>-<16 hex fingerprint>; the same order on the same day has the same id, so a consumer can de-duplicate"},
+    "created_ist": {"type": "string", "description": "ISO time in India (+05:30) the user approved it"},
+    "source": {"const": "nse-broker"},
+    "mode": {"enum": ["paper", "live"]},
+    "broker": {"type": ["string", "null"], "description": "the broker key from nse/config.json, e.g. shoonya"},
+    "strategy": {"type": ["object", "string", "null"], "description": "strategy name, run id and params hash when the order came from an nse-backtest signal"},
+    "instrument": {
+      "type": "object", "required": ["exchange", "symbol"],
+      "properties": {"exchange": {"enum": ["NSE", "BSE"]}, "symbol": {"type": "string", "description": "exchange symbol without series suffix, e.g. RELIANCE"}}
+    },
+    "side": {"enum": ["BUY", "SELL"]},
+    "product": {"enum": ["MIS", "CNC"]},
+    "quantity": {"type": "integer", "minimum": 1},
+    "entry": {
+      "type": "object", "required": ["type"],
+      "properties": {"type": {"enum": ["LIMIT", "MARKET", "SL", "SL-M"]}, "price": {"type": ["number", "null"]}, "trigger": {"type": ["number", "null"]}}
+    },
+    "stop": {"type": "object", "properties": {"trigger": {"type": ["number", "null"]}}},
+    "target": {"type": "object", "properties": {"price": {"type": ["number", "null"]}}},
+    "flat_by_ist": {"type": ["string", "null"], "description": "HH:MM for an MIS position"},
+    "max_loss_inr": {"type": ["number", "null"], "description": "loss at the stop including charges, as nse-budget sized it"},
+    "risk_check": {
+      "type": "object", "required": ["by", "verdict", "fingerprint"],
+      "properties": {"by": {"const": "nse-risk"}, "verdict": {"enum": ["PASS", "BLOCK", null]}, "fingerprint": {"type": "string"}, "kind": {"enum": ["entry", "exit", null]}}
+    },
+    "consent": {
+      "type": "object", "required": ["typed_reply", "approved_ist"],
+      "properties": {"typed_reply": {"type": "string", "description": "the user's yes, word for word"}, "approved_ist": {"type": "string"}}
+    },
+    "algo_id": {"type": ["string", "null"], "description": "exchange Algo ID for API orders (SEBI retail-algo framework)"}
+  }
+}

@@ -3,7 +3,7 @@
 **Scan, plan, replay and size every Indian trade before a rupee moves. STT, stamp duty, circuit bands, your broker's square-off and the 3:15 closing auction are all built in.**
 
 [![tests](https://github.com/Adityaraj0421/dalal-street-skills/actions/workflows/tests.yml/badge.svg)](https://github.com/Adityaraj0421/dalal-street-skills/actions/workflows/tests.yml)
-![533 offline tests](https://img.shields.io/badge/tests-533%20offline-brightgreen)
+![595 offline tests](https://img.shields.io/badge/tests-595%20offline-brightgreen)
 ![python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue)
 ![stdlib only](https://img.shields.io/badge/dependencies-none-blue)
 ![license MIT](https://img.shields.io/badge/license-MIT-lightgrey)
@@ -13,7 +13,13 @@
 
 That's a real session from Monday 26 Oct 2026, 11:38 to 11:49 IST, in paper mode with Zerodha. The Nifty 500 scan put TCS and HCLTECH on both the daily-breakout and opening-range lists, and both triggered. On paper each was a clean 2:1. After charges it was 1.76:1. As F&O stocks, both stop continuous trading at 3:15 for the closing auction, and Zerodha squares them off at 3:12. Ten thousand replays each from their own last 58 sessions said the stop comes first, and the same rule had lost money on both. **The best trade is often the one the tools talk you out of.**
 
-Eleven [Claude Code](https://claude.com/claude-code) skills, plain Python, no API keys, nothing to `pip install`.
+Fourteen [Claude Code](https://claude.com/claude-code) skills, plain Python, nothing to `pip install`. No API keys needed to start; connect Shoonya for live exchange data.
+
+> **v2 (this fork)** adds what the original lacked for real use: live Shoonya data behind every skill
+> (`/nse-shoonya`), a walk-forward backtester judged only out-of-sample after Indian charges (`/nse-backtest`),
+> a forward-test gate (`/nse-validate`), and a Shoonya order path that sends nothing without the operator's own
+> consent code. What changed and why: [docs/CHANGES-v2.md](docs/CHANGES-v2.md). None of it proves a strategy
+> makes money; it is built to tell you, as early and cheaply as possible, when one doesn't.
 
 ## Quick start
 
@@ -55,9 +61,11 @@ US trading tools get Indian markets wrong in ways that cost money:
 | **Results in crore and fiscal quarters** | Q1FY27 (Apr–Jun 2026) in ₹ crore, vs the same quarter last year. USD reporters like Infosys are labelled, with `--inr` to convert |
 | **Delivery % matters to investors** | A bhavcopy scan for delivery spikes (accumulation) |
 
-## The eleven
+## The fourteen
 
 ```
+data        /nse-shoonya (live exchange data for every skill)
+prove       /nse-backtest ─▶ /nse-validate
 find        /nse-scanner ─▶ /nse-news
 time        /nse-entry ─▶ /nse-exit ─▶ /nse-timemachine
 size+guard  /nse-budget ─▶ /nse-risk ─▶ /nse-broker
@@ -66,6 +74,9 @@ alongside   /nse-alerts   /nse-analyst   /nse-bigmoney
 
 | command | job |
 | --- | --- |
+| `/nse-shoonya` | Shoonya OAuth login in your own terminal, a live selftest of auth and bar schema, then every skill reads Shoonya's 1–240-minute and daily bars instead of Yahoo |
+| `/nse-backtest` | Walk-forward backtests of micro-cap momentum (bhavcopy, point-in-time, split-adjusted) and intraday ORB, scored only out-of-sample after charges and your slippage: NO EDGE, INSUFFICIENT DATA, INCONCLUSIVE or CANDIDATE |
+| `/nse-validate` | Forward test of a CANDIDATE on data newer than the backtest, with a drawdown breaker and a pass gate whose false-pass rate is measured; optional block on unvalidated live entries |
 | `/nse-scanner` | Nifty 50/100/200/500, Midcap 150, Smallcap 250, Bank Nifty or all NSE: 20-day breakouts, bull flags, oversold bounces, opening-range breakouts, delivery-% spikes |
 | `/nse-news` | Google News (India edition) per stock, tagged: results, dividend, bonus, split, buyback, order win, block deal, SEBI, rating... Only new items, in IST |
 | `/nse-entry` | Watches a setup bar by bar from 9:15 and calls the entry on a closed bar above the range or your level |
@@ -94,6 +105,7 @@ Set `"broker"` in `nse/config.json`. Charges, square-off times, how stops are he
 | Dhan | `dhan` | DhanHQ ticket, Forever OCO for delivery |
 | SBI Securities | `sbi` | Manual ticket |
 | Motilal Oswal | `motilal` | MO API ticket |
+| Shoonya (Finvasia) | `shoonya` | Sent through Shoonya's API by `ticket.py send`, only after every gate and the operator's consent code. Brokerage is not built in: you set it |
 
 The top 10 by NSE active clients, September 2026. Every number has a source and a confidence tag in [docs/brokers.md](docs/brokers.md). Unverified square-off times use a cautious default and say so. If you can confirm one, [open an issue](../../issues/new?template=broker-data.yml).
 
@@ -107,7 +119,7 @@ The top 10 by NSE active clients, September 2026. Every number has a source and 
 
 ## Data and freshness
 
-Prices come from Yahoo Finance (free, unofficial, can lag). NSE's archive CSVs supply the equity list, bhavcopy, price bands, F&O list and bulk/block deals. The holiday list covers 2026 (NSE circulars NSE/CMTR/71775 and 72260). NSE publishes 2027 in December; add it to `nse/holidays.json` or send a PR. A weekly CI run catches stale calendars.
+With `/nse-shoonya use shoonya`, prices come from Shoonya's exchange feed for every skill (Yahoo stays only for fundamentals and FX, and as an opt-in fallback that is off by default). Without it, prices come from Yahoo Finance (free, unofficial, can lag). NSE's archive CSVs supply the equity list, bhavcopy, price bands, F&O list and bulk/block deals. The holiday list covers 2026 (NSE circulars NSE/CMTR/71775 and 72260). NSE publishes 2027 in December; add it to `nse/holidays.json` or send a PR. A weekly CI run catches stale calendars.
 
 ## Configure
 
@@ -128,15 +140,16 @@ Full example: [`nse-budget/config.example.json`](nse-budget/config.example.json)
 
 ## Contributing
 
-Good first contributions: confirm a broker's post-auction square-off time, add the 2027 NSE holidays, add a scanner setup, or improve a news tag. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). All 533 tests run offline in about 20 seconds:
+Good first contributions: confirm a broker's post-auction square-off time, add the 2027 NSE holidays, add a scanner setup, or improve a news tag. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). All 595 tests run offline in about 20 seconds:
 
 ```bash
-python -m unittest discover -s tests -p "test_nse_*.py"
+python -m unittest discover -s tests -p "test_*.py"
 ```
 
 ## Credits
 
-Built on Jake Schincariol's MIT-licensed US [day-trader-skill](https://github.com/Jakeschincariol/day-trader-skill), whose structure, rigor and honesty this pack keeps. The market layer is rebuilt for India.
+v2 (Shoonya data, walk-forward backtester, forward-test gate, consent-gated Shoonya orders) is a fork of Aditya Raj's
+MIT-licensed [dalal-street-skills](https://github.com/Adityaraj0421/dalal-street-skills), itself built on Jake Schincariol's MIT-licensed US [day-trader-skill](https://github.com/Jakeschincariol/day-trader-skill), whose structure, rigor and honesty this pack keeps. The market layer is rebuilt for India.
 
 ## Not investment advice
 

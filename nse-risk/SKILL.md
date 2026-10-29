@@ -1,25 +1,18 @@
 ---
 name: nse-risk
 description: >-
-  Risk Manager for NSE/BSE. Checks every trade against your limits and stops
-  anything over them, before it can reach the broker. For an intraday (MIS)
-  trade: a stop is required, the loss at the stop INCLUDING charges must fit
-  your max loss per trade, reward:risk after charges must meet your minimum,
-  the day's total risk must fit your daily loss limit, no more than your
-  trades per day, entries only inside your window (IST, NSE holidays and
-  Muhurat sessions), no entry in the last minutes before continuous trading
-  ends (F&O stocks stop at 15:15 until 2026-12-06), and the order must carry
-  a flat_by at least 5 minutes before the configured broker's MIS auto
-  square-off for that stock and day. India rules: series BE/BZ cannot be MIS, GSM/ASM stocks
-  block MIS and warn on delivery, entry/stop/target must sit inside the
-  circuit band from sec_list.csv, CNC can never be sold short. Plus the
-  basics: blocked symbols, order size, position cap, cash buffer and MIS
-  margin, F&O, malformed orders and GTTs, duplicates and a daily order limit.
-  Getting out is never blocked. Prints PASS or BLOCK with the reason and
-  records the verdicts so nse-broker only shows an order that passed. Use when
-  the user says "check my order", "is this safe", "risk check", "does this
-  break my rules", "can I take this trade", "is RELIANCE in a circuit",
-  "how much have I risked today", or before /nse-broker, always.
+  Risk Manager for NSE/BSE. PASS or BLOCK for every order before it can reach
+  the broker. Intraday (MIS): stop required, loss at the stop including
+  charges within your max loss, minimum reward:risk after charges, daily loss
+  and trades-per-day limits, entry window (IST, holidays, Muhurat), no late
+  entries before the 15:15 closing auction, flat_by before your broker's
+  square-off. India rules: no MIS in BE/BZ series or GSM/ASM stocks, prices
+  inside the circuit band, no CNC short selling. Also blocked symbols, size,
+  position cap, cash and margin, F&O, malformed orders, duplicates, and (opt-
+  in "require_validated") live entries from strategies that have not passed
+  nse-validate. Getting out is never blocked. Use when the user says "check my
+  order", "is this safe", "risk check", "can I take this trade", "how much
+  have I risked today", or before /nse-broker, always.
 argument-hint: "[path to orders.json]"
 ---
 

@@ -1,28 +1,19 @@
 ---
 name: nse-broker
 description: >-
-  Order Executor for NSE/BSE, for the ten biggest Indian brokers (Groww,
-  Zerodha, Angel One, ICICIdirect, Upstox, Kotak Neo, HDFC Sky, Dhan, SBI
-  Securities, Motilal Oswal). Paper trading by default, never a real order
-  without your yes. Shows each order as a plain ticket (entry, stop, target,
-  max loss with charges, flat-by time), records your yes word for word, and
-  in the default PAPER mode books a simulated fill in its own paper ledger
-  (no Indian broker gives a paper account through its API) only when the
-  market is at or through the limit, else keeps it as a working day order
-  that fills or expires like a real one: stop and target
-  tracked, P&L net of charges, in nse/state/broker.json and nse/portfolio.json.
-  In LIVE mode it renders the order in the configured broker's own API field
-  names (Kite place_order, Groww, SmartAPI, Breeze, Upstox, Neo, DhanHQ,
-  Motilal) or as a manual ticket where there is no API, says honestly whether
-  that broker's official MCP server can place orders (Groww yes; Zerodha's
-  hosted one is read-only plus GTT; Upstox and Kotak read-only), and prints
-  the SL-M stop or GTT OCO to place after the fill. Builds the sell ticket
-  that closes an intraday position before flat_by, records fills, and logs
-  each trade's max loss so nse-risk can hold the daily limit. Use when the
-  user says "place the order", "buy it", "execute", "send it to my broker",
-  "close my position", "square off", "flatten", "get me out", "connect
-  Zerodha", "connect Groww", "set up Kite", "which broker", "paper trade",
-  or after /nse-risk passes.
+  Order Executor for NSE/BSE, paper by default. Shows each order as a plain
+  ticket (entry, stop, target, max loss with charges, flat-by), records your
+  yes word for word, and in PAPER mode books simulated fills only when the
+  market reaches the limit, tracking stop, target and P&L net of charges. In
+  LIVE mode renders the order in your broker's API fields (Zerodha, Groww,
+  Angel One, ICICIdirect, Upstox, Kotak Neo, HDFC Sky, Dhan, SBI, Motilal) or
+  as a manual ticket, and says honestly whether that broker's MCP can place
+  it. For Shoonya it sends through Shoonya's API itself, only behind every
+  gate and a consent code the operator types. Writes a broker-neutral order
+  intent for every approval. Use when the user says "place the order", "buy
+  it", "execute", "send it to my broker", "send to Shoonya", "close my
+  position", "square off", "flatten", "connect Zerodha", "paper trade", or
+  after /nse-risk passes.
 argument-hint: "[order number]"
 ---
 
@@ -116,6 +107,49 @@ Live mode is the user's own edit of `"paper": false`; never do it for them. Then
 - **Angel One, ICICIdirect, Dhan, Motilal Oswal.** No official MCP server. Place the ticket by hand in the app, or through the
   official API if the user has set it up themselves. Community MCP servers exist: this pack does not recommend or use them.
 - **SBI Securities.** No public API. Type the ticket into the SBI app.
+- **Shoonya (Finvasia).** No MCP server; this pack sends to Shoonya's own API itself with `ticket.py send`, and only
+  through every gate below. Setup is the user's, in their own `nse/config.json`, never Claude's edit:
+  `"broker": "shoonya"`, `"paper": false`, the brokerage and DP charge in `"charges"` (not built in: Shoonya's pricing
+  was not verified here), and
+  `"shoonya": {"orders_enabled": true, "algo_id": "<exchange Algo ID from Shoonya>", "sl_limit_buffer_pct": <their choice>,
+  "consent": "terminal", "consent_window_min": 5, "max_orders_per_day": 10}`. Login and data come from `/nse-shoonya`.
+
+### Shoonya: the gates in front of `ticket.py send`
+
+An order reaches Shoonya only when **all** of these hold, checked in code, in this order:
+1. No kill switch: the file `nse/KILL` does not exist (creating it stops every send at once).
+2. Broker is shoonya, `"paper": false`, and `shoonya.orders_enabled` is true. All three are the user's own edits.
+3. `shoonya.algo_id` is set: exchanges reject API orders without an empanelled Algo ID.
+4. nse-risk passed this exact order today (fingerprint), and the user's typed yes is recorded (`approve`).
+5. The yes is fresh: at most `consent_window_min` minutes old (default 5). Older, show the ticket and ask again.
+6. Not already sent today (no duplicates per order and leg), and under `max_orders_per_day`.
+7. **The operator's consent code.** `approve` prints a 6-character code for that order. In the default
+   `"consent": "terminal"` mode, the user runs `python3 ticket.py send --index N` **in their own terminal** and types the
+   code there; Claude cannot send it (no terminal, no send). In `"consent": "chat"` mode, the user's own chat message
+   must contain `SEND <code> <SYMBOL>`, passed word for word with `--reply`, and Claude's Allow card still appears for the
+   command. Claude never types, guesses or relays the code on the user's behalf.
+8. At most one order per second; the session token is never written to the audit log.
+
+```bash
+python3 "${CLAUDE_SKILL_DIR}/ticket.py" send --index 1 --dry-run           # the exact payload and code, sends nothing
+python3 "${CLAUDE_SKILL_DIR}/ticket.py" send --index 1                     # operator, own terminal: asks for the code
+python3 "${CLAUDE_SKILL_DIR}/ticket.py" send --index 1 --reply "SEND 7F3A2C RELIANCE"   # chat mode only
+python3 "${CLAUDE_SKILL_DIR}/ticket.py" order-status --broker-id 26102600001234        # read-only: status, fills, avg price
+python3 "${CLAUDE_SKILL_DIR}/ticket.py" send --index 1 --leg stop --qty 118             # the stop, after the entry fills
+```
+
+Shoonya takes only LMT and SL-LMT through the API: a MARKET entry is refused (make it a limit), and the stop is an SL-LMT
+whose limit sits `sl_limit_buffer_pct` below the trigger. In a fast fall the price can jump past that limit and the stop
+stays unfilled. Say so when showing a Shoonya stop. Accepted is not filled: check `order-status`, then record the fill with
+`result` or `fill`, and send the stop leg; until then nothing protects the position at the broker.
+
+### Order intents (handoff to another execution system)
+
+Every `approve`, paper or live, any broker, also writes `nse/intents/<date>-<fingerprint>.json` (and a line in
+`nse/intents/intents.jsonl`) in the broker-neutral schema `docs/order-intent.schema.json`: instrument, side, product,
+quantity, entry, stop, target, max loss, the nse-risk verdict and fingerprint, the user's yes word for word and the Algo ID.
+A separate execution system (for example a risk governor in front of an OMS) can consume these, re-check them against its
+own limits, and place them. That system then owns the final decision; do not also send the same order with `send`.
 
 Whatever the broker: **never invent a tool name or a parameter**. Tell Claude to read the connected server's tool list,
 use only the names it shows, and map the ticket's fields onto them; if a name or field is unclear, show the user the
@@ -256,5 +290,6 @@ file and are never sent.
 - Nothing in this pack places an order except nse-broker, and only when all three hold: nse-risk
   passed that exact order today, the user typed an explicit yes for that one order in the chat, and (live
   mode) the user clicked Allow once on Claude's own card because the order tool is set to "Needs approval".
+  For Shoonya the third step is the operator's consent code, typed by the operator (see the gates above).
 - No F&O, short selling or leverage beyond the broker's MIS unless the config allows it and the user confirms.
 - Broker logins happen in the broker's own page, never in the chat.

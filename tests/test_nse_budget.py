@@ -454,11 +454,11 @@ class RealChain(unittest.TestCase):
 
 
 class BrokerProfiles(unittest.TestCase):
-    def test_zerodha_is_the_default_and_the_core_has_ten(self):
+    def test_zerodha_is_the_default_and_the_core_has_eleven(self):
         p = size.broker_profile({})
         self.assertEqual((p["key"], p["squareoff"]), ("zerodha", {"cas": "15:12", "other": "15:25"}))
         self.assertEqual(sorted(size.BROKERS), sorted(["groww", "zerodha", "angelone", "icicidirect", "upstox", "kotak",
-                                                       "hdfcsky", "dhan", "sbi", "motilal"]))
+                                                       "hdfcsky", "dhan", "sbi", "motilal", "shoonya"]))
         with open(CFG, encoding="utf-8") as fh:
             c = json.load(fh)
         self.assertEqual(c["broker"], "zerodha")

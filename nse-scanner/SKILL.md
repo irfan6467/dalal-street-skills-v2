@@ -1,22 +1,16 @@
 ---
 name: nse-scanner
 description: >-
-  Chart Scanner for NSE/BSE. Scans hundreds of Indian charts for setups:
-  opening-range breakouts, flags, oversold bounces and, for investors,
-  delivery-percentage spikes. Builds its stock list from the Nifty indices
-  (Nifty 50, 100, 200, 500, Midcap 150, Smallcap 250, Bank Nifty) on
-  niftyindices.com or from every EQ-series stock on NSE, runs a scan of daily
-  closes (20-day closing-high breakout, bull flag, reclaimed the 20-day
-  average, oversold, oversold bounce), an intraday opening-range breakout scan
-  on 5-minute bars from 09:15 IST, and a delivery scan on the NSE bhavcopy
-  (delivery % and delivery quantity well above a stock's own average), then
-  writes nse/watchlist.json for nse-news and nse-entry. Free Yahoo and NSE
-  archive data. Use when the user says "scan the market", "find me setups",
-  "what is breaking out", "opening range breakout", "Nifty 500 scan",
-  "scan for bull flags", "oversold stocks", "delivery spike", "high delivery
-  percentage", "accumulation", "stocks to invest in", "pre-market scan",
-  "build my watchlist", "what should I look at today", for intraday (MIS) or
-  delivery (CNC) ideas on RELIANCE, TCS, HDFCBANK and friends, or at the
+  Chart Scanner for NSE/BSE. Scans Nifty 50/100/200/500, Midcap 150, Smallcap
+  250, Bank Nifty or every NSE EQ stock for setups: 20-day closing-high
+  breakouts, bull flags, reclaimed 20-day average, oversold bounces, intraday
+  opening-range breakouts on 5-minute bars from 09:15 IST, and delivery-
+  percentage spikes from the NSE bhavcopy. Writes nse/watchlist.json for nse-
+  news and nse-entry. Uses Shoonya live data when connected, else Yahoo, plus
+  NSE archive files. Use when the user says "scan the market", "find me
+  setups", "what is breaking out", "opening range breakout", "Nifty 500 scan",
+  "bull flags", "oversold stocks", "delivery spike", "accumulation", "pre-
+  market scan", "build my watchlist", "what should I look at today", or at the
   start of a trading day before /nse-news.
 argument-hint: "[universe | daily | orb | delivery] [--universe nifty500] [--at HH:MM]"
 ---

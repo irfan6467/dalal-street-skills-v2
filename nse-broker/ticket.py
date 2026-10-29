@@ -367,7 +367,40 @@ def _open_url(url, timeout=20, accept="application/json"):
         return r.read().decode("utf-8", "replace")
 
 
+def _shoonya_feed():
+    """shoonya_feed.py from this script's folder, loaded once (None when absent)."""
+    mod = globals().get("_SHOONYA_FEED_MOD")
+    if mod is None:
+        import importlib.util
+        here = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(here, "shoonya_feed.py")
+        if not os.path.exists(path):
+            path = os.path.join(os.path.dirname(here), "_shared", "shoonya_feed.py")
+        if not os.path.exists(path):
+            return None
+        spec = importlib.util.spec_from_file_location("shoonya_feed_" + str(abs(hash(path))), path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        globals()["_SHOONYA_FEED_MOD"] = mod
+    return mod
+
+
 def yahoo_get(path):
+    """Price data for a Yahoo-style path. When nse/config.json picks Shoonya as the data provider the
+    chart and spark paths are answered from Shoonya's live exchange data (same JSON shape); anything
+    else, or the Yahoo provider, goes to Yahoo."""
+    feed = _shoonya_feed()
+    if feed is not None:
+        try:
+            hooked = feed.yahoo_hook(path)
+        except feed.ShoonyaError as e:
+            raise IndiaError(str(e))
+        if hooked is not None:
+            return hooked
+    return _yahoo_http(path)
+
+
+def _yahoo_http(path):
     """GET a Yahoo path: query2 first, query1 when query2 answers 429 or 5xx.
     An HTTP 429 gets one retry on the same host after BACKOFF seconds.
     A 404 body is returned: Yahoo says why (an unknown ticker) in it."""
@@ -576,11 +609,21 @@ BROKERS = {
         "stop_mis": "sl_leg", "stop_cnc": "gtt",
         "api": "Motilal Oswal API", "mcp": None, "paper": False,
     },
+    "shoonya": {
+        "name": "Shoonya (Finvasia)", "rank": 11,
+        # Brokerage and DP charge are NOT built in: Shoonya's pricing has changed over the years and was not
+        # verified here. charges_cfg() refuses to guess until the user sets them in nse/config.json "charges".
+        "brokerage_mis": None, "brokerage_cnc": None, "dp_charge": None,
+        "squareoff": dict(UNVERIFIED_SQUAREOFF), "verified": [],
+        "stop_mis": "sl_leg", "stop_cnc": "gtt",
+        "api": "Noren REST API (OAuth login, whitelisted IP, exchange Algo ID on every API order; no MKT orders)",
+        "mcp": None, "paper": False,
+    },
 }
 BROKER_ALIASES = {"angel": "angelone", "angel one": "angelone", "icici": "icicidirect", "kotak neo": "kotak",
                   "kotaksecurities": "kotak", "hdfc": "hdfcsky", "hdfc sky": "hdfcsky", "hdfcsec": "hdfcsky",
                   "sbisecurities": "sbi", "sbicap": "sbi", "motilaloswal": "motilal", "mosl": "motilal",
-                  "kite": "zerodha"}
+                  "kite": "zerodha", "finvasia": "shoonya", "noren": "shoonya"}
 DEFAULT_BROKER = "zerodha"
 SQUAREOFF_UNTIL = "2026-12-06"
 
@@ -658,12 +701,17 @@ def charges_cfg(cfg=None):
     c = dict(CHARGES)
     p = broker_profile(cfg)
     for m in ("mis", "cnc"):
-        pct, lo, cap = p["brokerage_" + m]
+        pct, lo, cap = p["brokerage_" + m] or (None, None, None)
         c["brokerage_pct_" + m], c["brokerage_min_" + m], c["brokerage_cap_" + m] = pct, lo, cap
     c["dp_charge_cnc_sell"] = p["dp_charge"]
     for k, v in ((cfg or {}).get("charges") or {}).items():
         if k in c:
             c[k] = float(v)
+    missing = sorted(k for k, v in c.items() if v is None)
+    if missing:
+        raise IndiaError("%s's brokerage is not built in, so charges cannot be computed. Set these from your "
+                         "broker's current price list in nse/config.json \"charges\" (percent, minimum and cap per "
+                         "order, 0 for none): %s" % (p["name"], ", ".join(missing)))
     return c
 
 
@@ -1092,6 +1140,10 @@ MCP_NONE = ("none", "%s has no official MCP server. Place this ticket by hand in
 
 def live_route(prof):
     """(kind, one sentence) on how a live ticket for this broker can reach the market."""
+    if prof["key"] == "shoonya":
+        return "send", ("Shoonya has no MCP server. `ticket.py send` places it through Shoonya's API, and only "
+                        "after every gate: live mode, orders_enabled, your Algo ID, nse-risk PASS, your typed yes, "
+                        "and the one-time consent code typed by you (in your terminal by default).")
     if prof["key"] == "sbi":
         return "manual", "SBI Securities has no public retail API and no MCP: type this ticket into the SBI app by hand."
     if prof["key"] in MCP_ORDERS:
@@ -1236,15 +1288,52 @@ def r_sbi(order, n, L):
     return None, None, ["SBI Securities has no public retail API: type this ticket into the SBI app by hand."]
 
 
+def shoonya_cfg(cfg):
+    return dict((cfg or {}).get("shoonya") or {})
+
+
+def r_shoonya(order, n, L, cfg=None):
+    """Noren PlaceOrder jData. Shoonya's API takes only LMT and SL-LMT (MKT and SL-M are rejected), so a stop
+    is an SL-LMT whose limit sits sl_limit_buffer_pct below the trigger: the user must choose that buffer."""
+    sc = shoonya_cfg(cfg)
+    notes = ["Shoonya PlaceOrder fields [from shoonya.com/api-documentation/place-order, read 2026-10-29]. "
+             "tsym is resolved from Shoonya's symbol master when the order is sent."]
+    if L["otype"] == "MARKET":
+        return None, None, ["Shoonya's API rejects MKT orders: make this a LIMIT (nse-budget --entry-type limit) "
+                            "or place it by hand in the Shoonya app."]
+    prc, trg, prctyp = L["price"], None, "LMT"
+    if L["otype"] in ("SL-M", "SL"):
+        prctyp, trg = "SL-LMT", L["trigger"]
+        if L["otype"] == "SL-M" or prc is None:
+            buf = sc.get("sl_limit_buffer_pct")
+            if buf is None:
+                return None, None, ["Shoonya has no SL-M order: a stop is an SL-LMT with a limit below the trigger. "
+                                    "Set shoonya.sl_limit_buffer_pct in nse/config.json (your choice: how far below "
+                                    "the trigger you accept being filled) before this stop can be sent."]
+            prc = tick_down(trg * (1 - float(buf) / 100.0))
+            notes.append("Stop as SL-LMT: trigger %s, limit %s (%.2f%% below). In a fast fall the price can skip the "
+                         "limit and the stop stays UNFILLED: watch it." % (_s(trg), _s(prc), float(buf)))
+    tsym = n["sym"] + ("-EQ" if n["exch"] == "NSE" else "")
+    p = _clean({"uid": "<your Shoonya id>", "actid": "<your Shoonya id>", "exch": n["exch"], "tsym": tsym,
+                "qty": str(L["qty"]), "prc": _s(prc), "trgprc": _s(trg), "dscqty": "0",
+                "prd": {"MIS": "I", "CNC": "C"}[n["prod"]], "prctyp": prctyp,
+                "trantype": "B" if L["side"] == "BUY" else "S", "ret": "DAY", "ordersource": "API",
+                "remarks": ("nse-broker %s" % (n["id"] or ""))[:30].strip(),
+                "algo_id": sc.get("algo_id") or "<the exchange Algo ID Shoonya issued you>"})
+    return "Shoonya PlaceOrder (ticket.py send)", p, notes
+
+
 RENDERERS = {"zerodha": r_zerodha, "groww": r_groww, "angelone": r_angelone, "icicidirect": r_icicidirect,
              "upstox": r_upstox, "kotak": r_kotak, "hdfcsky": r_hdfcsky, "dhan": r_dhan, "motilal": r_motilal,
-             "sbi": r_sbi}
+             "sbi": r_sbi, "shoonya": r_shoonya}
 
 
 def render_leg(order, cfg, role, q=None):
     """(tool, payload or None, notes) for one leg in the configured broker's format."""
     prof = broker_profile(cfg)
     n = _n(order)
+    if prof["key"] == "shoonya":
+        return r_shoonya(order, n, _leg(n, role, q), cfg)
     return RENDERERS[prof["key"]](order, n, _leg(n, role, q))
 
 
@@ -1652,6 +1741,20 @@ def cmd_approve(a):
     state.setdefault("orders", []).append(rec)
     write_json(a.state, state)
     print("Recorded your yes for order %d: %s." % (a.index, plain(order, cfg)))
+    print("Order intent: %s" % write_intent(order_intent(order, cfg, rec, rv)))
+    if not paper and broker_profile(cfg)["key"] == "shoonya":
+        code = consent_code(fp, rec["at"], "entry")
+        mode = shoonya_cfg(cfg).get("consent", "terminal")
+        print("LIVE, Shoonya. Nothing has been sent. One more step, by the operator:")
+        if mode == "terminal":
+            print("  In YOUR terminal run:  python3 ticket.py send --index %d" % a.index)
+            print("  and type the consent code %s when asked. Valid for %s minutes." % (
+                code, shoonya_cfg(cfg).get("consent_window_min", 5)))
+        else:
+            print("  Reply in chat with exactly:  SEND %s %s   (valid %s minutes)" % (
+                code, symbol_of(order), shoonya_cfg(cfg).get("consent_window_min", 5)))
+        print(SEBI_NOTE)
+        return 0
     if not paper:
         prof = broker_profile(cfg)
         name, payload, notes = entry_payload(order, cfg)
@@ -1692,6 +1795,222 @@ def cmd_approve(a):
         if prod == "MIS" and order.get("flat_by"):
             print("Flat by %s IST: ticket.py flatten --symbol %s then closes it." % (order["flat_by"], sym))
     print("Cash in the paper ledger: %s." % inr(res["portfolio"]["cash"]))
+    return 0
+
+
+
+# ---------------------------------------------------------------- order intents (Prop-Desk handoff)
+# Every approved ticket, paper or live, is also written as a broker-neutral order intent: the contract a
+# separate execution system (a risk governor, an OMS) can consume. Schema: docs/order-intent.schema.json.
+
+INTENT_DIR = os.path.join("nse", "intents")
+INTENT_VERSION = 1
+
+
+def order_intent(order, cfg, rec, rv):
+    e = entry_of(order)
+    loss, stop = max_loss(order, cfg)
+    return {
+        "schema": "dalal-street/order-intent", "version": INTENT_VERSION,
+        "intent_id": "%s-%s" % (rec["date"], rec["fingerprint"]), "created_ist": rec["at"],
+        "source": "nse-broker", "mode": "paper" if rec.get("paper") else "live", "broker": rec.get("broker"),
+        "strategy": order.get("strategy") or None,
+        "instrument": {"exchange": str(e.get("exchange") or "NSE").upper(), "symbol": symbol_of(order)},
+        "side": side_of(order).upper(), "product": product_of(order), "quantity": int(qty_of(order) or 0),
+        "entry": {"type": str(e.get("order_type") or "LIMIT").upper(), "price": _f(e.get("price")),
+                  "trigger": _f(e.get("trigger_price"))},
+        "stop": {"trigger": stop}, "target": {"price": target_of(order)},
+        "flat_by_ist": order.get("flat_by"), "max_loss_inr": loss,
+        "risk_check": {"by": "nse-risk", "verdict": (rv or {}).get("verdict"), "fingerprint": rec["fingerprint"],
+                       "kind": rec.get("kind")},
+        "consent": {"typed_reply": rec.get("reply"), "approved_ist": rec["at"]},
+        "algo_id": shoonya_cfg(cfg).get("algo_id") if rec.get("broker") == "shoonya" else None,
+    }
+
+
+def write_intent(intent):
+    os.makedirs(INTENT_DIR, exist_ok=True)
+    path = os.path.join(INTENT_DIR, intent["intent_id"] + ".json")
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(intent, fh, indent=2)
+    with open(os.path.join(INTENT_DIR, "intents.jsonl"), "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(intent, separators=(",", ":")) + "\n")
+    return path
+
+
+# ---------------------------------------------------------------- Shoonya send (consent-gated)
+
+KILL_FILE = os.path.join("nse", "KILL")
+SEND_STATE = os.path.join("nse", "state", "shoonya_orders.json")
+AUDIT_LOG = os.path.join("nse", "state", "shoonya_audit.jsonl")
+LEGS = ("entry", "stop", "target")
+
+
+def consent_code(fp, approved_at, leg):
+    return hashlib.sha256(("%s|%s|%s" % (fp, approved_at, leg)).encode()).hexdigest()[:6].upper()
+
+
+def shoonya_gates(cfg, state, fp, today, now, leg):
+    """Every condition that must hold before a Shoonya order may be sent. Returns the approval record."""
+    sc = shoonya_cfg(cfg)
+    prof = broker_profile(cfg)
+    if os.path.exists(KILL_FILE):
+        raise TicketError("kill switch on (%s exists): nothing is sent until you delete it" % KILL_FILE)
+    if prof["key"] != "shoonya":
+        raise TicketError("send is for Shoonya only; the broker in nse/config.json is %s" % prof["name"])
+    if is_paper(cfg):
+        raise TicketError("paper mode: nothing is sent. Live needs \"paper\": false in nse/config.json, set by you")
+    if not sc.get("orders_enabled"):
+        raise TicketError("Shoonya orders are off. They go on only when you set \"shoonya\": {\"orders_enabled\": "
+                          "true} in nse/config.json yourself")
+    if not sc.get("algo_id"):
+        raise TicketError("no exchange Algo ID: SEBI's retail-algo rules (in force since 1 Apr 2026) make the exchange "
+                          "reject API orders without one. Get it from Shoonya and set shoonya.algo_id")
+    rec = latest(state, fp, today)
+    if leg == "entry":
+        if not rec or rec.get("status") != "approved":
+            raise TicketError("this order has no yes recorded today (or it was already sent): approve it first")
+    else:
+        placed = [r for r in state.get("orders", []) if r.get("fingerprint") == fp and r.get("status") == "placed"]
+        if not placed:
+            raise TicketError("the %s leg follows a placed entry; this order has none" % leg)
+        rec = placed[-1]
+    window = float(sc.get("consent_window_min", 5))
+    try:
+        at = datetime.datetime.strptime(rec["at"][:19], "%Y-%m-%dT%H:%M:%S")
+        age = (now - ist_to_utc(at)).total_seconds() / 60.0
+    except (KeyError, ValueError):
+        age = 0.0
+    if leg == "entry" and age > window:
+        raise TicketError("your yes is %.0f minutes old (limit %.0f): prices move. Show the ticket and ask again"
+                          % (age, window))
+    sent = read_json(SEND_STATE, "send state", required=False) or {}
+    day = [x for x in sent.get("sent", []) if x.get("date") == today]
+    cap = int(sc.get("max_orders_per_day", 10))
+    if len(day) >= cap:
+        raise TicketError("%d Shoonya orders already sent today (cap %d, shoonya.max_orders_per_day)" % (len(day), cap))
+    if any(x.get("fingerprint") == fp and x.get("leg") == leg for x in day):
+        raise TicketError("the %s leg of this order was already sent today: no duplicates" % leg)
+    return rec
+
+
+def check_consent(code, mode, typed=None, reply=None, symbol=None):
+    if mode == "terminal":
+        if typed is None:
+            if not sys.stdin.isatty():
+                raise TicketError("consent mode is \"terminal\": the operator must run this command in their own "
+                                  "terminal and type the code there. Claude cannot send it")
+            typed = input("Type the consent code to send this order (anything else cancels): ")
+        if typed.strip().upper() != code:
+            raise TicketError("consent code did not match: nothing sent")
+        return "terminal"
+    if mode == "chat":
+        r = (reply or "").upper()
+        if not reply or ("SEND %s" % code) not in r or (symbol and symbol.upper() not in r):
+            raise TicketError("consent mode is \"chat\": the user's own message, passed word for word with --reply, "
+                              "must contain \"SEND %s\" and the symbol %s" % (code, symbol))
+        return "chat"
+    raise TicketError("shoonya.consent is \"terminal\" (default) or \"chat\"")
+
+
+def resolve_tsym(feed, symbol, exch):
+    y = symbol + (".BO" if exch == "BSE" else ".NS")
+    try:
+        return feed.resolve(y)[2]
+    except feed.ShoonyaError as e:
+        raise TicketError("could not resolve %s in Shoonya's symbol master: %s" % (symbol, e))
+
+
+def audit(entry):
+    os.makedirs(os.path.dirname(AUDIT_LOG), exist_ok=True)
+    with open(AUDIT_LOG, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(entry, separators=(",", ":")) + "\n")
+
+
+def cmd_send(a):
+    orders, cfg, risk, state, today, now = _load(a)
+    order = _pick(orders, a.index)
+    fp = fingerprint(order)
+    leg = a.leg
+    rec = shoonya_gates(cfg, state, fp, today, now, leg)
+    q = int(a.qty) if a.qty else (rec.get("filled_qty") or qty_of(order))
+    tool, payload, notes = render_leg(order, cfg, leg, int(q) if leg != "entry" else None)
+    if payload is None:
+        raise TicketError("; ".join(notes))
+    feed = _shoonya_feed()
+    if feed is None:
+        raise TicketError("shoonya_feed.py is missing from this skill folder: reinstall nse-broker")
+    sess = feed.load_session()
+    payload = dict(payload, uid=sess["uid"], actid=sess["uid"],
+                   tsym=resolve_tsym(feed, symbol_of(order), payload["exch"]),
+                   algo_id=shoonya_cfg(cfg)["algo_id"])
+    code = consent_code(fp, rec["at"], leg)
+    print("SEND TO SHOONYA, LIVE ACCOUNT, REAL MONEY")
+    print("  %s leg of order %d: %s" % (leg, a.index, plain(order, cfg)))
+    print(json.dumps(payload, indent=2))
+    for nt in notes:
+        print("note: " + nt)
+    mode = shoonya_cfg(cfg).get("consent", "terminal")
+    if a.dry_run:
+        print("Dry run: nothing sent. Consent code for this leg: %s" % code)
+        return 0
+    how = check_consent(code, mode, typed=a.code, reply=a.reply, symbol=symbol_of(order))
+    sent = read_json(SEND_STATE, "send state", required=False) or {"sent": []}
+    last = max([x.get("ts", 0) for x in sent.get("sent", [])] or [0])
+    if time.time() - last < 1.0:
+        time.sleep(1.0 - (time.time() - last))          # never more than one order a second
+    entry = {"at": ist_iso(now), "date": today, "fingerprint": fp, "leg": leg, "index": a.index,
+             "payload": payload, "consent": how}
+    try:
+        res = feed.call("PlaceOrder", payload, mode="jkey")
+        ok, oid, err = True, res.get("norenordno"), None
+    except feed.ShoonyaError as e:
+        ok, oid, err = False, None, str(e)
+    entry.update({"ok": ok, "norenordno": oid, "error": err})
+    audit(entry)
+    sent.setdefault("sent", []).append({"date": today, "fingerprint": fp, "leg": leg, "ts": time.time(),
+                                        "norenordno": oid, "ok": ok})
+    write_json(SEND_STATE, sent)
+    if leg == "entry":
+        new = {"at": ist_iso(now), "date": today, "index": a.index, "fingerprint": fp, "symbol": rec["symbol"],
+               "side": rec["side"], "product": rec.get("product"), "plain": rec["plain"],
+               "status": "placed" if ok else "failed", "via": "shoonya send (%s consent)" % how}
+        for k in ("qty", "kind", "max_loss", "stop"):
+            if rec.get(k) is not None:
+                new[k] = rec[k]
+        if oid:
+            new["broker_order_id"] = oid
+        if err:
+            new["note"] = err
+        state["orders"].append(new)
+        write_json(a.state, state)
+    if not ok:
+        print("Shoonya REJECTED it: %s. Nothing is working at the broker." % err)
+        return 1
+    print("Placed with Shoonya: order %s. Accepted is not filled: check it with ticket.py order-status --broker-id %s"
+          % (oid, oid))
+    if leg == "entry" and (order.get("stop") or order.get("gtt_oco")):
+        print("The position has NO stop at the broker until you send it: ticket.py send --index %d --leg stop "
+              "(after the entry fills)" % a.index)
+    return 0
+
+
+def cmd_order_status(a):
+    feed = _shoonya_feed()
+    if feed is None:
+        raise TicketError("shoonya_feed.py is missing from this skill folder")
+    sess = feed.load_session()
+    try:
+        hist = feed.call("SingleOrdHist", {"uid": sess["uid"], "norenordno": a.broker_id})
+    except feed.ShoonyaError as e:
+        raise TicketError(str(e))
+    rows = hist if isinstance(hist, list) else [hist]
+    top = rows[0] if rows else {}
+    print("Order %s: %s  filled %s of %s  avg %s  %s" % (
+        a.broker_id, top.get("status"), top.get("fillshares", 0), top.get("qty"), top.get("avgprc", "-"),
+        top.get("rejreason") or ""))
+    if a.json:
+        print(json.dumps(rows, indent=2))
     return 0
 
 
@@ -2224,6 +2543,17 @@ def main(argv=None):
     p.add_argument("--note")
     p.add_argument("--filled-qty")
     p.add_argument("--filled-price")
+    p = sub.add_parser("send", help="(live, Shoonya) send one approved leg, after every gate and the consent code")
+    common(p)
+    p.add_argument("--index", type=int, required=True)
+    p.add_argument("--leg", choices=LEGS, default="entry")
+    p.add_argument("--qty", help="stop / target legs: shares that filled")
+    p.add_argument("--code", help="the consent code (terminal mode asks for it when this is left out)")
+    p.add_argument("--reply", help="chat consent mode: the user's message, word for word")
+    p.add_argument("--dry-run", action="store_true", help="show the exact payload and the code, send nothing")
+    p = sub.add_parser("order-status", help="(Shoonya) an order's status, fills and average price, read-only")
+    p.add_argument("--broker-id", required=True)
+    p.add_argument("--json", action="store_true")
     p = sub.add_parser("legs", help="(live) the protective stop / GTT to place after the entry filled")
     common(p)
     p.add_argument("--index", type=int, required=True)
@@ -2278,7 +2608,7 @@ def main(argv=None):
         return 1
     try:
         return {"show": cmd_show, "approve": cmd_approve, "decline": cmd_decline, "result": cmd_result,
-                "legs": cmd_legs, "fill": cmd_fill, "working": cmd_working, "track": cmd_track, "flatten": cmd_flatten,
+                "legs": cmd_legs, "send": cmd_send, "order-status": cmd_order_status, "fill": cmd_fill, "working": cmd_working, "track": cmd_track, "flatten": cmd_flatten,
                 "log": cmd_log}[a.cmd](a)
     except IndiaError as e:
         print("ticket.py: %s" % e, file=sys.stderr)

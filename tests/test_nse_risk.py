@@ -681,7 +681,7 @@ class BrokerProfiles(unittest.TestCase):
         self.assertEqual(check.broker_profile({"broker": "Zerodha"})["key"], "zerodha")
         self.assertEqual(check.broker_profile({"broker": "Angel One"})["key"], "angelone")
         self.assertEqual(check.broker_key({}), "zerodha")
-        self.assertEqual(len(check.BROKERS), 10)
+        self.assertEqual(len(check.BROKERS), 11)
 
     def test_charges_are_per_the_configured_broker(self):
         zer = run_one(rel())["results"][0]["charges_at_stop"]
