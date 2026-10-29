@@ -6,6 +6,13 @@
 
 import importlib.util
 import os
+import tempfile
+
+# Tests never run inside a real trading folder: the skills read and write nse/ relative to the working
+# directory (config, Shoonya session and symbol master, intents, ledgers), so a test run from a live folder
+# would read the user's real state and write test records into it. Every run starts in an empty folder.
+_HERMETIC = tempfile.mkdtemp(prefix="nse-tests-")
+os.chdir(_HERMETIC)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIX = os.path.join(ROOT, "tests", "fixtures")
