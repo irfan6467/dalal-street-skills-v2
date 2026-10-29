@@ -216,21 +216,23 @@ def call(route, values, token=None, mode=None, throttle_key=None, need_auth=True
         token = sess["token"]
     _throttle(throttle_key)
     url = BASE + route
-    js = json.dumps(values, separators=(",", ":"))
-    if mode == "bearer" and need_auth:
-        body = js.encode("utf-8")
-        headers = {"Content-Type": "application/json", "Authorization": "Bearer %s" % token, "User-Agent": UA}
+    if sess is not None and mode == "bearer" and sess.get("access_token"):
+        token = sess["access_token"]
+    # Exactly what Shoonya's official NorenRestApiOAuth (0.0.41) sends: a form body "jData=<raw JSON>";
+    # OAuth sessions add "Authorization: Bearer <access_token>", older ones add "&jKey=<susertoken>".
+    # A trading symbol is percent-encoded inside the JSON, as the SDK does, so "&" (M&M) cannot split the form.
+    if "tsym" in values:
+        values = dict(values, tsym=urllib.parse.quote_plus(str(values["tsym"])))
+    js = json.dumps(values)
+    body = "jData=" + js
+    headers = {"User-Agent": UA}
+    if need_auth and mode == "bearer":
+        headers.update({"Authorization": "Bearer %s" % token, "Content-Type": "application/json; charset=utf-8"})
     else:
-        # Noren reads jData as raw JSON (the official SDK sends it unencoded); only a trading symbol is
-        # percent-encoded inside it, as the SDK does, so an "&" (M&M) cannot split the form.
-        if "tsym" in values:
-            values = dict(values, tsym=urllib.parse.quote_plus(str(values["tsym"])))
-            js = json.dumps(values, separators=(",", ":"))
-        form = "jData=" + js
+        headers["Content-Type"] = "text/plain"
         if need_auth:
-            form += "&jKey=" + str(token)
-        body = form.encode("utf-8")
-        headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Agent": UA}
+            body += "&jKey=" + str(token)
+    body = body.encode("utf-8")
     text = _http(url, body, headers)
     try:
         doc = json.loads(text)

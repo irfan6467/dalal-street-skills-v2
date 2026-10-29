@@ -53,8 +53,8 @@ class FakeShoonya:
         self.answer = answer or {"stat": "Ok", "norenordno": "26102600001234"}
 
     def __call__(self, url, body, headers):
-        q = urllib.parse.parse_qs(body.decode())
-        self.calls.append((url.rsplit("/", 1)[-1], json.loads(q["jData"][0]), q.get("jKey", [None])[0]))
+        js, _, key = body.decode()[len("jData="):].partition("&jKey=")
+        self.calls.append((url.rsplit("/", 1)[-1], json.loads(js), key or None))
         return json.dumps(self.answer)
 
 

@@ -66,10 +66,13 @@ class FakeShoonya:
 
 
 def decode(body, headers):
-    if headers.get("Content-Type", "").startswith("application/json"):
-        return json.loads(body.decode()), headers.get("Authorization")
-    q = urllib.parse.parse_qs(body.decode())
-    return json.loads(q["jData"][0]), (q.get("jKey") or [None])[0]
+    """Both modes send the SDK's form body jData=<raw JSON>; Bearer mode carries the token in a header."""
+    text = body.decode()
+    assert text.startswith("jData="), text
+    js, _, rest = text[len("jData="):].partition("&jKey=")
+    if headers.get("Authorization"):
+        return json.loads(js), headers["Authorization"]
+    return json.loads(js), (rest or None)
 
 
 class Base(unittest.TestCase):
@@ -141,6 +144,9 @@ class TestAuth(Base):
         self.F.call("GetQuotes", {"uid": "FA1234"}, mode="bearer")
         sent, auth = decode(fake.calls[-1][1], fake.calls[-1][2])
         self.assertEqual(auth, "Bearer TOKEN123")
+        self.F.save_session("FA1234", "SUSER", {"access_token": "ACCESS"})
+        self.F.call("GetQuotes", {"uid": "FA1234"}, mode="bearer")
+        self.assertEqual(decode(fake.calls[-1][1], fake.calls[-1][2])[1], "Bearer ACCESS")   # OAuth access token
 
     def test_rejected_session_tells_user_to_log_in(self):
         self.login()

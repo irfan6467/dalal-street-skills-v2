@@ -99,7 +99,7 @@ def exchange_with_diagnosis(code, cid, sec, uid):
         raise Err("SHOONYA_SECRET has brackets, quotes or spaces in it: set it again with\n"
                   "  $env:SHOONYA_SECRET = (Read-Host \"Secret\").Trim()")
     c = F.code_from_redirect(code)
-    variants = [("docs", cid, False), ("sdk+uid", cid, True)]
+    variants = [("sdk+uid", cid, True), ("docs", cid, False)]
     if cid.upper().endswith("_U"):
         variants.append(("id-no-_U", cid[:-2], True))
     last = None
@@ -139,7 +139,10 @@ def cmd_login(a):
         code = input("3. Paste the address here: ").strip()
     doc, tok = exchange_with_diagnosis(code, cid, sec, uid)
     F.save_session(doc.get("actid") or doc.get("USERID") or uid, tok,
-                   {"name": doc.get("uname"), "exchanges": doc.get("exarr")})
+                   {"name": doc.get("uname"), "exchanges": doc.get("exarr"),
+                    "access_token": doc.get("access_token"), "susertoken": doc.get("susertoken")})
+    if doc.get("access_token"):
+        set_data(auth="bearer")      # OAuth sessions authenticate with the access token as a Bearer header
     print("Logged in as %s. Session saved to %s (owner-only), valid today."
           % (doc.get("uname") or uid, F.SESSION_PATH))
     print("Next: python3 shoonya.py selftest")
