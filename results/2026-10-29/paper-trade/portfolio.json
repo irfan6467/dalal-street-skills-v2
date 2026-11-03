@@ -1,0 +1,16 @@
+{
+  "cash": 3506.63,
+  "positions": [],
+  "closed": [
+    {
+      "date": "2026-10-29",
+      "ticker": "BEL",
+      "product": "MIS",
+      "shares": 4.0,
+      "sell_price": 369.35,
+      "gross": 8.2,
+      "charges": 1.57,
+      "net": 6.63
+    }
+  ]
+}

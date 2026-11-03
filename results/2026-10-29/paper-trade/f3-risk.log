@@ -1,0 +1,5 @@
+PASS  #1 sell BEL 4 shares MIS, exit
+
+1 passed, 0 blocked at 2026-10-29 14:42 IST. Cash after the passed orders: ₹3,499.38 (paper account).
+Every order passed. nse-broker still asks you yes or no for each one.
+Education and tooling, not financial advice.

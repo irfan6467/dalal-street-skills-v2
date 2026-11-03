@@ -1,0 +1,46 @@
+Stage 1: 5-minute closes for 50 symbols (3 spark requests)...
+Opening-range breakout scan, Thu 2026-10-29 2:14 PM IST: 15-minute range (9:15 AM to 9:30 AM), 5-minute bars, Yahoo.
+Fetched 50 of 50 charts; 50 usable; 45 candidates, 45 confirmed with real highs and lows.
+Closing auction: F&O stocks stop continuous trading at 3:15 PM, not 3:30 PM (no stop-loss orders in the auction); their bars are read to then.
+20 of the candidates have 5-minute bars missing in Yahoo's spark answer, so the full chart decides them.
+38 of 50 charts closed above their opening-range high by 2:14 PM:
+   9:35 AM  CIPLA           ₹1,363.40  range 1,350.10 to 1,362.30  +0.08% over
+   9:35 AM  COALINDIA         ₹396.20  range 392.40 to 395.15  +0.27% over
+   9:35 AM  DRREDDY         ₹1,349.30  range 1,336.10 to 1,348.10  +0.09% over
+   9:35 AM  HDFCBANK          ₹682.50  range 678.10 to 682.45  +0.01% over
+   9:35 AM  KOTAKBANK         ₹444.00  range 439.25 to 443.20  +0.18% over
+   9:35 AM  TITAN           ₹4,390.30  range 4,341.00 to 4,381.10  +0.21% over
+   9:40 AM  ADANIENT        ₹2,512.70  range 2,473.10 to 2,505.90  +0.27% over
+   9:40 AM  AXISBANK        ₹1,222.70  range 1,210.50 to 1,222.00  +0.06% over
+   9:40 AM  BAJAJFINSV      ₹1,650.00  range 1,641.10 to 1,649.70  +0.02% over
+   9:40 AM  BAJFINANCE        ₹916.45  range 908.75 to 915.50  +0.10% over
+   9:40 AM  RELIANCE        ₹1,174.40  range 1,155.60 to 1,170.50  +0.33% over
+   9:45 AM  JSWSTEEL        ₹1,245.90  range 1,233.20 to 1,245.80  +0.01% over
+   9:50 AM  ITC               ₹260.55  range 257.80 to 260.50  +0.02% over
+   9:55 AM  POWERGRID         ₹256.05  range 251.10 to 255.55  +0.20% over
+   9:55 AM  SHRIRAMFIN        ₹835.15  range 820.80 to 832.75  +0.29% over
+  10:00 AM  HINDUNILVR      ₹1,832.00  range 1,804.00 to 1,829.50  +0.14% over
+  10:00 AM  NTPC              ₹306.65  range 301.70 to 306.60  +0.02% over
+  10:05 AM  ADANIPORTS      ₹1,815.80  range 1,775.10 to 1,806.60  +0.51% over
+  10:05 AM  ONGC              ₹224.23  range 223.05 to 224.20  +0.01% over
+  10:05 AM  TATACONSUM      ₹1,003.05  range 991.50 to 999.50  +0.36% over
+  10:05 AM  ULTRACEMCO     ₹11,151.00  range 11,085.00 to 11,150.00  +0.01% over
+  10:10 AM  APOLLOHOSP      ₹8,202.00  range 8,100.00 to 8,189.50  +0.15% over
+  10:10 AM  ICICIBANK       ₹1,378.90  range 1,367.50 to 1,377.00  +0.14% over
+  10:10 AM  TMPV              ₹264.10  range 262.20 to 263.95  +0.06% over
+  10:15 AM  GRASIM          ₹2,901.20  range 2,883.20 to 2,900.00  +0.04% over
+  10:20 AM  MAXHEALTH         ₹859.35  range 849.65 to 858.95  +0.05% over
+  10:20 AM  NESTLEIND       ₹1,172.00  range 1,158.00 to 1,168.70  +0.28% over
+  10:25 AM  SBILIFE         ₹1,668.10  range 1,653.40 to 1,667.50  +0.04% over
+  10:30 AM  HDFCLIFE          ₹516.80  range 511.95 to 515.95  +0.16% over
+  10:30 AM  JIOFIN            ₹206.65  range 204.70 to 206.50  +0.07% over
+  10:35 AM  MARUTI         ₹11,530.00  range 11,411.00 to 11,516.00  +0.12% over
+  10:35 AM  SUNPHARMA       ₹1,768.90  range 1,752.70 to 1,768.70  +0.01% over
+  10:40 AM  LT              ₹3,815.00  range 3,776.90 to 3,814.90  +0.00% over
+  10:55 AM  ETERNAL           ₹331.05  range 325.65 to 329.55  +0.46% over
+  11:35 AM  SBIN              ₹962.15  range 954.60 to 961.70  +0.05% over
+   1:00 PM  M&M             ₹2,891.40  range 2,856.20 to 2,887.50  +0.14% over
+   1:20 PM  INFY            ₹1,139.95  range 1,125.20 to 1,139.65  +0.03% over
+   2:05 PM  BEL               ₹367.30  range 363.15 to 366.85  +0.12% over
+Wrote nse/watchlist.json (mode orb, 38 hits).
+A scan is a list of charts that match a rule, not a list of stocks to buy. Next: pick one chart, then /nse-news TICKER and /nse-entry TICKER.

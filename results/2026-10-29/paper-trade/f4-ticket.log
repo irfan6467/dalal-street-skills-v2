@@ -1,0 +1,10 @@
+ORDER 1 of 1, PAPER ledger, no real money, Shoonya (Finvasia)
+  SELL 4 BEL (MIS intraday), MARKET, valid today
+  flat by 14:55 IST
+  why: flat by 14:55 IST: closes the BEL MIS position (qty from nse/portfolio.json)
+  READY: nse-risk PASS, waiting for your yes
+  Paper mode: your yes books a simulated fill in the ledger at the market (--price P, or a
+  fresh nse/prices.json quote). Nothing is sent to Shoonya (Finvasia).
+  Reply "yes" to place this one order, or "no" to skip it.
+
+One order at a time: a yes covers one ticket (the entry and the protective stop shown on it), never the batch. Education and tooling, not financial advice.

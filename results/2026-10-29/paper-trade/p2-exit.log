@@ -1,0 +1,16 @@
+Exit plan: BEL long (NSE MIS), Thu 2026-10-29, opening-range breakout on 5-minute bars
+  Entry         ₹367.30 at 2:05 PM (bar 57)
+  Stop          ₹365.00  opening-range midpoint: (₹366.85 + ₹363.15) / 2 = ₹365.00
+  Target        ₹371.90  2R (two times the risk)
+  Risk a share  ₹2.30 (0.63% of the entry)
+  Reward:risk   2.0 before charges, 1.56 after
+  Charges       ₹11.66 at the stop, ₹11.79 at the target (30 shares, MIS round trip: brokerage, STT, exchange, SEBI, stamp duty, GST)
+  Flat by       14:55 IST, win or lose: intraday, no overnight hold
+  Square-off    15:00 IST: Shoonya (Finvasia) auto-squares-off open MIS F&O positions then, with a fee
+Set before the entry. If price hits the stop, you are out; never move it further away.
+A stop is a plan, not a guarantee: a gap or a fast market can fill past it.
+Note: Closing auction: BEL is an F&O stock, so continuous trading ends at 15:15, not 15:30, and the auction takes no stop-loss orders. Be out by 14:55.
+Note: Shoonya (Finvasia)'s square-off time is not verified (cautious default used): check it with Shoonya (Finvasia) and set "squareoff" in nse/config.json
+Note: Flat-by lowered from 15:10 to 14:55: Shoonya (Finvasia) squares off MIS F&O stocks at 15:00, and the default leaves 5 minutes
+Wrote nse/plan.json.
+Next: /nse-timemachine replays it, then /nse-budget sizes it to your max loss. Nothing was placed.

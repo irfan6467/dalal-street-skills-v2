@@ -1,0 +1,17 @@
+ORDER 1 of 1, PAPER ledger, no real money, Shoonya (Finvasia)
+  BUY 4 BEL (MIS intraday), LIMIT 367.30, valid today
+  stop-loss SL-M trigger 365.00 (a SELL placed after the fill)
+  target 371.90
+  max loss about ₹10.74 if the stop fills at 365.00, charges included (it can fill worse in a fast market)
+  flat by 14:55 IST
+  why: opening-range breakout on BEL: 4 shares, bound by your position cap (4 x 2.30 + ₹1.54 charges = ₹10.74 at the stop)
+  charges (government and broker): about ₹1.54 round trip at the stop, ₹1.57 at the target
+  READY: nse-risk PASS, waiting for your yes
+  note: BEL has no fixed price band (dynamic bands apply): the circuit check is skipped
+  Paper mode, nothing is sent to Shoonya (Finvasia). Your yes fills this LIMIT in the ledger at 367.30 only if
+  the market is at or through it then (--price P, or a nse/prices.json quote at most 15
+  minutes old). Otherwise it rests as a WORKING order, like a real day order: it fills when
+  the price trades at the limit (ticket.py working / track), and expires unfilled at 14:30 IST (the entry cut-off: continuous trading ends at 15:15, minus your 45-minute entry buffer).
+  Reply "yes" to place this one order, or "no" to skip it.
+
+One order at a time: a yes covers one ticket (the entry and the protective stop shown on it), never the batch. Education and tooling, not financial advice.

@@ -1,0 +1,26 @@
+BEL buy (MIS, intraday), opening-range breakout, plan entry 367.30 at 2:05 PM
+Stop 365.00: opening-range midpoint. Target 371.90: 2R (two times the risk).
+Sized at ₹367.30 (the plan's entry). Risk ₹2.30 a share (entry 367.30 minus stop 365.00). Reward:risk 1.57 after charges.
+
+Limits (whole shares; the smallest one wins):
+  max loss      ₹70 max loss, risk 2.30 a share plus charges                      26 shares
+  position cap  50% of ₹3,500 = ₹1,750 / 367.30                                    4 shares  <- binds
+  max order     ₹4,00,000 / 367.30                                              1089 shares
+  cash          budget ₹3,500 minus the ₹350 cash buffer = ₹3,150 / 367.30         8 shares
+
+Size: 4 shares of BEL = ₹1,469.20 order value, ₹1,469.20 margin at 1x leverage (check your broker's actual margin).
+Max loss at the stop: 4 x 2.30 = ₹9.20, plus charges ₹1.54 = ₹10.74.
+Charges (what the government and the broker take) if the stop fills: ₹1.54 = brokerage ₹0.88, STT ₹0.36, exchange ₹0.09, SEBI ₹0.00, stamp duty ₹0.04, GST ₹0.17.
+If the target fills: ₹18.40 before charges, charges ₹1.57 (9% of it), ₹16.83 after.
+A stop is an order, not a promise: in a fast market it can fill below 365.00.
+
+Proposed orders (broker-neutral, shown as Kite place_order fields; nothing has been placed):
+  BUY 4 BEL MIS, LIMIT 367.30, NSE, DAY
+  then SELL 4 BEL MIS, SL-M trigger 365.00 (placed after the entry fills)
+  target 371.90 (a LIMIT sell, or an alert: see nse-broker)
+Flat by 14:55 IST: anything still open then gets closed (Shoonya (Finvasia) auto-squares-off MIS at 15:00, with a fee; nse-alerts rings, nse-broker flatten).
+Note: Shoonya (Finvasia)'s square-off time is not verified (cautious default used): check it with Shoonya (Finvasia) and set "squareoff" in nse/config.json
+
+Next: nse-risk checks it, then nse-broker asks you yes or no.
+Education and tooling, not financial advice.
+Wrote 1 proposed order set to nse/orders.json

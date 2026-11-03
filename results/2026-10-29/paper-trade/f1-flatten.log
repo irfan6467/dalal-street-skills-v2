@@ -1,0 +1,9 @@
+Flatten BEL: SELL 4 BEL (MIS intraday), MARKET, valid today / flat by 14:55 IST (flat by 14:55 IST).
+Wrote it to nse/orders.json (it replaced 1 earlier proposal).
+The qty comes from nse/portfolio.json. Check it against the broker's positions before you say yes.
+It is a MARKET order. If your broker's API insists on a limit price, re-run with --limit-price P.
+Next:
+  1. nse-risk: check.py. A sell that only closes what you hold is never blocked by the daily
+     limits or the entry window.
+  2. ticket.py show, then the user's yes for this one order.
+  3. Paper: the yes books the exit in the ledger (give --price P to approve if there is no fresh quote).

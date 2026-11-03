@@ -1,0 +1,5 @@
+Recorded your yes for order 1: SELL 4 BEL (MIS intraday), MARKET, valid today / flat by 14:55 IST.
+Order intent: nse\intents\2026-10-29-983890dab0aaf838.json
+PAPER FILL (simulated, nothing sent to Shoonya (Finvasia)): SELL 4 BEL at ₹369.35 (the fresh quote in nse/prices.json), charges ₹0.95.
+Realised: +₹8.20 before charges, +₹6.63 net of charges for the round trip.
+Cash in the paper ledger: ₹3,506.63.

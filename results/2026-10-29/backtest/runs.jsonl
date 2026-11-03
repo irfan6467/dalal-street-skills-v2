@@ -1,0 +1,1 @@
+{"run_id": "momentum-20261029-083521", "strategy": "momentum", "verdict": "NO EDGE", "frozen_hash": "981319a2c38f", "variants_tried_per_fold": 24, "created_utc": "2026-10-29T08:35:21Z", "oos_trades": 496, "oos_day_avg_r": -0.1197}

@@ -1,0 +1,25 @@
+{
+  "created_by": "nse-entry",
+  "symbol": "BEL",
+  "exchange": "NSE",
+  "yahoo": "BEL.NS",
+  "product": "MIS",
+  "setup": "orb",
+  "side": "buy",
+  "date": "2026-10-29",
+  "status": "triggered",
+  "time": "2:05 PM",
+  "bar_start": "14:00",
+  "bar_index": 57,
+  "price": 367.3,
+  "level": 366.85,
+  "interval": "5m",
+  "opening_range": {
+    "high": 366.85,
+    "low": 363.15,
+    "minutes": 15
+  },
+  "source": "yahoo",
+  "checked_at": "2026-10-29T08:46:46Z",
+  "reason": "the 14:00 bar closed above the range high"
+}

@@ -1,0 +1,7 @@
+Symbol master : RELIANCE.NS -> RELIANCE-EQ token 2885, tick 0.1
+Auth mode     : bearer works
+Quote fields  : ap, bo1, bo2, bo3, bo4, bo5, bp1, bp2, bp3, bp4, bp5, bq1, bq2, bq3, bq4, bq5, c, cname, cutof_all, exch, h, imbal_mkt_qty, imbal_qty, instname, isin, issuecap, l, lc, lp, ls, ltd, ltq, ltt, lut, mult, o, pp, prcftr_d, request_time, seg, sip_ind, so1, so2, so3, so4, so5, sp1, sp2, sp3, sp4, sp5, sq1, sq2, sq3, sq4, sq5, stat, symname, tbq, ti, toi, token, tsq, tsym, uc, v, wk52_h, wk52_l
+Quote         : last 1168.40, prev close 1158.00, band 1042.20 - 1273.80
+5m bars       : 135 over 2 sessions, last 29-Oct 14:10 IST
+Daily bars    : 30, last 2026-10-29 (today, built from the live quote)
+Selftest      : PASS

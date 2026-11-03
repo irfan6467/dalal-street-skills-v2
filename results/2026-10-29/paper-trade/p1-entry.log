@@ -1,0 +1,9 @@
+BEL.NS  Thu 2026-10-29 14:16 IST  opening-range breakout (15-minute range) on 5-minute bars (Yahoo, free, can lag), data to 14:10:00
+Opening range 9:15-9:30: high ₹366.85, low ₹363.15 (3 of 3 bars).
+TRIGGERED 2:05 PM at ₹367.30: the 14:00 bar (bar 57) closed above the range high ₹366.85 (+0.12%).
+That was 11 minutes ago; the last close is ₹366.80 (14:10 bar). A late entry is a different trade: the price, the stop distance and the odds have moved.
+Product MIS (intraday): it must be closed the same day, and nse-exit sets the flat-by time.
+Nothing was placed.
+Next: set the stop and target BEFORE you buy: /nse-exit (exit.py plan --from nse/entry.json).
+Closing auction: this is an F&O stock, so continuous trading ends at 15:15, not 15:30, and the auction takes no stop-loss orders; the last new entry is 14:30 (your no_entries_after 14:45 is capped by entry_buffer_min 45).
+Wrote nse/entry.json (status triggered).

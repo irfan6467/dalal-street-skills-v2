@@ -1,0 +1,6 @@
+Recorded your yes for order 1: BUY 4 BEL (MIS intraday), LIMIT 367.30, valid today / stop-loss SL-M trigger 365.00 (a SELL placed after the fill) / target 371.90 / max loss about ₹10.74 if the stop fills at 365.00, charges included (it can fill worse in a fast market) / flat by 14:55 IST.
+Order intent: nse\intents\2026-10-29-ced262b8baff96b2.json
+PAPER FILL (simulated, nothing sent to Shoonya (Finvasia)): BUY 4 BEL at ₹367.30 (your limit price; the market was 367.00, the fresh quote in nse/prices.json), charges ₹0.62.
+Tracking stop 365.00 and target 371.90. Check them with: ticket.py track
+Flat by 14:55 IST: ticket.py flatten --symbol BEL then closes it.
+Cash in the paper ledger: ₹2,030.18.

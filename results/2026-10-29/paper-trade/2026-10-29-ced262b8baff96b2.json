@@ -1,0 +1,41 @@
+{
+  "schema": "dalal-street/order-intent",
+  "version": 1,
+  "intent_id": "2026-10-29-ced262b8baff96b2",
+  "created_ist": "2026-10-29T14:17:51+05:30",
+  "source": "nse-broker",
+  "mode": "paper",
+  "broker": "shoonya",
+  "strategy": null,
+  "instrument": {
+    "exchange": "NSE",
+    "symbol": "BEL"
+  },
+  "side": "BUY",
+  "product": "MIS",
+  "quantity": 4,
+  "entry": {
+    "type": "LIMIT",
+    "price": 367.3,
+    "trigger": null
+  },
+  "stop": {
+    "trigger": 365.0
+  },
+  "target": {
+    "price": 371.9
+  },
+  "flat_by_ist": "14:55",
+  "max_loss_inr": 10.74,
+  "risk_check": {
+    "by": "nse-risk",
+    "verdict": "PASS",
+    "fingerprint": "ced262b8baff96b2",
+    "kind": "entry"
+  },
+  "consent": {
+    "typed_reply": "yes",
+    "approved_ist": "2026-10-29T14:17:51+05:30"
+  },
+  "algo_id": null
+}

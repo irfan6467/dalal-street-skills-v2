@@ -1,0 +1,19 @@
+@echo off
+REM Paper-trade preparation started by Claude: Shoonya data only, paper ledger. Nothing is sent to any broker.
+cd /d "%~dp0"
+del nse\paper-prep.done 2>nul
+echo [%time%] Entry check: BEL opening-range breakout...
+py -u nse-entry\entry.py check BEL --write > nse\p1-entry.log 2>&1
+echo [%time%] Exit plan: stop and target...
+py -u nse-exit\exit.py plan --write > nse\p2-exit.log 2>&1
+echo [%time%] Live quote for sizing...
+py -u nse-alerts\alerts.py quote BEL --write > nse\p3-quote.log 2>&1
+echo [%time%] Budget: size to Rs 70 max loss...
+py -u nse-budget\size.py --write > nse\p4-budget.log 2>&1
+echo [%time%] Risk check...
+py -u nse-risk\check.py > nse\p5-risk.log 2>&1
+echo [%time%] Paper ticket...
+py -u nse-broker\ticket.py show > nse\p6-ticket.log 2>&1
+echo [%time%] DONE. You can close this window.
+echo DONE > nse\paper-prep.done
+timeout /t 20

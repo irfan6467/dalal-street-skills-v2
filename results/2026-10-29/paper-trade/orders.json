@@ -1,0 +1,41 @@
+{
+  "created_by": "nse-broker",
+  "created_at": "2026-10-29T09:12:34Z",
+  "status": "proposed",
+  "paper": true,
+  "note": "Flatten ticket. Nothing is placed until nse-risk passes it and you say yes in the chat.",
+  "source": "ticket.py flatten BEL on 2026-10-29",
+  "orders": [
+    {
+      "id": "BEL-20261029-1442-FLAT",
+      "symbol": "BEL",
+      "exchange": "NSE",
+      "yahoo": "BEL.NS",
+      "series": "EQ",
+      "product": "MIS",
+      "side": "SELL",
+      "qty": 4,
+      "order_type": "MARKET",
+      "price": null,
+      "stop_trigger": null,
+      "target_price": null,
+      "broker": "shoonya",
+      "entry": {
+        "variety": "regular",
+        "exchange": "NSE",
+        "tradingsymbol": "BEL",
+        "transaction_type": "SELL",
+        "quantity": 4,
+        "product": "MIS",
+        "order_type": "MARKET",
+        "validity": "DAY"
+      },
+      "stop": null,
+      "target": null,
+      "gtt_oco": null,
+      "plan": {},
+      "flat_by": "14:55",
+      "why": "flat by 14:55 IST: closes the BEL MIS position (qty from nse/portfolio.json)"
+    }
+  ]
+}
