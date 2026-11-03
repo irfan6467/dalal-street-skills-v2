@@ -1,0 +1,25 @@
+fold 1/4  test 2025-10-29..2026-01-28  params {'atr_stop': 3.0, 'breakout_days': 252, 'exit_days': 10, 'vol_mult': 2.5}  IS 22 trades -0.067R  OOS 64 trades -0.324R
+fold 2/4  test 2026-01-29..2026-04-28  params {'atr_stop': 3.0, 'breakout_days': 126, 'exit_days': 10, 'vol_mult': 1.5}  IS 545 trades -0.105R  OOS 176 trades 0.157R
+fold 3/4  test 2026-04-29..2026-07-28  params {'atr_stop': 3.0, 'breakout_days': 126, 'exit_days': 10, 'vol_mult': 1.5}  IS 685 trades -0.054R  OOS 232 trades 0.054R
+fold 4/4  test 2026-07-29..2026-10-14  params {'atr_stop': 2.0, 'breakout_days': 252, 'exit_days': 10, 'vol_mult': 2.5}  IS 218 trades -0.035R  OOS 95 trades -0.179R
+MOMENTUM  walk-forward 2024-10-29..2026-10-14  (4 windows: 12 months train, 3 test)
+costs: slippage 20.0 bp/side, ₹8,333 per trade, charges for Shoonya (Finvasia)
+
+VERDICT: NO EDGE
+  out-of-sample average is -0.143R per entry day after charges
+
+Out-of-sample only (567 trades, 180 entry days):
+  avg 0.004R net  (0.039R before charges)   win rate 36%   profit factor 1.008
+  per entry day -0.143R, 95% interval -0.312 to 0.028, t -1.697
+  max drawdown 26.6R   worst losing streak 10   net ₹34,540 after ₹15,957 charges
+  in-sample (chosen params) averaged -0.066R: the gap to out-of-sample is the overfit
+
+win  test window             params                             trades    avg R
+1    2025-10-29..2026-01-28  atr=3.0 brk=252 exit=10 vol=2.5        64   -0.324
+2    2026-01-29..2026-04-28  atr=3.0 brk=126 exit=10 vol=1.5       176    0.157
+3    2026-04-29..2026-07-28  atr=3.0 brk=126 exit=10 vol=1.5       232    0.054
+4    2026-07-29..2026-10-14  atr=2.0 brk=252 exit=10 vol=2.5        95   -0.179
+
+Frozen params (last window) atr=2.0 brk=252 exit=10 vol=2.5  hash 458d56c24af4
+
+run momentum-20261103-045519 saved in nse/backtest (all out-of-sample trades included)

@@ -1,0 +1,46 @@
+Daily scan, Wed 2026-10-14 16:00 IST, closes through 2026-10-14 (Yahoo spark, daily closes only).
+Fetched 200 of 200 charts. 200 passed the liquidity filter (close ₹10+); 200 scanned.
+40 charts matched a setup: 14 20-day closing-high breakout, 15 reclaimed the 20-day average, 9 oversold (RSI under 30), 3 oversold bounce.
+Listed A to Z (no bhavcopy turnover to rank by):
+  ABB             ₹6,999.00  RSI  47.6  reclaimed the 20-day average
+  ADANIENSOL      ₹1,364.00  RSI  50.5  reclaimed the 20-day average
+  ASTRAL          ₹1,443.20  RSI  55.3  20-day closing-high breakout
+  BHEL              ₹464.00  RSI  65.2  20-day closing-high breakout
+  BIOCON            ₹350.60  RSI  28.1  oversold (RSI under 30)
+  BLUESTARCO      ₹1,614.00  RSI  59.3  20-day closing-high breakout
+  BRITANNIA       ₹4,928.00  RSI  49.3  reclaimed the 20-day average
+  CANBK             ₹124.76  RSI  57.0  reclaimed the 20-day average
+  COLPAL          ₹1,826.40  RSI  50.3  reclaimed the 20-day average
+  DABUR             ₹388.40  RSI  52.7  reclaimed the 20-day average
+  DMART           ₹3,415.00  RSI  31.8  oversold bounce
+  EXIDEIND          ₹383.05  RSI  26.6  oversold (RSI under 30)
+  FORTIS            ₹750.00  RSI  29.0  oversold (RSI under 30)
+  HAL             ₹4,933.00  RSI  58.4  20-day closing-high breakout
+  HCLTECH         ₹1,327.00  RSI  63.0  20-day closing-high breakout
+  ICICIGI         ₹1,713.00  RSI  67.8  20-day closing-high breakout
+  INDHOTEL          ₹725.40  RSI  50.9  reclaimed the 20-day average
+  INDIANB           ₹849.45  RSI  55.2  20-day closing-high breakout
+  INFY            ₹1,088.00  RSI  59.4  20-day closing-high breakout
+  IRCTC             ₹477.10  RSI  60.4  20-day closing-high breakout
+  JSWENERGY         ₹490.30  RSI  45.9  oversold bounce
+  MARUTI         ₹11,178.00  RSI  28.1  oversold (RSI under 30)
+  MAXHEALTH         ₹852.50  RSI  24.0  oversold (RSI under 30)
+  NESTLEIND       ₹1,383.20  RSI  54.5  reclaimed the 20-day average
+  NLCINDIA          ₹257.65  RSI  48.8  reclaimed the 20-day average
+  NMDC               ₹71.08  RSI  29.7  oversold (RSI under 30)
+  PNB               ₹118.50  RSI  59.0  20-day closing-high breakout
+  SRF             ₹2,499.70  RSI  48.0  reclaimed the 20-day average
+  SUPREMEIND      ₹3,607.00  RSI  58.2  20-day closing-high breakout
+  SUZLON             ₹40.80  RSI  47.1  reclaimed the 20-day average
+  SWIGGY            ₹230.95  RSI  29.8  oversold (RSI under 30)
+  TATACONSUM        ₹987.90  RSI  50.9  reclaimed the 20-day average
+  TCS             ₹2,304.90  RSI  64.2  20-day closing-high breakout
+  TIINDIA         ₹2,220.50  RSI  29.6  oversold (RSI under 30), oversold bounce
+  UNIONBANK         ₹174.00  RSI  48.3  reclaimed the 20-day average
+  UNITDSPR        ₹1,381.60  RSI  47.9  reclaimed the 20-day average
+  UPL               ₹541.65  RSI  51.7  reclaimed the 20-day average
+  VAML              ₹367.55  RSI  29.8  oversold (RSI under 30)
+  VBL               ₹442.65  RSI  57.9  20-day closing-high breakout
+  WIPRO             ₹170.92  RSI  58.0  20-day closing-high breakout
+Wrote nse/watchlist-daily.json (mode daily, 40 hits).
+A scan is a list of charts that match a rule, not a list of stocks to buy. Next: pick one chart, then /nse-news TICKER.

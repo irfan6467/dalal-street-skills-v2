@@ -1,0 +1,6 @@
+Data provider : yahoo
+Auth mode     : jkey
+Session       : none (not logged in to Shoonya: run /nse-shoonya login in your own terminal (the token is never typed into chat))
+SHOONYA_UID   : not set
+SHOONYA_CLIENT_ID: not set
+SHOONYA_SECRET: not set

@@ -1,0 +1,67 @@
+{
+ "keep": [],
+ "drop": [
+  "TCS",
+  "INFY",
+  "MEESHO",
+  "BHEL",
+  "HCLTECH",
+  "HINDUNILVR",
+  "CANBK",
+  "NESTLEIND",
+  "ADANIENSOL",
+  "MARUTI"
+ ],
+ "tags": {
+  "TCS": {
+   "results": 3,
+   "order win": 1,
+   "dividend": 4
+  },
+  "INFY": {
+   "results": 1
+  },
+  "MEESHO": {
+   "results": 3
+  },
+  "BHEL": {
+   "results": 6
+  },
+  "HCLTECH": {
+   "rating/target": 5,
+   "results": 14,
+   "split": 1,
+   "dividend": 4
+  },
+  "HINDUNILVR": {
+   "dividend": 1,
+   "results": 1
+  },
+  "CANBK": {
+   "results": 37,
+   "rating/target": 1,
+   "SEBI/regulatory": 1
+  },
+  "NESTLEIND": {
+   "results": 2
+  },
+  "ADANIENSOL": {
+   "results": 1
+  },
+  "MARUTI": {
+   "SEBI/regulatory": 1
+  }
+ },
+ "items": {
+  "TCS": 23,
+  "INFY": 19,
+  "MEESHO": 19,
+  "BHEL": 9,
+  "HCLTECH": 31,
+  "HINDUNILVR": 4,
+  "CANBK": 53,
+  "NESTLEIND": 5,
+  "ADANIENSOL": 3,
+  "MARUTI": 2
+ }
+}

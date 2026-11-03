@@ -1,0 +1,619 @@
+{
+  "created_by": "nse-scanner",
+  "created_at": "2026-10-14T10:30:00Z",
+  "mode": "daily",
+  "as_of": "2026-10-14 close",
+  "universe": 200,
+  "scanned": 200,
+  "failed": 0,
+  "source": "yahoo",
+  "filters": {
+    "min_price": 10.0,
+    "min_turnover_lakh": 0.0
+  },
+  "note": "A scan is a list of charts that match a rule, not a list of stocks to buy.",
+  "hits": [
+    {
+      "symbol": "ABB",
+      "exchange": "NSE",
+      "yahoo": "ABB.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 6999.0,
+      "close_date": "2026-10-14",
+      "rsi": 47.6,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "ADANIENSOL",
+      "exchange": "NSE",
+      "yahoo": "ADANIENSOL.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 1364.0,
+      "close_date": "2026-10-14",
+      "rsi": 50.5,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "ASTRAL",
+      "exchange": "NSE",
+      "yahoo": "ASTRAL.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 1443.2,
+      "close_date": "2026-10-14",
+      "rsi": 55.3,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "BHEL",
+      "exchange": "NSE",
+      "yahoo": "BHEL.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 464.0,
+      "close_date": "2026-10-14",
+      "rsi": 65.2,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "BIOCON",
+      "exchange": "NSE",
+      "yahoo": "BIOCON.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold"
+      ],
+      "price": 350.6,
+      "close_date": "2026-10-14",
+      "rsi": 28.1,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "BLUESTARCO",
+      "exchange": "NSE",
+      "yahoo": "BLUESTARCO.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 1614.0,
+      "close_date": "2026-10-14",
+      "rsi": 59.3,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "BRITANNIA",
+      "exchange": "NSE",
+      "yahoo": "BRITANNIA.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 4928.0,
+      "close_date": "2026-10-14",
+      "rsi": 49.3,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "CANBK",
+      "exchange": "NSE",
+      "yahoo": "CANBK.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 124.76,
+      "close_date": "2026-10-14",
+      "rsi": 57.0,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "COLPAL",
+      "exchange": "NSE",
+      "yahoo": "COLPAL.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 1826.4,
+      "close_date": "2026-10-14",
+      "rsi": 50.3,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "DABUR",
+      "exchange": "NSE",
+      "yahoo": "DABUR.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 388.4,
+      "close_date": "2026-10-14",
+      "rsi": 52.7,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "DMART",
+      "exchange": "NSE",
+      "yahoo": "DMART.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold_bounce"
+      ],
+      "price": 3415.0,
+      "close_date": "2026-10-14",
+      "rsi": 31.8,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "EXIDEIND",
+      "exchange": "NSE",
+      "yahoo": "EXIDEIND.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold"
+      ],
+      "price": 383.05,
+      "close_date": "2026-10-14",
+      "rsi": 26.6,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "FORTIS",
+      "exchange": "NSE",
+      "yahoo": "FORTIS.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold"
+      ],
+      "price": 750.0,
+      "close_date": "2026-10-14",
+      "rsi": 29.0,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "HAL",
+      "exchange": "NSE",
+      "yahoo": "HAL.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 4933.0,
+      "close_date": "2026-10-14",
+      "rsi": 58.4,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "HCLTECH",
+      "exchange": "NSE",
+      "yahoo": "HCLTECH.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 1327.0,
+      "close_date": "2026-10-14",
+      "rsi": 63.0,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "ICICIGI",
+      "exchange": "NSE",
+      "yahoo": "ICICIGI.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 1713.0,
+      "close_date": "2026-10-14",
+      "rsi": 67.8,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "INDHOTEL",
+      "exchange": "NSE",
+      "yahoo": "INDHOTEL.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 725.4,
+      "close_date": "2026-10-14",
+      "rsi": 50.9,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "INDIANB",
+      "exchange": "NSE",
+      "yahoo": "INDIANB.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 849.45,
+      "close_date": "2026-10-14",
+      "rsi": 55.2,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "INFY",
+      "exchange": "NSE",
+      "yahoo": "INFY.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 1088.0,
+      "close_date": "2026-10-14",
+      "rsi": 59.4,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "IRCTC",
+      "exchange": "NSE",
+      "yahoo": "IRCTC.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 477.1,
+      "close_date": "2026-10-14",
+      "rsi": 60.4,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "JSWENERGY",
+      "exchange": "NSE",
+      "yahoo": "JSWENERGY.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold_bounce"
+      ],
+      "price": 490.3,
+      "close_date": "2026-10-14",
+      "rsi": 45.9,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "MARUTI",
+      "exchange": "NSE",
+      "yahoo": "MARUTI.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold"
+      ],
+      "price": 11178.0,
+      "close_date": "2026-10-14",
+      "rsi": 28.1,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "MAXHEALTH",
+      "exchange": "NSE",
+      "yahoo": "MAXHEALTH.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold"
+      ],
+      "price": 852.5,
+      "close_date": "2026-10-14",
+      "rsi": 24.0,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "NESTLEIND",
+      "exchange": "NSE",
+      "yahoo": "NESTLEIND.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 1383.2,
+      "close_date": "2026-10-14",
+      "rsi": 54.5,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "NLCINDIA",
+      "exchange": "NSE",
+      "yahoo": "NLCINDIA.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 257.65,
+      "close_date": "2026-10-14",
+      "rsi": 48.8,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "NMDC",
+      "exchange": "NSE",
+      "yahoo": "NMDC.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold"
+      ],
+      "price": 71.08,
+      "close_date": "2026-10-14",
+      "rsi": 29.7,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "PNB",
+      "exchange": "NSE",
+      "yahoo": "PNB.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 118.5,
+      "close_date": "2026-10-14",
+      "rsi": 59.0,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "SRF",
+      "exchange": "NSE",
+      "yahoo": "SRF.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 2499.7,
+      "close_date": "2026-10-14",
+      "rsi": 48.0,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "SUPREMEIND",
+      "exchange": "NSE",
+      "yahoo": "SUPREMEIND.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 3607.0,
+      "close_date": "2026-10-14",
+      "rsi": 58.2,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "SUZLON",
+      "exchange": "NSE",
+      "yahoo": "SUZLON.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 40.8,
+      "close_date": "2026-10-14",
+      "rsi": 47.1,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "SWIGGY",
+      "exchange": "NSE",
+      "yahoo": "SWIGGY.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold"
+      ],
+      "price": 230.95,
+      "close_date": "2026-10-14",
+      "rsi": 29.8,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "TATACONSUM",
+      "exchange": "NSE",
+      "yahoo": "TATACONSUM.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 987.9,
+      "close_date": "2026-10-14",
+      "rsi": 50.9,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "TCS",
+      "exchange": "NSE",
+      "yahoo": "TCS.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 2304.9,
+      "close_date": "2026-10-14",
+      "rsi": 64.2,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "TIINDIA",
+      "exchange": "NSE",
+      "yahoo": "TIINDIA.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold",
+        "oversold_bounce"
+      ],
+      "price": 2220.5,
+      "close_date": "2026-10-14",
+      "rsi": 29.6,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "UNIONBANK",
+      "exchange": "NSE",
+      "yahoo": "UNIONBANK.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 174.0,
+      "close_date": "2026-10-14",
+      "rsi": 48.3,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "UNITDSPR",
+      "exchange": "NSE",
+      "yahoo": "UNITDSPR.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 1381.6,
+      "close_date": "2026-10-14",
+      "rsi": 47.9,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "UPL",
+      "exchange": "NSE",
+      "yahoo": "UPL.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "reclaim_ma20"
+      ],
+      "price": 541.65,
+      "close_date": "2026-10-14",
+      "rsi": 51.7,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "VAML",
+      "exchange": "NSE",
+      "yahoo": "VAML.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "oversold"
+      ],
+      "price": 367.55,
+      "close_date": "2026-10-14",
+      "rsi": 29.8,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "VBL",
+      "exchange": "NSE",
+      "yahoo": "VBL.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 442.65,
+      "close_date": "2026-10-14",
+      "rsi": 57.9,
+      "volume": null,
+      "turnover_lakh": null
+    },
+    {
+      "symbol": "WIPRO",
+      "exchange": "NSE",
+      "yahoo": "WIPRO.NS",
+      "series": null,
+      "name": "",
+      "setups": [
+        "breakout_20d"
+      ],
+      "price": 170.92,
+      "close_date": "2026-10-14",
+      "rsi": 58.0,
+      "volume": null,
+      "turnover_lakh": null
+    }
+  ],
+  "offline": "spark-daily-to-20261014.json"
+}

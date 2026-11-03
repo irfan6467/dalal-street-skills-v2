@@ -1,0 +1,79 @@
+{
+ "union": 42,
+ "ranked_by": "14 Oct EQ turnover (lakh)",
+ "top10": [
+  {
+   "symbol": "TCS",
+   "setups": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "turnover_lacs": 280518.03
+  },
+  {
+   "symbol": "INFY",
+   "setups": [
+    "breakout_20d"
+   ],
+   "turnover_lacs": 240053.56
+  },
+  {
+   "symbol": "MEESHO",
+   "setups": [
+    "delivery"
+   ],
+   "turnover_lacs": 200257.93
+  },
+  {
+   "symbol": "BHEL",
+   "setups": [
+    "breakout_20d"
+   ],
+   "turnover_lacs": 170040.87
+  },
+  {
+   "symbol": "HCLTECH",
+   "setups": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "turnover_lacs": 123136.41
+  },
+  {
+   "symbol": "HINDUNILVR",
+   "setups": [
+    "delivery"
+   ],
+   "turnover_lacs": 69082.65
+  },
+  {
+   "symbol": "CANBK",
+   "setups": [
+    "reclaim_ma20"
+   ],
+   "turnover_lacs": 65198.92
+  },
+  {
+   "symbol": "NESTLEIND",
+   "setups": [
+    "reclaim_ma20"
+   ],
+   "turnover_lacs": 57724.77
+  },
+  {
+   "symbol": "ADANIENSOL",
+   "setups": [
+    "delivery",
+    "reclaim_ma20"
+   ],
+   "turnover_lacs": 52408.93
+  },
+  {
+   "symbol": "MARUTI",
+   "setups": [
+    "oversold"
+   ],
+   "turnover_lacs": 52322.39
+  }
+ ]
+}

@@ -1,0 +1,183 @@
+{
+ "test_day": "2026-10-15",
+ "signal_day": "2026-10-14",
+ "rules_sha256": "0c0185f003cbfa9203b32d44dd08b8a3062a8a89677fb6b6657389fc3ca363cf",
+ "draw_sha256": "30814e8ccb431b6e01e50f4d2e1f1df9635dc58848377134366929b8285f7d98",
+ "official": {
+  "rule": "rules.json as written",
+  "watchlist_after_news_gate": [],
+  "dropped_by_news": [
+   "TCS",
+   "INFY",
+   "MEESHO",
+   "BHEL",
+   "HCLTECH",
+   "HINDUNILVR",
+   "CANBK",
+   "NESTLEIND",
+   "ADANIENSOL",
+   "MARUTI"
+  ],
+  "trades": [],
+  "result": "no trades: Rs 0 (every top-10 stock had a results or SEBI/regulatory headline)"
+ },
+ "shadow": {
+  "decided": "by Irfan on 3 Nov after the news gate dropped all 10, before any 15 Oct data was read",
+  "rule": "rules.json phase_2_test_day exactly, on the top 10 without the news gate",
+  "watchlist": [
+   "TCS",
+   "INFY",
+   "MEESHO",
+   "BHEL",
+   "HCLTECH",
+   "HINDUNILVR",
+   "CANBK",
+   "NESTLEIND",
+   "ADANIENSOL",
+   "MARUTI"
+  ]
+ },
+ "watchlist_detail": [
+  {
+   "symbol": "TCS",
+   "setups": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "turnover_lacs": 280518.03,
+   "news_tags": {
+    "results": 3,
+    "order win": 1,
+    "dividend": 4
+   },
+   "news_items": 23
+  },
+  {
+   "symbol": "INFY",
+   "setups": [
+    "breakout_20d"
+   ],
+   "turnover_lacs": 240053.56,
+   "news_tags": {
+    "results": 1
+   },
+   "news_items": 19
+  },
+  {
+   "symbol": "MEESHO",
+   "setups": [
+    "delivery"
+   ],
+   "turnover_lacs": 200257.93,
+   "news_tags": {
+    "results": 3
+   },
+   "news_items": 19
+  },
+  {
+   "symbol": "BHEL",
+   "setups": [
+    "breakout_20d"
+   ],
+   "turnover_lacs": 170040.87,
+   "news_tags": {
+    "results": 6
+   },
+   "news_items": 9
+  },
+  {
+   "symbol": "HCLTECH",
+   "setups": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "turnover_lacs": 123136.41,
+   "news_tags": {
+    "rating/target": 5,
+    "results": 14,
+    "split": 1,
+    "dividend": 4
+   },
+   "news_items": 31
+  },
+  {
+   "symbol": "HINDUNILVR",
+   "setups": [
+    "delivery"
+   ],
+   "turnover_lacs": 69082.65,
+   "news_tags": {
+    "dividend": 1,
+    "results": 1
+   },
+   "news_items": 4
+  },
+  {
+   "symbol": "CANBK",
+   "setups": [
+    "reclaim_ma20"
+   ],
+   "turnover_lacs": 65198.92,
+   "news_tags": {
+    "results": 37,
+    "rating/target": 1,
+    "SEBI/regulatory": 1
+   },
+   "news_items": 53
+  },
+  {
+   "symbol": "NESTLEIND",
+   "setups": [
+    "reclaim_ma20"
+   ],
+   "turnover_lacs": 57724.77,
+   "news_tags": {
+    "results": 2
+   },
+   "news_items": 5
+  },
+  {
+   "symbol": "ADANIENSOL",
+   "setups": [
+    "delivery",
+    "reclaim_ma20"
+   ],
+   "turnover_lacs": 52408.93,
+   "news_tags": {
+    "results": 1
+   },
+   "news_items": 3
+  },
+  {
+   "symbol": "MARUTI",
+   "setups": [
+    "oversold"
+   ],
+   "turnover_lacs": 52322.39,
+   "news_tags": {
+    "SEBI/regulatory": 1
+   },
+   "news_items": 2
+  }
+ ],
+ "backtest": {
+  "run": "momentum-20261103-045519",
+  "verdict": "NO EDGE",
+  "frozen_hash": "458d56c24af4",
+  "role": "context only (require_validated off)"
+ },
+ "validate": "refused: the run is NO EDGE",
+ "not_run": {
+  "nse-bigmoney": "no point-in-time bulk/block file",
+  "nse-shoonya": "laptop only; status: not logged in"
+ },
+ "inputs_sha256": {
+  "scan-daily.log": "e718717cca21f23f59804be8e40fb817d2e89059d6ad8a85072bec7dd3615959",
+  "scan-delivery.log": "0d929b77360c4e8b1f457db56abe6708c3054d3bd2165d1e8445010099a99a4f",
+  "news.log": "addc07e65f3670fc21b01db0d7226d5b2b9ef7ecc3e39259ea8d9429c4a96ede",
+  "news-filter.json": "34bd0ee43ad9b8e0c218788f109cc9802f3a650820685c4602fd8c8688e361f2",
+  "analyst-point-in-time.json": "3ef45cfc9918c2662c4476f4c05bcea7a1eee81740df12fe302ddc6878fae430",
+  "backtest-momentum.log": "bc77a439aa035ca4e158450a5ec04c8a825db11de2bacb01cd1dae4d94fb78a7"
+ },
+ "locked_utc": "2026-11-03T04:56:02+00:00"
+}
