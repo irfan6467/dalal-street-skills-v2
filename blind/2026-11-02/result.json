@@ -1,0 +1,139 @@
+{
+ "test_day": "2026-11-02",
+ "signal_day": "2026-10-30",
+ "picks_sha256": "33ed12e737794df60af1f3aed7da3a3a7e555e694894db89b3460e6302a32b79",
+ "rules_sha256": "db6d82f449fa921c36f83f63367b9bb204ce7247371a3da3958285386e41478f",
+ "sets": {
+  "A": {
+   "qualified": 5,
+   "trades": [
+    {
+     "symbol": "COFORGE",
+     "open": 2065.0,
+     "high": 2112.2,
+     "low": 2053.3,
+     "close": 2099.0,
+     "qty": 2,
+     "entry": 2069.13,
+     "stop": 1853.09,
+     "target": 2501.21,
+     "exit": 2094.8,
+     "exit_reason": "close",
+     "gross_inr": 51.34,
+     "charges_inr": 4.44,
+     "net_inr": 46.9,
+     "risk_inr": 432.08,
+     "r": 0.109
+    },
+    {
+     "symbol": "LAURUSLABS",
+     "open": 2406.0,
+     "high": 2441.9,
+     "low": 2347.0,
+     "close": 2348.0,
+     "qty": 2,
+     "entry": 2410.81,
+     "stop": 2195.66,
+     "target": 2841.11,
+     "exit": 2343.3,
+     "exit_reason": "close",
+     "gross_inr": -135.02,
+     "charges_inr": 5.03,
+     "net_inr": -140.05,
+     "risk_inr": 430.3,
+     "r": -0.325
+    },
+    {
+     "symbol": "ZYDUSLIFE",
+     "open": 1250.0,
+     "high": 1254.2,
+     "low": 1231.6,
+     "close": 1240.5,
+     "qty": 4,
+     "entry": 1252.5,
+     "stop": 1151.01,
+     "target": 1455.47,
+     "exit": 1238.02,
+     "exit_reason": "close",
+     "gross_inr": -57.92,
+     "charges_inr": 5.29,
+     "net_inr": -63.21,
+     "risk_inr": 405.94,
+     "r": -0.156
+    }
+   ],
+   "taken": 3,
+   "net_inr": -156.36,
+   "return_pct": -0.625,
+   "charges_inr": 14.76
+  },
+  "B": {
+   "qualified": 5,
+   "trades": [
+    {
+     "symbol": "COFORGE",
+     "open": 2065.0,
+     "high": 2112.2,
+     "low": 2053.3,
+     "close": 2099.0,
+     "qty": 4,
+     "entry": 2069.13,
+     "stop": 1972.0,
+     "target": 2263.39,
+     "exit": 2094.8,
+     "exit_reason": "close",
+     "gross_inr": 102.69,
+     "charges_inr": 8.86,
+     "net_inr": 93.83,
+     "risk_inr": 388.52,
+     "r": 0.242
+    },
+    {
+     "symbol": "LAURUSLABS",
+     "open": 2406.0,
+     "high": 2441.9,
+     "low": 2347.0,
+     "close": 2348.0,
+     "qty": 3,
+     "entry": 2410.81,
+     "stop": 2303.24,
+     "target": 2625.96,
+     "exit": 2343.3,
+     "exit_reason": "close",
+     "gross_inr": -202.52,
+     "charges_inr": 7.56,
+     "net_inr": -210.08,
+     "risk_inr": 322.72,
+     "r": -0.651
+    },
+    {
+     "symbol": "ZYDUSLIFE",
+     "open": 1250.0,
+     "high": 1254.2,
+     "low": 1231.6,
+     "close": 1240.5,
+     "qty": 6,
+     "entry": 1252.5,
+     "stop": 1201.76,
+     "target": 1353.99,
+     "exit": 1238.02,
+     "exit_reason": "close",
+     "gross_inr": -86.89,
+     "charges_inr": 7.93,
+     "net_inr": -94.82,
+     "risk_inr": 304.46,
+     "r": -0.311
+    }
+   ],
+   "taken": 3,
+   "net_inr": -211.07,
+   "return_pct": -0.844,
+   "charges_inr": 24.35
+  }
+ },
+ "benchmark": {
+  "stocks": 1709,
+  "avg_open_to_close_pct": 0.996,
+  "share_up_pct": 65.2
+ }
+}

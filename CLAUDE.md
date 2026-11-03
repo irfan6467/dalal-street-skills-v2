@@ -2,7 +2,7 @@
 
 Owner: Irfan (GitHub `irfan6467`, Hyderabad, IST). Fork of `Adityaraj0421/dalal-street-skills` (MIT), extended to
 v2: Shoonya live data, walk-forward backtester, forward-test gate, consent-gated Shoonya orders, daily cloud job,
-blind one-day tests. 14 skills, 624 offline tests (`python3 -m unittest discover -s tests -p "test_*.py"`).
+blind one-day tests. 14 skills, 627 offline tests (`python3 -m unittest discover -s tests -p "test_*.py"`).
 
 ## How Irfan wants to work (follow every session)
 
@@ -36,22 +36,24 @@ settings > network access > Custom, keep the default list). Check with
   byte for byte into scan, entry, alerts, news, timemachine (`tests/test_source_labels.py` guards the copies).
   Still Yahoo-worded when Shoonya answers: parse error messages ("Yahoo has no data for X") and Yahoo-based limits
   (scanner refuses ORB replays over 6 days old; entry's 1-minute range limit; timemachine's 15:15 last bar).
-- **Daily cloud job** built and tested offline (`scripts/cloud/`), **not yet scheduled** (waiting on NSE network access).
+- Fixed 3 Nov (`a2246a4`): on a holiday NSE serves the last session's bhavcopy under the holiday's name. The
+  loader kept every copy: 16 phantom sessions per stock on 14 months of history and ~19.5k false split/bonus
+  adjustments. Now `load_daily` counts a DATE1 once and `fetch_bhav` saves a file only if its DATE1 is the day
+  asked. **The 29 Oct momentum walk-forward (NO EDGE) ran on the duplicated data: re-run it before relying on it.**
+- **Daily cloud job** built and tested offline (`scripts/cloud/`), **not yet scheduled**. NSE is reachable from the
+  cloud since 3 Nov (nsearchives drops clients without a browser-like User-Agent; the skills send one).
 
-## In progress: blind test for Mon 2 Nov 2026 (`blind/2026-11-02/`)
+## Done: blind test for Mon 2 Nov 2026 (`blind/2026-11-02/`)
 
-Pre-registered and pushed in commit `827243e` (2026-11-03 09:11 IST) **before any 2 Nov data was fetched**.
-`rules.json` sha256 `db6d82f449fa921c36f83f63367b9bb204ce7247371a3da3958285386e41478f`. Two rule sets (A frozen
-momentum, B breakout with volume), ₹25,000 each, ₹500 max loss a trade, 3 positions, no leverage, MIS, Shoonya
-charges, 20 bp slippage. Irfan asked that the outcome stay unknown to Claude until the picks are locked.
+Pre-registered in `827243e`; picks locked and pushed in `3d12fe8` (picks sha256 `33ed12e7...`) before the 2 Nov
+file was fetched; result in `RESULT.md`. Both sets took the same 3 stocks (COFORGE, LAURUSLABS, ZYDUSLIFE), no stop
+or target hit, all out at the close: **A −₹156.36, B −₹211.07** while the screened universe averaged +1.0% open to
+close (65% up). One day, three correlated stock-days: no evidence either way. A first screen made before the
+holiday-file fix (sha `58cfd17e...`, same symbols, ATR ~1% lower) was superseded, by Irfan's choice, before reveal.
+Never edit `rules.json`, `picks.json` or `result.json` there.
 
-Next steps, in order, once NSE is reachable:
-1. `python3 blind/blind_test.py screen blind/2026-11-02` (fetches history to 2026-11-01 only; refuses if the test
-   day is in its data). Commit and push `picks.json`; note its sha256.
-2. Only then: `python3 blind/blind_test.py reveal blind/2026-11-02 --picks-sha <sha>`. Commit and push
-   `result.json` and `RESULT.md`. Report to Irfan; one day is one sample, say so.
-3. Never edit `rules.json` or `picks.json` after they are committed; never run reveal before screen is pushed.
-4. Then offer to schedule `scripts/cloud/run_daily.sh` as a weekday cloud scheduled task (~18:30 IST).
+Next: offer to schedule `scripts/cloud/run_daily.sh` as a weekday cloud scheduled task (~18:30 IST); re-run the
+momentum walk-forward on de-duplicated history.
 
 Build notes: `_shared/build/build.py` regenerates size.py, check.py, ticket.py, backtest.py and copies
 `_shared/shoonya_feed.py` into every skill; edit the templates in `_shared/`, never the generated copies.
