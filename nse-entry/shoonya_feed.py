@@ -597,7 +597,8 @@ def answer_spark(symbols, rng, interval):
         out[y.upper()] = {"symbol": y.upper(), "timestamp": r["timestamp"],
                           "close": r["indicators"]["quote"][0]["close"],
                           "chartPreviousClose": r["meta"].get("chartPreviousClose"),
-                          "previousClose": r["meta"].get("previousClose"), "dataGranularity": interval}
+                          "previousClose": r["meta"].get("previousClose"), "dataGranularity": interval,
+                          "dataSource": "shoonya"}
     return out
 
 

@@ -400,6 +400,31 @@ def yahoo_get(path):
     return _yahoo_http(path)
 
 
+FEED_NAME = {"shoonya": "Shoonya", "yahoo": "Yahoo", "shoonya+yahoo": "Shoonya and Yahoo"}
+
+
+def data_source(doc):
+    """'shoonya' when nse-shoonya's feed built this chart document, its meta or a spark entry (the feed
+    stamps dataSource on everything it answers), else 'yahoo'. Output names the feed that answered."""
+    d = doc if isinstance(doc, dict) else {}
+    if isinstance(d.get("chart"), dict):
+        d = ((d["chart"].get("result") or [None])[0] or {}).get("meta") or {}
+    return "shoonya" if d.get("dataSource") == "shoonya" else "yahoo"
+
+
+def mixed_source(sources):
+    """data_source() values -> 'shoonya', 'yahoo', or 'shoonya+yahoo' when a Yahoo fallback mixed in.
+    None came back: the feed that was asked (the configured provider)."""
+    s = set(sources)
+    if not s:
+        try:
+            feed = _shoonya_feed()
+            s = {"shoonya" if feed is not None and feed.provider() == "shoonya" else "yahoo"}
+        except Exception:
+            s = {"yahoo"}
+    return "shoonya+yahoo" if len(s) > 1 else s.pop()
+
+
 def _yahoo_http(path):
     """GET a Yahoo path: query2 first, query1 when query2 answers 429 or 5xx.
     An HTTP 429 gets one retry on the same host after BACKOFF seconds.

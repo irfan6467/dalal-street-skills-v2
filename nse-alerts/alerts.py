@@ -402,6 +402,31 @@ def yahoo_get(path):
     return _yahoo_http(path)
 
 
+FEED_NAME = {"shoonya": "Shoonya", "yahoo": "Yahoo", "shoonya+yahoo": "Shoonya and Yahoo"}
+
+
+def data_source(doc):
+    """'shoonya' when nse-shoonya's feed built this chart document, its meta or a spark entry (the feed
+    stamps dataSource on everything it answers), else 'yahoo'. Output names the feed that answered."""
+    d = doc if isinstance(doc, dict) else {}
+    if isinstance(d.get("chart"), dict):
+        d = ((d["chart"].get("result") or [None])[0] or {}).get("meta") or {}
+    return "shoonya" if d.get("dataSource") == "shoonya" else "yahoo"
+
+
+def mixed_source(sources):
+    """data_source() values -> 'shoonya', 'yahoo', or 'shoonya+yahoo' when a Yahoo fallback mixed in.
+    None came back: the feed that was asked (the configured provider)."""
+    s = set(sources)
+    if not s:
+        try:
+            feed = _shoonya_feed()
+            s = {"shoonya" if feed is not None and feed.provider() == "shoonya" else "yahoo"}
+        except Exception:
+            s = {"yahoo"}
+    return "shoonya+yahoo" if len(s) > 1 else s.pop()
+
+
 def _yahoo_http(path):
     """GET a Yahoo path: query2 first, query1 when query2 answers 429 or 5xx.
     An HTTP 429 gets one retry on the same host after BACKOFF seconds.
@@ -932,7 +957,7 @@ def parse_yahoo(text, key):
     return {"symbol": key, "price": float(price), "open": opens[0] if opens else None,
             "high": m.get("regularMarketDayHigh"), "low": m.get("regularMarketDayLow"),
             "prev_close": m.get("previousClose") or m.get("chartPreviousClose"), "time": when,
-            "currency": m.get("currency"), "yahoo": m.get("symbol"), "source": "yahoo"}
+            "currency": m.get("currency"), "yahoo": m.get("symbol"), "source": data_source(m)}
 
 
 def fetch_yahoo(key):
@@ -968,7 +993,7 @@ def get_quotes(keys, offline=None, pause=PAUSE):
     return quotes, errors
 
 
-def write_prices(path, quotes, now_utc, source="yahoo"):
+def write_prices(path, quotes, now_utc, source=None):
     old = {}
     if os.path.exists(path):
         try:
@@ -984,9 +1009,12 @@ def write_prices(path, quotes, now_utc, source="yahoo"):
         prices[s] = q["price"]
         detail[s] = {"prev_close": q.get("prev_close"), "time": q.get("time"), "source": q.get("source"),
                      "yahoo": q.get("yahoo") or ps["yahoo"], "exchange": ps["exchange"], "fetched": stamp}
+    if source is None:
+        source = mixed_source(q.get("source") or "yahoo" for q in quotes.values())
     doc = {"as_of": stamp, "source": source,
-           "note": ("Delayed quotes in rupees for alerts and sizing checks. Your broker's price is the one that "
-                    "fills. detail.fetched is when each price was read."),
+           "note": ("%s in rupees for alerts and sizing checks. Your broker's price is the one that "
+                    "fills. detail.fetched is when each price was read."
+                    % ("Quotes" if source == "shoonya" else "Delayed quotes")),
            "prices": prices, "detail": detail}
     _write(path, doc)
     return doc
@@ -1391,7 +1419,10 @@ def cmd_quote(a):
             print("error: " + e)
         if a.write and quotes:
             print("Wrote %d price(s) to %s." % (len(quotes), a.write))
-        print("Quotes are free, delayed and unofficial: for alerts only. Your broker's price is the one that fills.")
+        if quotes and mixed_source(q.get("source") or "yahoo" for q in quotes.values()) == "shoonya":
+            print("Quotes are Shoonya's exchange data: for alerts only. Your broker's price is the one that fills.")
+        else:
+            print("Quotes are free, delayed and unofficial: for alerts only. Your broker's price is the one that fills.")
     return 0 if quotes else 1
 
 

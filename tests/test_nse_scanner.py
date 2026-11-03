@@ -897,6 +897,65 @@ class Cli(unittest.TestCase):
             "name": "Tata Consultancy Services Ltd.", "setups": ["breakout_20d", "bull_flag"], "price": 2530.0,
             "close_date": "2026-10-23", "rsi": 74.1, "volume": 6857942, "turnover_lakh": 176079.81})
 
+    def test_daily_names_shoonya_when_shoonya_answered(self):
+        """Bug of 29 Oct: Shoonya data was labelled Yahoo. The label follows the feed's own dataSource stamp."""
+        spark = json.loads(read(DAILY))
+        for v in spark.values():
+            v["dataSource"] = "shoonya"
+        path = os.path.join(self.d, "spark-shoonya.json")
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(spark, fh)
+        code, text, _ = run(["daily", "--offline", path, "--now", LATE, "--out", self.wl] + self.base)
+        self.assertEqual(code, 0)
+        self.assertIn("closes through 2026-10-23 (Shoonya, daily closes only).", text)
+        self.assertNotIn("Yahoo", text)
+        self.assertEqual(self.read(self.wl)["source"], "shoonya")
+        # one symbol from a Yahoo fallback: the output says both
+        del next(iter(spark.values()))["dataSource"]
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(spark, fh)
+        code, text, _ = run(["daily", "--offline", path, "--now", LATE, "--out", self.wl] + self.base)
+        self.assertIn("(Shoonya and Yahoo, daily closes only)", text)
+        self.assertEqual(self.read(self.wl)["source"], "shoonya+yahoo")
+
+    def test_orb_names_shoonya_when_shoonya_answered(self):
+        spark = json.loads(read(SPARK5))
+        for v in spark.values():
+            v["dataSource"] = "shoonya"
+        bundle = json.loads(scan._read_maybe_gz(WALL))
+        for doc in bundle.values():
+            doc["chart"]["result"][0]["meta"]["dataSource"] = "shoonya"
+
+        def get(path):
+            if path.startswith("/v8/finance/spark"):
+                names = [scan.urllib.parse.unquote(a) for a in path.split("symbols=")[1].split("&")[0].split(",")]
+                return json.dumps({k: spark[k] for k in names if k in spark})
+            return json.dumps(bundle[scan.urllib.parse.unquote(path.split("/chart/")[1].split("?")[0])[:-3]])
+        old = (scan.yahoo_get, scan.SLEEP, scan.utc_now)
+        scan.yahoo_get, scan.SLEEP = get, (lambda s: None)
+        scan.utc_now = lambda: scan.parse_now("2026-10-23 14:05")
+        try:
+            code, text, _ = run(["orb", "--now", "2026-10-23 14:00", "--min-price", "0", "--max-confirm", "5",
+                                 "--out", self.wl, "--config", os.path.join(self.d, "none.json")] + self.base)
+        finally:
+            scan.yahoo_get, scan.SLEEP, scan.utc_now = old
+        self.assertIn("5-minute bars, Shoonya.", text)
+        self.assertIn("17 of the candidates have 5-minute bars missing in Shoonya's spark answer", text)
+        self.assertNotIn("Yahoo", text)
+        self.assertEqual(self.read(self.wl)["source"], "shoonya")
+
+    def test_a_missing_symbol_names_the_feed(self):
+        spark = json.loads(read(DAILY))
+        tcs = dict(spark["TCS.NS"], dataSource="shoonya")
+        old = scan.yahoo_get
+        scan.yahoo_get = lambda path: json.dumps({"TCS.NS": tcs})
+        try:
+            data, failed = scan.fetch_spark([entry("TCS"), entry("NOPE")], "3mo", "1d", 0)
+        finally:
+            scan.yahoo_get = old
+        self.assertEqual(failed, {"NOPE.NS": "no data from Shoonya"})
+        self.assertEqual(scan.data_source(data["TCS.NS"]["meta"]), "shoonya")
+
     def test_daily_filters_and_json(self):
         code, text, _ = run(["daily", "--offline", DAILY, "--now", LATE, "--json", "--no-write",
                              "--min-turnover-lakh", "50000", "--min-price", "1000"] + self.base)

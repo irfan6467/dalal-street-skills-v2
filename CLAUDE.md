@@ -2,7 +2,7 @@
 
 Owner: Irfan (GitHub `irfan6467`, Hyderabad, IST). Fork of `Adityaraj0421/dalal-street-skills` (MIT), extended to
 v2: Shoonya live data, walk-forward backtester, forward-test gate, consent-gated Shoonya orders, daily cloud job,
-blind one-day tests. 14 skills, 612 offline tests (`python3 -m unittest discover -s tests -p "test_*.py"`).
+blind one-day tests. 14 skills, 624 offline tests (`python3 -m unittest discover -s tests -p "test_*.py"`).
 
 ## How Irfan wants to work (follow every session)
 
@@ -29,8 +29,13 @@ settings > network access > Custom, keep the default list). Check with
 - **29 Oct live test** (`results/2026-10-29/REPORT.md`): Shoonya selftest PASS; momentum walk-forward on 2 years =
   **NO EDGE** (charges 73% of gross); one BEL paper trade +₹6.63 (proves the pipeline, not a strategy).
 - Shoonya app in use is `FN195954_U2` (the old `FN195954_U` secret was exposed in chat; Irfan should disable it).
-- Open bugs: exits after `flat_by` not blocked; `ticket.py track` may use a 15-minute-old quote; output labels Shoonya
-  data as "Yahoo"; Shoonya MIS square-off time unverified (15:00 assumed).
+- Open bugs: exits after `flat_by` not blocked; `ticket.py track` may use a 15-minute-old quote; Shoonya MIS
+  square-off time unverified (15:00 assumed).
+- Fixed 3 Nov: output labelled Shoonya data as "Yahoo". Labels now read `meta.dataSource` (stamped by
+  `shoonya_feed` on charts and spark entries) via `data_source()` / `mixed_source()` in `india_core.py`, pasted
+  byte for byte into scan, entry, alerts, news, timemachine (`tests/test_source_labels.py` guards the copies).
+  Still Yahoo-worded when Shoonya answers: parse error messages ("Yahoo has no data for X") and Yahoo-based limits
+  (scanner refuses ORB replays over 6 days old; entry's 1-minute range limit; timemachine's 15:15 last bar).
 - **Daily cloud job** built and tested offline (`scripts/cloud/`), **not yet scheduled** (waiting on NSE network access).
 
 ## In progress: blind test for Mon 2 Nov 2026 (`blind/2026-11-02/`)

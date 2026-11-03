@@ -398,6 +398,31 @@ def yahoo_get(path):
     return _yahoo_http(path)
 
 
+FEED_NAME = {"shoonya": "Shoonya", "yahoo": "Yahoo", "shoonya+yahoo": "Shoonya and Yahoo"}
+
+
+def data_source(doc):
+    """'shoonya' when nse-shoonya's feed built this chart document, its meta or a spark entry (the feed
+    stamps dataSource on everything it answers), else 'yahoo'. Output names the feed that answered."""
+    d = doc if isinstance(doc, dict) else {}
+    if isinstance(d.get("chart"), dict):
+        d = ((d["chart"].get("result") or [None])[0] or {}).get("meta") or {}
+    return "shoonya" if d.get("dataSource") == "shoonya" else "yahoo"
+
+
+def mixed_source(sources):
+    """data_source() values -> 'shoonya', 'yahoo', or 'shoonya+yahoo' when a Yahoo fallback mixed in.
+    None came back: the feed that was asked (the configured provider)."""
+    s = set(sources)
+    if not s:
+        try:
+            feed = _shoonya_feed()
+            s = {"shoonya" if feed is not None and feed.provider() == "shoonya" else "yahoo"}
+        except Exception:
+            s = {"yahoo"}
+    return "shoonya+yahoo" if len(s) > 1 else s.pop()
+
+
 def _yahoo_http(path):
     """GET a Yahoo path: query2 first, query1 when query2 answers 429 or 5xx.
     An HTTP 429 gets one retry on the same host after BACKOFF seconds.
@@ -662,7 +687,7 @@ def parse_chart(text, sym):
                      "l": float(c if lo is None else lo), "c": float(c), "v": int(at("volume", i) or 0)})
     return {"symbol": str(meta.get("symbol") or sym).upper(), "meta": meta, "bars": bars,
             "prev_close": meta.get("previousClose") or meta.get("chartPreviousClose"),
-            "data_time": meta.get("regularMarketTime")}
+            "data_time": meta.get("regularMarketTime"), "source": data_source(meta)}
 
 
 def read_text(path):
@@ -800,7 +825,9 @@ def evaluate(chart, now_utc, setup="orb", or_minutes=15, interval="5m", level=No
            "interval": interval, "or_minutes": or_minutes, "now": local.strftime("%Y-%m-%d %H:%M:%S"), "status": "waiting",
            "phase": "", "reason": "", "opening_range": None, "level": None, "trigger": None,
            "last": None, "forming": None, "min_volume_x": min_volume_x,
-           "prev_close": chart.get("prev_close"), "calendar_known": day.year in CALENDAR_YEARS, "_bars": []}
+           "prev_close": chart.get("prev_close"), "calendar_known": day.year in CALENDAR_YEARS, "_bars": [],
+           "source": chart.get("source") or data_source(chart.get("meta"))}
+    feed = FEED_NAME[res["source"]]
     dt = chart.get("data_time")
     res["data_time"] = to_ist(utc_of(dt)).strftime("%Y-%m-%d %H:%M:%S") if dt else None
     ok, why = trading_day(day)
@@ -834,16 +861,16 @@ def evaluate(chart, now_utc, setup="orb", or_minutes=15, interval="5m", level=No
         b = by_slot[slot]
         end_ts = b["t"] + step
         if end_ts <= now_ts:
-            # Closed by the clock. On live data it counts once Yahoo has caught up: its last
+            # Closed by the clock. On live data it counts once the feed has caught up: its last
             # trade is at or after the close, a later bar exists, or a minute has passed.
             if dt is None or dt >= end_ts or slot < top or now_ts >= end_ts + SETTLE:
                 bars.append(b)
             else:
                 pending = b
                 res["forming"] = {"bar_start": hm(b["et"]), "closes": ampm(b["end"]), "price": r2(b["c"])}
-                res["lag_note"] = ("Yahoo's last trade is %s, before the %s bar's close: it counts once Yahoo "
-                                   "catches up (a minute at most)" % (to_ist(utc_of(dt)).strftime("%H:%M:%S"),
-                                                                       short(b["et"])))
+                res["lag_note"] = ("%s's last trade is %s, before the %s bar's close: it counts once %s "
+                                   "catches up (a minute at most)" % (feed, to_ist(utc_of(dt)).strftime("%H:%M:%S"),
+                                                                       short(b["et"]), feed))
         elif b["et"] <= local:
             res["forming"] = {"bar_start": hm(b["et"]), "closes": ampm(b["end"]), "price": r2(b["c"])}
     res["_bars"] = bars
@@ -866,7 +893,7 @@ def evaluate(chart, now_utc, setup="orb", or_minutes=15, interval="5m", level=No
                 len(or_bars), n_or, short(or_end)))
             return res
         if not or_bars:
-            res.update(status="no-data", phase="open", reason="Yahoo sent no bars for the opening range")
+            res.update(status="no-data", phase="open", reason="%s sent no bars for the opening range" % feed)
             return res
         lvl = max(b["h"] for b in or_bars)
     else:
@@ -899,11 +926,11 @@ def evaluate(chart, now_utc, setup="orb", or_minutes=15, interval="5m", level=No
                           "volume": trig["v"], "volume_x": r2(vx), "pct_over": r2(100.0 * (trig["c"] / lvl - 1))}
         res["minutes_since"] = int((local - trig["end"]).total_seconds() // 60)
         if dt and utc_of(dt) < ist_to_utc(trig["end"]):
-            res["data_note"] = ("Yahoo's last trade is %s, before this bar closed: its close can still move a paisa or two"
-                                % to_ist(utc_of(dt)).strftime("%H:%M:%S"))
+            res["data_note"] = ("%s's last trade is %s, before this bar closed: its close can still move a paisa or two"
+                                % (feed, to_ist(utc_of(dt)).strftime("%H:%M:%S")))
         return res
     if not bars:
-        res.update(status="no-data", phase="open", reason="Yahoo sent no bars for %s yet" % day.isoformat())
+        res.update(status="no-data", phase="open", reason="%s sent no bars for %s yet" % (feed, day.isoformat()))
         return res
     what = "close above the range high %s" % inr(lvl) if setup == "orb" else "close above %s" % inr(lvl)
     if local >= cutoff and not (pending and pending["end"] <= cutoff):
@@ -943,7 +970,7 @@ def entry_doc(res, now_utc, sym, product="MIS"):
             "bar_index": t.get("bar_index"), "price": t.get("price"), "level": res.get("level"),
             "interval": res["interval"],
             "opening_range": {"high": orr["high"], "low": orr["low"], "minutes": orr["minutes"]} if orr else None,
-            "source": "yahoo", "checked_at": iso(now_utc), "reason": res.get("reason")}
+            "source": res.get("source") or "yahoo", "checked_at": iso(now_utc), "reason": res.get("reason")}
 
 
 def write_json(path, doc):
@@ -958,6 +985,8 @@ def write_json(path, doc):
 # ---------------------------------------------------------------- words
 
 LABEL = {"triggered": "TRIGGERED", "waiting": "WAITING", "expired": "EXPIRED", "no-data": "NO DATA"}
+FEED_NOTE = {"yahoo": "Yahoo, free, can lag", "shoonya": "Shoonya, exchange data"}
+FEED_NOTE_LONG = {"yahoo": "Free Yahoo bars, unofficial and can lag.", "shoonya": "Shoonya exchange bars."}
 PHASE_LABEL = {"pre-open": "NOT OPEN YET", "forming": "RANGE FORMING", "closed": "MARKET CLOSED"}
 SHORT = {"pre-open": "not open", "forming": "forming", "closed": "closed"}
 
@@ -972,8 +1001,9 @@ def describe(res, product="MIS"):
     """Plain lines for a person."""
     when = datetime.datetime.strptime(res["now"], "%Y-%m-%d %H:%M:%S")
     bars = "5-minute" if res["interval"] == "5m" else "1-minute"
-    head = "%s  %s %s IST  %s on %s bars (Yahoo, free, can lag)" % (
-        res["symbol"], when.strftime("%a %Y-%m-%d"), when.strftime("%H:%M"), setup_name(res), bars)
+    head = "%s  %s %s IST  %s on %s bars (%s)" % (
+        res["symbol"], when.strftime("%a %Y-%m-%d"), when.strftime("%H:%M"), setup_name(res), bars,
+        FEED_NOTE[res.get("source") or "yahoo"])
     if res.get("data_time") and res["data_time"] <= res["now"] and res["data_time"][:10] == res["date"]:
         head += ", data to %s" % res["data_time"][11:]
     out = [head]
@@ -1317,7 +1347,8 @@ def cmd_watchlist(a):
                 ("%+.2f%%" % last["vs_level_pct"]) if last.get("vs_level_pct") is not None else "-"))
         n = sum(1 for _, r, _ in rows if r and r["status"] == "triggered")
         print("%d of %d triggered. Pick one, then: entry.py check <SYMBOL> --write, and /nse-exit." % (n, len(rows)))
-        print("Free Yahoo bars, unofficial and can lag. Nothing was placed.")
+        srcs = {r.get("source") or "yahoo" for _, r, _ in rows if r}
+        print(" ".join([FEED_NOTE_LONG[k] for k in sorted(srcs, reverse=True)] + ["Nothing was placed."]))
     return 0 if any(r and r["status"] == "triggered" for _, r, _ in rows) else 1
 
 

@@ -418,6 +418,31 @@ def yahoo_get(path):
     return _yahoo_http(path)
 
 
+FEED_NAME = {"shoonya": "Shoonya", "yahoo": "Yahoo", "shoonya+yahoo": "Shoonya and Yahoo"}
+
+
+def data_source(doc):
+    """'shoonya' when nse-shoonya's feed built this chart document, its meta or a spark entry (the feed
+    stamps dataSource on everything it answers), else 'yahoo'. Output names the feed that answered."""
+    d = doc if isinstance(doc, dict) else {}
+    if isinstance(d.get("chart"), dict):
+        d = ((d["chart"].get("result") or [None])[0] or {}).get("meta") or {}
+    return "shoonya" if d.get("dataSource") == "shoonya" else "yahoo"
+
+
+def mixed_source(sources):
+    """data_source() values -> 'shoonya', 'yahoo', or 'shoonya+yahoo' when a Yahoo fallback mixed in.
+    None came back: the feed that was asked (the configured provider)."""
+    s = set(sources)
+    if not s:
+        try:
+            feed = _shoonya_feed()
+            s = {"shoonya" if feed is not None and feed.provider() == "shoonya" else "yahoo"}
+        except Exception:
+            s = {"yahoo"}
+    return "shoonya+yahoo" if len(s) > 1 else s.pop()
+
+
 def _yahoo_http(path):
     """GET a Yahoo path: query2 first, query1 when query2 answers 429 or 5xx.
     An HTTP 429 gets one retry on the same host after BACKOFF seconds.
@@ -712,7 +737,7 @@ def series_from_spark(item):
     n = len(t)
     c = item.get("close")
     c = list(c) + [None] * (n - len(c)) if isinstance(c, list) else [None] * n
-    meta = {k: item.get(k) for k in ("symbol", "chartPreviousClose", "previousClose", "fulldayPrice")}
+    meta = {k: item.get(k) for k in ("symbol", "chartPreviousClose", "previousClose", "fulldayPrice", "dataSource")}
     return {"t": list(t), "c": c, "o": None, "h": None, "l": None, "v": None, "meta": meta}
 
 
@@ -1468,11 +1493,12 @@ def fetch_spark(entries, rng, interval, pause, a=None):
             for y in batch:
                 failed[y] = str(e)
             continue
+        feed = FEED_NAME[mixed_source(data_source(v["meta"]) for v in got.values())]
         for y in batch:
             if y in got:
                 data[y] = got[y]
             else:
-                failed[y] = "no data from Yahoo"
+                failed[y] = "no data from %s" % feed
         if a is not None and len(batches) > 25 and (k + 1) % 50 == 0:
             progress(a, "  spark %d of %d requests" % (k + 1, len(batches)))
     return data, failed
@@ -1584,11 +1610,12 @@ def cmd_daily(a):
                  % (n(len(entries)), (len(entries) + SPARK_MAX - 1) // SPARK_MAX))
         data, failed = fetch_spark(entries, "3mo", "1d", a.pause, a)
     hits, counts, last_date = scan_daily(data, entries, now, a.min_price, a.min_turnover_lakh, liquidity)
+    src = mixed_source(data_source(s["meta"]) for s in data.values())
     nfailed = len(entries) - counts["fetched"]
     as_of = ("%s close" % last_date.isoformat()) if last_date else None
     doc = {"created_by": "nse-scanner", "created_at": iso(now), "mode": "daily",
            "as_of": as_of, "universe": len(entries), "scanned": counts["scanned"], "failed": nfailed,
-           "source": "yahoo", "filters": {"min_price": a.min_price, "min_turnover_lakh": a.min_turnover_lakh},
+           "source": src, "filters": {"min_price": a.min_price, "min_turnover_lakh": a.min_turnover_lakh},
            "note": NOTE, "hits": hits}
     if liq:
         doc["liquidity_from"] = "bhavcopy %s" % liq[0].isoformat()
@@ -1600,8 +1627,9 @@ def cmd_daily(a):
         print(json.dumps(dict(doc, counts=counts, seconds=round(time.time() - t0, 1)), indent=2,
                          ensure_ascii=False))
         return 0 if hits else 1
-    print("Daily scan, %s IST, closes through %s (Yahoo spark, daily closes only)." % (
-        to_ist(now).strftime("%a %Y-%m-%d %H:%M"), last_date.isoformat() if last_date else "nothing"))
+    print("Daily scan, %s IST, closes through %s (%s, daily closes only)." % (
+        to_ist(now).strftime("%a %Y-%m-%d %H:%M"), last_date.isoformat() if last_date else "nothing",
+        "Yahoo spark" if src == "yahoo" else FEED_NAME[src]))
     print("Fetched %s of %s charts%s. %s passed the liquidity filter (close %s+%s)%s; %s scanned." % (
         n(counts["fetched"]), n(len(entries)),
         (" (%s failed or had no data)" % n(nfailed)) if nfailed else "",
@@ -1661,6 +1689,7 @@ def cmd_orb(a):
     liq = load_liquidity(a, now, a.min_turnover_lakh > 0)
     liquidity = liq[1] if liq else None
     confirm = None
+    stage2 = []                          # data_source of every stage-2 chart read
     if not a.offline:
         today = to_ist(utc_now()).date()
         if (today - day).days > 6:
@@ -1677,16 +1706,19 @@ def cmd_orb(a):
             done.append(e["yahoo"])
             if len(done) % 50 == 0:
                 progress(a, "  stage 2: %d v8 charts so far" % len(done))
-            return parse_chart(yahoo_get(chart_path(e["yahoo"], rng, "%dm" % BAR_MIN)), e["yahoo"])
+            got = parse_chart(yahoo_get(chart_path(e["yahoo"], rng, "%dm" % BAR_MIN)), e["yahoo"])
+            stage2.append(data_source(got["meta"]))
+            return got
     hits, counts, failed2 = scan_orb(data, entries, day, cutoff, a.or_minutes, a.min_price, a.min_turnover_lakh,
                                      liquidity, confirm, a.max_confirm, cas_stocks)
     failed = dict(failed or {})
     failed.update(failed2)
     nfailed = len([e for e in entries if e["yahoo"] in failed])
+    src = mixed_source([data_source(s["meta"]) for s in (data or {}).values()] + stage2)
     as_of = "%s %s IST" % (day.isoformat(), cutoff.strftime("%H:%M"))
     doc = {"created_by": "nse-scanner", "created_at": iso(now), "mode": "orb",
            "as_of": as_of, "universe": len(entries), "scanned": counts["scanned"], "failed": nfailed,
-           "unconfirmed": counts["unconfirmed"], "source": "yahoo", "or_minutes": a.or_minutes,
+           "unconfirmed": counts["unconfirmed"], "source": src, "or_minutes": a.or_minutes,
            "interval": "%dm" % BAR_MIN,
            "filters": {"min_price": a.min_price, "min_turnover_lakh": a.min_turnover_lakh}, "note": NOTE,
            "hits": hits}
@@ -1702,9 +1734,9 @@ def cmd_orb(a):
         print(json.dumps(dict(doc, counts=counts, seconds=round(time.time() - t0, 1)), indent=2,
                          ensure_ascii=False))
         return 0 if hits else 1
-    print("Opening-range breakout scan, %s %s IST: %d-minute range (%s to %s), 5-minute bars, Yahoo."
+    print("Opening-range breakout scan, %s %s IST: %d-minute range (%s to %s), 5-minute bars, %s."
           % (day_label(day), clock_label(cutoff), a.or_minutes, clock_label(slot(day, 0)),
-             clock_label(slot(day, a.or_minutes // BAR_MIN))))
+             clock_label(slot(day, a.or_minutes // BAR_MIN)), FEED_NAME[src]))
     print("Fetched %s of %s charts%s; %s usable%s; %s candidates, %s confirmed with real highs and lows."
           % (n(counts["fetched"]), n(len(entries)),
              (" (%s failed or had no data)" % n(nfailed)) if nfailed else "",
@@ -1716,8 +1748,9 @@ def cmd_orb(a):
         if cas_note:
             print(cas_note + ".")
     if counts["gappy"]:
-        print("%s of the candidates have 5-minute bars missing in Yahoo's spark answer, so the full chart "
-              "decides them." % n(counts["gappy"]))
+        print("%s of the candidates have 5-minute bars missing in %s's spark answer, so the full chart "
+              "decides them." % (n(counts["gappy"]), FEED_NAME[mixed_source(
+                  data_source(s["meta"]) for s in (data or {}).values())]))
     if counts["unconfirmed"]:
         print("PARTIAL: %s more candidates were not checked (only the %s most traded are; --max-confirm 0 "
               "checks all)." % (n(counts["unconfirmed"]), n(a.max_confirm)))

@@ -30,14 +30,16 @@ MCP server or API, or a manual ticket, after your yes.
   fill      records a fill in nse/portfolio.json (cash, shares, charges, P&L).
   working   (paper) lists the WORKING limit orders and checks each one: it
             fills at the limit when the price trades through it (the low of a
-            Yahoo 1-minute bar since the order for a BUY, the high for a SELL;
-            5-minute bars if 1-minute fail), and expires unfilled, with no
+            1-minute bar since the order for a BUY, the high for a SELL;
+            5-minute bars if 1-minute fail; bars from Shoonya when it is the
+            data provider, else Yahoo), and expires unfilled, with no
             ledger change, at the MIS entry cut-off (the end of continuous
             trading minus entry_buffer_min, or no_entries_after if earlier),
             at the square-off for an MIS exit, or at the close for CNC.
   track     (paper) does what `working` does, then checks open positions
             against the stop and the target, from --price, nse/prices.json or
-            Yahoo's 5-minute bars, books the exit that would have happened, and
+            5-minute bars (Shoonya or Yahoo, named in the output), books the
+            exit that would have happened, and
             lists MIS positions past flat_by.
   flatten   builds a sell ticket that closes a symbol's open position by
             flat_by. It still goes through nse-risk and your yes.
@@ -398,6 +400,31 @@ def yahoo_get(path):
         if hooked is not None:
             return hooked
     return _yahoo_http(path)
+
+
+FEED_NAME = {"shoonya": "Shoonya", "yahoo": "Yahoo", "shoonya+yahoo": "Shoonya and Yahoo"}
+
+
+def data_source(doc):
+    """'shoonya' when nse-shoonya's feed built this chart document, its meta or a spark entry (the feed
+    stamps dataSource on everything it answers), else 'yahoo'. Output names the feed that answered."""
+    d = doc if isinstance(doc, dict) else {}
+    if isinstance(d.get("chart"), dict):
+        d = ((d["chart"].get("result") or [None])[0] or {}).get("meta") or {}
+    return "shoonya" if d.get("dataSource") == "shoonya" else "yahoo"
+
+
+def mixed_source(sources):
+    """data_source() values -> 'shoonya', 'yahoo', or 'shoonya+yahoo' when a Yahoo fallback mixed in.
+    None came back: the feed that was asked (the configured provider)."""
+    s = set(sources)
+    if not s:
+        try:
+            feed = _shoonya_feed()
+            s = {"shoonya" if feed is not None and feed.provider() == "shoonya" else "yahoo"}
+        except Exception:
+            s = {"yahoo"}
+    return "shoonya+yahoo" if len(s) > 1 else s.pop()
 
 
 def _yahoo_http(path):
@@ -2120,14 +2147,16 @@ def load_bars_files(specs):
 
 
 def fetch_bars(ysym, rng):
-    """(bars, label) from Yahoo: 1-minute bars, else 5-minute ones; ([], None) if neither answers."""
-    for interval, label in (("1m", "Yahoo 1-minute bars"), ("5m", "Yahoo 5-minute bars")):
+    """(bars, label): 1-minute bars, else 5-minute ones, from the feed that answered (Shoonya when it is the
+    provider, else Yahoo; the label says which); ([], None) if neither answers."""
+    for interval, words in (("1m", "1-minute bars"), ("5m", "5-minute bars")):
         try:
-            bars = bars_from_chart(json.loads(yahoo_get(chart_path(ysym, rng, interval))))
+            doc = json.loads(yahoo_get(chart_path(ysym, rng, interval)))
+            bars = bars_from_chart(doc)
         except (IndiaError, ValueError):
             continue
         if bars:
-            return bars, label
+            return bars, "%s %s" % (FEED_NAME[data_source(doc)], words)
     return [], None
 
 
@@ -2394,7 +2423,8 @@ def cmd_track(a):
                 doc = json.loads(yahoo_get(chart_path(pos.get("yahoo") or (sym + (".BO" if exch == "BSE" else ".NS")),
                                                       "1d", "5m")))
                 bars = bars_from_chart(doc)
-                res, src = evaluate_bars(pos, bars, after), "Yahoo 5-minute bars since the entry"
+                res, src = evaluate_bars(pos, bars, after), "%s 5-minute bars since the entry" % (
+                    FEED_NAME[data_source(doc)])
                 if not bars:
                     src = None
             except (IndiaError, ValueError):

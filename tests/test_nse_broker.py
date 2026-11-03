@@ -563,6 +563,27 @@ class WorkingOrders(PaperBase):
         self.assertIn("FILLED at ₹1,196.10 at 09:45 IST", text)
         self.assertIn("stop 1188.50 and target 1211.30 not touched (the bars you gave, since the entry)", text)
 
+    def test_track_names_the_feed_that_answered(self):
+        """Bug of 29 Oct: Shoonya bars were reported as "Yahoo 5-minute bars since the entry"."""
+        self.approve_away_from_the_market()
+        bars = self.bars([(9, 45, 1199, 1200, 1194, 1195), (9, 50, 1195, 1196, 1195.5, 1196)])
+        run(["track", "--offline", "--bars", "RELIANCE=" + bars, "--portfolio", self.pf, "--config", self.cfg,
+             "--state", self.state, "--now", "2026-10-26 09:55"])
+        live = chart([(9, 50, 1196, 1197, 1195, 1196), (9, 55, 1196, 1198, 1195, 1197)])
+        old = ticket.yahoo_get
+        try:
+            for stamp, name in ((None, "Yahoo"), ("shoonya", "Shoonya")):
+                if stamp:
+                    live["chart"]["result"][0]["meta"]["dataSource"] = stamp
+                ticket.yahoo_get = lambda path, text=json.dumps(live): text
+                code, text, _ = run(["track", "--portfolio", self.pf, "--config", self.cfg, "--state", self.state,
+                                     "--prices", self.none, "--now", "2026-10-26 10:00"])
+                self.assertIn("not touched (%s 5-minute bars since the entry)" % name, text)
+            bars, label = ticket.fetch_bars("RELIANCE.NS", "1d")
+            self.assertEqual((len(bars), label), (2, "Shoonya 1-minute bars"))
+        finally:
+            ticket.yahoo_get = old
+
     def test_a_working_order_expires_at_the_cut_off_with_no_ledger_change(self):
         self.approve_away_from_the_market()
         bars = self.bars([(9, 45, 1199, 1201, 1197, 1200), (14, 30, 1199, 1199, 1190, 1191)])   # after the cut-off
