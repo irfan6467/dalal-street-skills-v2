@@ -1,0 +1,25 @@
+{
+ "config": {
+  "broker": "shoonya",
+  "paper": true,
+  "budget": 3500,
+  "max_loss_per_trade_inr": 70,
+  "max_daily_loss_inr": 140,
+  "charges": {
+   "brokerage_pct_mis": 0.03,
+   "brokerage_min_mis": 0,
+   "brokerage_cap_mis": 5,
+   "brokerage_pct_cnc": 0,
+   "brokerage_min_cnc": 0,
+   "brokerage_cap_cnc": 0,
+   "dp_charge_cnc_sell": 10.62
+  },
+  "mis_leverage": 1,
+  "max_trades_per_day": 3
+ },
+ "costs": {
+  "slippage_bps": 20,
+  "notional_per_trade": 3500
+ },
+ "frozen_run": "results/2026-10-29/backtest/momentum-20261029-083521.json"
+}

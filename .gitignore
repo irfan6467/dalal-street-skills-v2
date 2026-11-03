@@ -7,3 +7,5 @@ __pycache__/
 Thumbs.db
 .vscode/
 .idea/
+
+# daily cloud job: scratch only, outputs live in reports/ and journal/

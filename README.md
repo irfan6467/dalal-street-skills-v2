@@ -3,7 +3,7 @@
 **Scan, plan, replay and size every Indian trade before a rupee moves. STT, stamp duty, circuit bands, your broker's square-off and the 3:15 closing auction are all built in.**
 
 [![tests](https://github.com/Adityaraj0421/dalal-street-skills/actions/workflows/tests.yml/badge.svg)](https://github.com/Adityaraj0421/dalal-street-skills/actions/workflows/tests.yml)
-![595 offline tests](https://img.shields.io/badge/tests-595%20offline-brightgreen)
+![607 offline tests](https://img.shields.io/badge/tests-607%20offline-brightgreen)
 ![python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue)
 ![stdlib only](https://img.shields.io/badge/dependencies-none-blue)
 ![license MIT](https://img.shields.io/badge/license-MIT-lightgrey)
@@ -60,6 +60,15 @@ US trading tools get Indian markets wrong in ways that cost money:
 | **NSE holidays and Muhurat trading** | 2026 calendar from NSE's own circulars, with Muhurat on 8 Nov from 2:20 to 3:30 PM |
 | **Results in crore and fiscal quarters** | Q1FY27 (Apr–Jun 2026) in ₹ crore, vs the same quarter last year. USD reporters like Infosys are labelled, with `--inr` to convert |
 | **Delivery % matters to investors** | A bhavcopy scan for delivery spikes (accumulation) |
+
+## Where things run
+
+| where | what | why |
+| --- | --- | --- |
+| **Claude's cloud** (scheduled task, trading days ~18:30 IST) | `scripts/cloud/run_daily.sh`: NSE after-close report + momentum shadow journal, committed to `reports/` and `journal/` | public NSE files only, no laptop needed |
+| **Your laptop** | Shoonya login, live data, scans, paper trades (`scripts/windows/`) | Shoonya accepts only your whitelisted IP |
+
+Results of the first live test (29 Oct 2026): [results/2026-10-29/REPORT.md](results/2026-10-29/REPORT.md).
 
 ## The fourteen
 
@@ -140,7 +149,7 @@ Full example: [`nse-budget/config.example.json`](nse-budget/config.example.json)
 
 ## Contributing
 
-Good first contributions: confirm a broker's post-auction square-off time, add the 2027 NSE holidays, add a scanner setup, or improve a news tag. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). All 595 tests run offline in about 20 seconds:
+Good first contributions: confirm a broker's post-auction square-off time, add the 2027 NSE holidays, add a scanner setup, or improve a news tag. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). All 607 tests run offline in about 20 seconds:
 
 ```bash
 python -m unittest discover -s tests -p "test_*.py"
