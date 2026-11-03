@@ -1,0 +1,9 @@
+{
+ "rules_sha256": "0c0185f003cbfa9203b32d44dd08b8a3062a8a89677fb6b6657389fc3ca363cf",
+ "index": 5,
+ "of": 10,
+ "test_day": "2026-10-15",
+ "test_weekday": "Thursday",
+ "signal_day": "2026-10-14",
+ "signal_weekday": "Wednesday"
+}

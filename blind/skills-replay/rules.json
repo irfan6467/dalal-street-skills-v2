@@ -1,0 +1,95 @@
+{
+ "name": "Full-skill blind replay of one past NSE session",
+ "written": "2026-11-03 IST, before the test day was drawn and before any of its data was read",
+ "eligible_test_days": [
+  "2026-10-08",
+  "2026-10-09",
+  "2026-10-12",
+  "2026-10-13",
+  "2026-10-14",
+  "2026-10-15",
+  "2026-10-16",
+  "2026-10-19",
+  "2026-10-21",
+  "2026-10-22"
+ ],
+ "eligible_why": "NSE sessions with Yahoo 5-minute bars on hand (about 60 days back from 3 Nov) and at least 20 earlier sessions for the time machine; 23-30 Oct excluded because test fixtures or the 29 Oct report have shown parts of them; 2 Nov excluded (already revealed).",
+ "draw": "test_day = eligible_test_days[int(sha256(this file's bytes), 16) % 10]; signal day = the NSE session before it",
+ "settings": {
+  "capital_inr": 25000,
+  "max_loss_per_trade_inr": 500,
+  "max_trades_per_day": 3,
+  "max_daily_loss_inr": 3000,
+  "max_position_pct": 33.33,
+  "mis_leverage": 1,
+  "product": "MIS",
+  "side": "long only",
+  "broker": "shoonya",
+  "charges": {
+   "brokerage_pct_mis": 0.03,
+   "brokerage_min_mis": 0,
+   "brokerage_cap_mis": 5
+  },
+  "slippage_bps_per_fill": 20,
+  "paper": true,
+  "data_provider": "yahoo",
+  "kept_from_29_oct_run (skill defaults then)": {
+   "cash_buffer_pct": 10,
+   "min_reward_risk": 1.0,
+   "no_entries_before": "09:30",
+   "no_entries_after": "14:45",
+   "flat_by": "15:10",
+   "entry_buffer_min": 45
+  },
+  "source": "capital, loss per trade, positions, leverage, product, charges and slippage as agreed for the 2 Nov test; daily loss limit and backtest notional chosen by Irfan on 3 Nov"
+ },
+ "phase_1_signal_day": {
+  "rule": "only data dated on or before the signal day; the screen folder holds no bhavcopy named on or after the test day",
+  "nse-backtest": {
+   "momentum": {
+    "from": "2024-10-29",
+    "to": "signal day",
+    "train_months": 12,
+    "test_months": 3,
+    "grid": "default",
+    "costs": {
+     "slippage_bps": 20,
+     "notional_per_trade": 8333
+    }
+   },
+   "role": "context only, does not gate the trades (require_validated is off, as on 29 Oct)"
+  },
+  "nse-validate": "start on the momentum run; it accepts only a CANDIDATE, so a NO EDGE run is refused",
+  "nse-scanner": {
+   "universe": "nifty200 (niftyindices list, last rebalanced end of September)",
+   "daily": "scan.py daily --offline on split-adjusted closes built from NSE bhavcopies up to the signal day (the same closes Yahoo's spark gives), --now 'signal day 16:00', defaults",
+   "delivery": "scan.py delivery --now 'signal day 18:30', defaults, Nifty 200 only"
+  },
+  "watchlist": "union of daily and delivery hits, ranked by signal-day turnover (highest first), top 10",
+  "nse-news": "Google News RSS per stock, items published in the 72 hours before 09:00 IST on the test day (news.py --offline --now 'test day 09:00' --hours 72 --per-ticker 0); a stock with an item tagged results or SEBI/regulatory in that window is dropped",
+  "nse-analyst": "facts.py for each remaining stock, shown only for periods ending on or before 2026-06-30; context only, no gate",
+  "nse-bigmoney": "not run: NSE serves only the latest day's bulk/block file, so the signal day's deals cannot be read point-in-time",
+  "nse-shoonya": "not run: login works only from Irfan's whitelisted laptop",
+  "lock": "the watchlist goes into picks.json, committed and pushed before any test-day bar is read"
+ },
+ "phase_2_test_day": {
+  "data": "Yahoo 5-minute bars (range 60d) fetched after the lock; every skill call gets bars cut at its own clock",
+  "nse-alerts": "clock check for the test day; add --from-plan for each plan; check at each event time",
+  "nse-entry": "check SYMBOL --offline, defaults: 15-minute opening range, first completed 5-minute bar closing above the range high, by no_entries_after",
+  "order": "triggers processed in time order (ties: higher signal-day turnover first)",
+  "nse-exit": "plan from entry.json, defaults: stop at the range midpoint, target 2R, flat_by 15:10, MIS",
+  "nse-timemachine": "run on the stock's bars up to the trigger bar's close; the trade is skipped unless the average R net of charges is above 0",
+  "nse-budget": "size.py --write from plan.json and config.json",
+  "nse-risk": "check.py --offline --now trigger time, prices from alerts.py quote; BLOCK = skipped",
+  "nse-broker": "paper: approve --reply 'yes' typed by Claude under this rule (a replay, not Irfan's consent), working orders filled on bars, track for stop/target, flatten at flat_by",
+  "result": "net P&L from the paper ledger, then minus 20 bp of every fill's value (slippage); also the Nifty 200 average open-to-close move that day"
+ },
+ "seen_before_the_draw (late-October facts Claude has seen, none from 8-22 Oct)": [
+  "TCS closed at Rs 2,530 on 23 Oct, a 20-day closing high (scanner test)",
+  "ADANIENT -2.86% on 23 Oct (scanner delivery test)",
+  "RELIANCE 5-minute bars on 26 Oct around Rs 1,175-1,200 (entry and time machine tests)",
+  "29 Oct: 38 of 50 Nifty stocks broke out of their opening range; BEL around Rs 367 (report)",
+  "COFORGE, LAURUSLABS, ZYDUSLIFE closed at 252-day highs on 30 Oct (2 Nov screen)"
+ ],
+ "one_day_is_one_sample": true
+}
