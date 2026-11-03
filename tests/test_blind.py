@@ -99,6 +99,20 @@ class Blind(unittest.TestCase):
         self.bl.cmd_reveal(self.folder, empty, fetch=False)
         self.assertIn("void", json.load(open(os.path.join(self.folder, "result.json"))))
 
+    def test_a_holiday_file_for_the_test_day_is_void(self):
+        """On a holiday NSE serves the last session's file under the holiday's name: never score it."""
+        self.bl.cmd_screen(self.folder, self.hist, fetch=False)
+        fake = os.path.join(self.tmp, "fake")
+        os.makedirs(fake)
+        last = sorted(os.listdir(self.hist), key=lambda n: (n[-8:-4], n[-10:-8], n[-12:-10]))[-1]
+        shutil.copy(os.path.join(self.hist, last),
+                    os.path.join(fake, "sec_bhavdata_full_%s.csv" % self.test_day.strftime("%d%m%Y")))
+        self.bl.cmd_reveal(self.folder, fake, fetch=False)
+        res = json.load(open(os.path.join(self.folder, "result.json")))
+        self.assertIn("void", res)
+        self.assertIn("NSE serves the last session's file on a holiday", res["void"])
+        self.assertNotIn("sets", res)
+
     def test_stop_assumed_first_when_both_hit(self):
         bt = self.bl.load_bt()
         R = json.load(open(os.path.join(self.folder, "rules.json")))

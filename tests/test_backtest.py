@@ -269,5 +269,47 @@ class TestVerdictAndRuns(Tmp):
         self.assertIn("2 times (48 parameter variants", bt.trials_note("orb"))
 
 
+class TestHolidayFiles(Tmp):
+    """NSE answers a holiday's sec_bhavdata_full URL with the last session's file. Seen on 2026-11-03 for every
+    2025-26 holiday (the 25 Dec 2025 file holds 24 Dec): 16 such files in 14 months of history."""
+
+    def setUp(self):
+        super().setUp()
+        self.mk = market(n_syms=20, n_days=40, seed=3)
+        self.days = sorted(self.mk)
+        os.makedirs("bhav")
+        write_bhav("bhav", self.mk)
+        # sessions k and k+1 straddle a weekend; a file named for the Saturday between them holds session k,
+        # exactly what a weekday holiday looks like (no session lost, one extra file)
+        k = next(i for i in range(len(self.days) - 1) if (self.days[i + 1] - self.days[i]).days == 3)
+        self.hol = self.days[k] + datetime.timedelta(days=1)
+        with open(os.path.join("bhav", "sec_bhavdata_full_%s.csv" % self.days[k].strftime("%d%m%Y"))) as fh:
+            self.copy = fh.read()
+        with open(os.path.join("bhav", "sec_bhavdata_full_%s.csv" % self.hol.strftime("%d%m%Y")), "w") as fh:
+            fh.write(self.copy)
+
+    def test_the_loader_counts_a_session_once(self):
+        daily, days = bt.load_daily("bhav")
+        self.assertEqual(len(days), 40)
+        self.assertNotIn(self.hol, days)
+        for sym, bars in daily.items():
+            self.assertEqual(len(bars), 40, sym)
+            self.assertEqual(len({b["d"] for b in bars}), 40, sym)
+            self.assertFalse(any("ca" in b for b in bars), sym)          # no split invented from a copy
+
+    def test_the_fetcher_does_not_save_a_copy(self):
+        served = {d.strftime("%d%m%Y"): (HEAD + "\n" + "\n".join(self.mk[d]) + "\n").encode() for d in self.days}
+        hol = self.days[20]                                   # say session 20 was a holiday: NSE serves 19
+        served[hol.strftime("%d%m%Y")] = served[self.days[19].strftime("%d%m%Y")]
+
+        def fetch(url):
+            return served[url.rsplit("_", 1)[1][:8]]
+        got, skipped = bt.fetch_bhav(self.days[18], self.days[21], "fresh", pause=0, fetch=fetch)
+        self.assertEqual((got, skipped), (3, 1))
+        self.assertFalse(os.path.exists(os.path.join("fresh", "sec_bhavdata_full_%s.csv" % hol.strftime("%d%m%Y"))))
+        self.assertEqual(bt.bhav_date(served[self.days[19].strftime("%d%m%Y")]), self.days[19])
+        self.assertIsNone(bt.bhav_date(b"<html>not a bhavcopy</html>"))
+
+
 if __name__ == "__main__":
     unittest.main()

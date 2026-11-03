@@ -196,7 +196,13 @@ def cmd_reveal(folder, day_dir, fetch, recorded_sha=None):
         jdump(os.path.join(folder, "result.json"), doc)
         print(doc["void"])
         return 0
-    _day, rows = bt.parse_bhav_text(bt._read_text(files[0]))
+    file_day, rows = bt.parse_bhav_text(bt._read_text(files[0]))
+    if file_day != test_day:
+        doc = {"test_day": R["test_day"], "void": "the file named for the test day holds %s (NSE serves the last "
+               "session's file on a holiday): no session on the test day" % file_day.isoformat()}
+        jdump(os.path.join(folder, "result.json"), doc)
+        print(doc["void"])
+        return 0
     bars = {}
     for r in rows:
         if r["series"] in R["universe"]["series"] and (r["sym"] not in bars or r["series"] == "EQ"):

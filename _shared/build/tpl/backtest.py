@@ -186,6 +186,8 @@ def load_daily(folder, start=None, end=None, series=TRADABLE_SERIES):
     days = []
     for d, p in files:
         day, rows = parse_bhav_text(_read_text(p))
+        if day in days:
+            continue       # NSE serves the last session's file under a holiday's name: one session counts once
         days.append(day)
         best = {}
         for r in rows:
@@ -892,6 +894,25 @@ def _http_bytes(url, timeout=30):
         return r.read()
 
 
+def bhav_date(data):
+    """DATE1 of a sec_bhavdata_full file's first row (bytes or text), or None. On a holiday NSE answers with
+    the last session's file under the holiday's name, so the name alone does not date a file."""
+    text = data.decode("utf-8", "replace") if isinstance(data, bytes) else data
+    head = None
+    for cells in csv.reader(io.StringIO(text[:8000])):
+        cells = [c.strip() for c in cells]
+        if not any(cells):
+            continue
+        if head is None:
+            head = [c.upper() for c in cells]
+            continue
+        try:
+            return datetime.datetime.strptime(dict(zip(head, cells)).get("DATE1", ""), "%d-%b-%Y").date()
+        except ValueError:
+            return None
+    return None
+
+
 def fetch_bhav(start, end, folder=BHAV_CACHE, pause=0.6, fetch=None, progress=None):
     os.makedirs(folder, exist_ok=True)
     got = skipped = 0
@@ -908,14 +929,15 @@ def fetch_bhav(start, end, folder=BHAV_CACHE, pause=0.6, fetch=None, progress=No
                         break
                     except (urllib.error.HTTPError, urllib.error.URLError, OSError):
                         continue
-                if data and b"SYMBOL" in data[:200]:
+                if data and b"SYMBOL" in data[:200] and bhav_date(data) == d:
                     with open(path, "wb") as fh:
                         fh.write(data)
                     got += 1
                     if pause:
                         time.sleep(pause)
                 else:
-                    skipped += 1            # holiday, or not published
+                    # holiday (NSE answers with the last session's file under the holiday's name), or not published
+                    skipped += 1
         d += datetime.timedelta(days=1)
     if progress:
         progress("bhavcopies: %d downloaded, %d days with none (holidays or not reachable), in %s" % (got, skipped, folder))
