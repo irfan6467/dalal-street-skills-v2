@@ -1,0 +1,10 @@
+$ nse-entry/entry.py check ADANIENSOL --offline blind/skills-replay/.data/ws-day/cut/ADANIENSOL.NS-1020.json --write --fo-lots blind/skills-replay/.data/ref/fo_mktlots.csv --now 2026-10-15 10:20
+(exit 0)
+ADANIENSOL.NS  Thu 2026-10-15 10:20 IST  opening-range breakout (15-minute range) on 5-minute bars (Yahoo, free, can lag), data to 10:20:00
+Opening range 9:15-9:30: high ₹1,350.90, low ₹1,339.20 (3 of 3 bars).
+TRIGGERED 10:20 AM at ₹1,353.70: the 10:15 bar (bar 12) closed above the range high ₹1,350.90 (+0.21%).
+Product MIS (intraday): it must be closed the same day, and nse-exit sets the flat-by time.
+This is the moment to get in, if you take the trade. Nothing was placed.
+Next: set the stop and target BEFORE you buy: /nse-exit (exit.py plan --from nse/entry.json).
+Closing auction: this is an F&O stock, so continuous trading ends at 15:15, not 15:30, and the auction takes no stop-loss orders; the last new entry is 14:30 (your no_entries_after 14:45 is capped by entry_buffer_min 45).
+Wrote nse/entry.json (status triggered).

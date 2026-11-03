@@ -1,0 +1,8 @@
+$ nse-broker/ticket.py approve --index 1 --reply yes --prices nse/prices.json --now 2026-10-15 10:10
+(exit 0)
+Recorded your yes for order 1: BUY 36 MEESHO (MIS intraday), LIMIT 228.00, valid today / stop-loss SL-M trigger 225.60 (a SELL placed after the fill) / target 232.80 / max loss about ₹95.07 if the stop fills at 225.60, charges included (it can fill worse in a fast market) / flat by 15:10 IST.
+Order intent: nse/intents/2026-10-15-bf2c36f1883fd1fd.json
+PAPER FILL (simulated, nothing sent to Shoonya (Finvasia)): BUY 36 MEESHO at ₹228.00 (your limit price; the market was 228.00, the fresh quote in nse/prices.json), charges ₹3.46.
+Tracking stop 225.60 and target 232.80. Check them with: ticket.py track
+Flat by 15:10 IST: ticket.py flatten --symbol MEESHO then closes it.
+Cash in the paper ledger: ₹16,788.54.

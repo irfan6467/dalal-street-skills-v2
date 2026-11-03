@@ -30,7 +30,9 @@ settings > network access > Custom, keep the default list). Check with
   **NO EDGE** (charges 73% of gross); one BEL paper trade +₹6.63 (proves the pipeline, not a strategy).
 - Shoonya app in use is `FN195954_U2` (the old `FN195954_U` secret was exposed in chat; Irfan should disable it).
 - Open bugs: exits after `flat_by` not blocked; `ticket.py track` may use a 15-minute-old quote; Shoonya MIS
-  square-off time unverified (15:00 assumed).
+  square-off time unverified (15:00 assumed); **nse-alerts compares Yahoo's raw float to the stop** (225.60000610 >
+  225.6, so an exact touch never rings) and checks only the last price, not the bar's low (found 3 Nov in
+  `blind/skills-replay/`); the installed claude.ai skill copies are older than this repo (re-upload them).
 - Fixed 3 Nov: output labelled Shoonya data as "Yahoo". Labels now read `meta.dataSource` (stamped by
   `shoonya_feed` on charts and spark entries) via `data_source()` / `mixed_source()` in `india_core.py`, pasted
   byte for byte into scan, entry, alerts, news, timemachine (`tests/test_source_labels.py` guards the copies).
@@ -52,8 +54,16 @@ close (65% up). One day, three correlated stock-days: no evidence either way. A 
 holiday-file fix (sha `58cfd17e...`, same symbols, ATR ~1% lower) was superseded, by Irfan's choice, before reveal.
 Never edit `rules.json`, `picks.json` or `result.json` there.
 
-Next: offer to schedule `scripts/cloud/run_daily.sh` as a weekday cloud scheduled task (~18:30 IST); re-run the
-momentum walk-forward on de-duplicated history.
+## Done: full-skill blind replay of Thu 15 Oct 2026 (`blind/skills-replay/`)
+
+Day drawn from the hash of `rules.json`; picks and the driver pushed before any 15 Oct bar was read. Official run:
+no trades (the news gate dropped all 10 in Q2 season). Shadow run (gate removed, Irfan's choice before the data):
+6 opening-range triggers, time machine passed 1, MEESHO stopped out, **−₹127.73** after charges and 20 bp slippage;
+Nifty 200 averaged −0.45%. Momentum walk-forward on de-duplicated history to 14 Oct: **NO EDGE** again
+(−0.143R per entry day). See `RESULT.md` there.
+
+Next: fix the nse-alerts stop comparison; offer to schedule `scripts/cloud/run_daily.sh` as a weekday cloud
+scheduled task (~18:30 IST).
 
 Build notes: `_shared/build/build.py` regenerates size.py, check.py, ticket.py, backtest.py and copies
 `_shared/shoonya_feed.py` into every skill; edit the templates in `_shared/`, never the generated copies.

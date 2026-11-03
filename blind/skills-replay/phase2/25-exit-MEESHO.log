@@ -1,0 +1,16 @@
+$ nse-exit/exit.py plan --write --fo-lots blind/skills-replay/.data/ref/fo_mktlots.csv --now 2026-10-15 10:10
+(exit 0)
+Exit plan: MEESHO long (NSE MIS), Thu 2026-10-15, opening-range breakout on 5-minute bars
+  Entry         ₹228.00 at 10:10 AM (bar 10)
+  Stop          ₹225.60  opening-range midpoint: (₹227.87 + ₹223.39) / 2 = ₹225.63, rounded down to the 0.05 tick
+  Target        ₹232.80  2R (two times the risk)
+  Risk a share  ₹2.40 (1.05% of the entry)
+  Reward:risk   2.0 before charges, 1.84 after
+  Charges       ₹28.48 at the stop, ₹28.92 at the target (208 shares, MIS round trip: brokerage, STT, exchange, SEBI, stamp duty, GST)
+  Flat by       15:10 IST, win or lose: intraday, no overnight hold
+  Square-off    15:15 IST: Shoonya (Finvasia) auto-squares-off open MIS positions then, with a fee
+Set before the entry. If price hits the stop, you are out; never move it further away.
+A stop is a plan, not a guarantee: a gap or a fast market can fill past it.
+Note: Shoonya (Finvasia)'s square-off time is not verified (cautious default used): check it with Shoonya (Finvasia) and set "squareoff" in nse/config.json
+Wrote nse/plan.json.
+Next: /nse-timemachine replays it, then /nse-budget sizes it to your max loss. Nothing was placed.

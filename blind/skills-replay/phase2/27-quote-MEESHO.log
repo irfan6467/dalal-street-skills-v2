@@ -1,0 +1,5 @@
+$ nse-alerts/alerts.py quote MEESHO --offline blind/skills-replay/.data/ws-day/cut/q-1010 --write --now 2026-10-15 10:10
+(exit 0)
+MEESHO     ₹228.00 (-0.15% vs prev close ₹228.35)  2026-10-15T04:40:00Z  [yahoo]
+Wrote 1 price(s) to nse/prices.json.
+Quotes are free, delayed and unofficial: for alerts only. Your broker's price is the one that fills.

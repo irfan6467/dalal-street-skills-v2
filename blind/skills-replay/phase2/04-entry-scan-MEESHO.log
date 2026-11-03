@@ -1,0 +1,56 @@
+$ nse-entry/entry.py check MEESHO --offline blind/skills-replay/.data/ws-day/cut/MEESHO.NS-1530.json --json --fo-lots blind/skills-replay/.data/ref/fo_mktlots.csv --now 2026-10-15 15:30
+(exit 0)
+{
+  "symbol": "MEESHO.NS",
+  "setup": "orb",
+  "side": "buy",
+  "date": "2026-10-15",
+  "interval": "5m",
+  "or_minutes": 15,
+  "now": "2026-10-15 15:30:00",
+  "status": "triggered",
+  "phase": "after-close",
+  "reason": "the 10:05 bar closed above the range high",
+  "opening_range": {
+    "high": 227.87,
+    "low": 223.39,
+    "minutes": 15,
+    "bars": 3,
+    "of": 3,
+    "complete": true,
+    "avg_volume": 458021
+  },
+  "level": 227.87,
+  "trigger": {
+    "time": "10:10 AM",
+    "close_time": "10:10",
+    "bar_start": "10:05",
+    "bar_index": 10,
+    "price": 228.0,
+    "close": 228.0,
+    "volume": 142531,
+    "volume_x": 0.31,
+    "pct_over": 0.06
+  },
+  "last": {
+    "bar_start": "15:25",
+    "close": 224.01,
+    "vs_level_pct": -1.69
+  },
+  "forming": null,
+  "min_volume_x": null,
+  "prev_close": 228.35,
+  "calendar_known": true,
+  "source": "yahoo",
+  "data_time": "2026-10-15 15:30:00",
+  "opens": "09:15",
+  "closes": "15:30",
+  "special_session": null,
+  "cas_stock": false,
+  "no_entries_before": "09:30",
+  "no_entries_after": "14:45",
+  "auction": null,
+  "bars_closed": 73,
+  "minutes_since": 320,
+  "cas_note": null
+}

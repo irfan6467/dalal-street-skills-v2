@@ -1,0 +1,15 @@
+$ nse-risk/check.py --offline --seclist blind/skills-replay/.data/ref/sec_list.csv --fo-lots blind/skills-replay/.data/ref/fo_mktlots.csv --now 2026-10-15 10:10
+(exit 0)
+WARNING: Shoonya (Finvasia)'s square-off time is not verified (cautious default used): check it with Shoonya (Finvasia) and set "squareoff" in nse/config.json
+
+PASS  #1 buy MEESHO 36 shares MIS, entry
+          circuit band 182.70 to 274.00 (previous close 228.35, 20%)
+          Shoonya (Finvasia) MIS square-off 15:15: flat_by must be at or before 15:10
+          entry 228.00 (the limit price), stop 225.60, target 232.80: risk 2.40 a share
+          max loss ₹95.07 = ₹86.40 + charges ₹8.67 (limit ₹500), reward:risk 1.72 after charges (min 1)
+          order value ₹8,208.00, margin ₹8,208.00 at 1x leverage
+          today before this: 0 of 3 MIS trades, ₹0.00 of ₹3,000 daily loss
+
+1 passed, 0 blocked at 2026-10-15 10:10 IST. Cash after the passed orders: ₹16,792.00 (paper account).
+Every order passed. nse-broker still asks you yes or no for each one.
+Education and tooling, not financial advice.

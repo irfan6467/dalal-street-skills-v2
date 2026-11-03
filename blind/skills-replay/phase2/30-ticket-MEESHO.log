@@ -1,0 +1,18 @@
+$ nse-broker/ticket.py show --now 2026-10-15 10:10
+(exit 0)
+ORDER 1 of 1, PAPER ledger, no real money, Shoonya (Finvasia)
+  BUY 36 MEESHO (MIS intraday), LIMIT 228.00, valid today
+  stop-loss SL-M trigger 225.60 (a SELL placed after the fill)
+  target 232.80
+  max loss about ₹95.07 if the stop fills at 225.60, charges included (it can fill worse in a fast market)
+  flat by 15:10 IST
+  why: opening-range breakout on MEESHO: 36 shares, bound by your position cap (36 x 2.40 + ₹8.67 charges = ₹95.07 at the stop)
+  charges (government and broker): about ₹8.67 round trip at the stop, ₹8.85 at the target
+  READY: nse-risk PASS, waiting for your yes
+  Paper mode, nothing is sent to Shoonya (Finvasia). Your yes fills this LIMIT in the ledger at 228.00 only if
+  the market is at or through it then (--price P, or a nse/prices.json quote at most 15
+  minutes old). Otherwise it rests as a WORKING order, like a real day order: it fills when
+  the price trades at the limit (ticket.py working / track), and expires unfilled at 14:45 IST (the entry cut-off: continuous trading ends at 15:30, minus your 45-minute entry buffer).
+  Reply "yes" to place this one order, or "no" to skip it.
+
+One order at a time: a yes covers one ticket (the entry and the protective stop shown on it), never the batch. Education and tooling, not financial advice.

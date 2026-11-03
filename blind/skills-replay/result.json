@@ -1,0 +1,177 @@
+{
+ "test_day": "2026-10-15",
+ "signal_day": "2026-10-14",
+ "rules_sha256": "0c0185f003cbfa9203b32d44dd08b8a3062a8a89677fb6b6657389fc3ca363cf",
+ "picks_sha256": "9c2aaf8fc7276bfc94ff028c2e8fff740d15679f95a74638818163855ba1d498",
+ "official": {
+  "trades": 0,
+  "net_inr": 0.0,
+  "why": "the pre-registered news gate dropped all 10 watchlist stocks"
+ },
+ "shadow": {
+  "triggers": [
+   {
+    "symbol": "INFY",
+    "at": "09:45"
+   },
+   {
+    "symbol": "TCS",
+    "at": "09:50"
+   },
+   {
+    "symbol": "HCLTECH",
+    "at": "09:50"
+   },
+   {
+    "symbol": "MARUTI",
+    "at": "09:50"
+   },
+   {
+    "symbol": "MEESHO",
+    "at": "10:10"
+   },
+   {
+    "symbol": "ADANIENSOL",
+    "at": "10:20"
+   }
+  ],
+  "decisions": [
+   {
+    "symbol": "INFY",
+    "trigger_close": "09:45",
+    "tm_avg_R": -0.375,
+    "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.81R, so it has to come first in 36 % of the replays that hit one side; it did in 8 % (target first 5.1 % vs stop first 54.9 %).",
+    "skipped": "time machine average R -0.375 is not above 0"
+   },
+   {
+    "symbol": "TCS",
+    "trigger_close": "09:50",
+    "tm_avg_R": -0.291,
+    "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.77R, so it has to come first in 36 % of the replays that hit one side; it did in 20 % (target first 15.0 % vs stop first 61.2 %).",
+    "skipped": "time machine average R -0.291 is not above 0"
+   },
+   {
+    "symbol": "HCLTECH",
+    "trigger_close": "09:50",
+    "tm_avg_R": -0.249,
+    "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.85R, so it has to come first in 35 % of the replays that hit one side; it did in 4 % (target first 1.3 % vs stop first 30.8 %).",
+    "skipped": "time machine average R -0.249 is not above 0"
+   },
+   {
+    "symbol": "MARUTI",
+    "trigger_close": "09:50",
+    "tm_avg_R": -0.38,
+    "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.73R, so it has to come first in 37 % of the replays that hit one side; it did in 18 % (target first 14.9 % vs stop first 67.7 %).",
+    "skipped": "time machine average R -0.380 is not above 0"
+   },
+   {
+    "symbol": "MEESHO",
+    "trigger_close": "10:10",
+    "tm_avg_R": 0.262,
+    "tm_verdict": "Leans toward the target: after charges the 2R target is worth 1.84R, so it has to come first in 35 % of the replays that hit one side; it did in 43 % (target first 30.5 % vs stop first 40.9 %).",
+    "risk": "PASS",
+    "plan": {
+     "entry": 228.0,
+     "stop": 225.6,
+     "target": 232.8,
+     "flat_by": "15:10"
+    }
+   },
+   {
+    "symbol": "ADANIENSOL",
+    "trigger_close": "10:20",
+    "tm_avg_R": -0.194,
+    "tm_verdict": "Leans toward the stop: after charges the 2R target is worth 1.78R, so it has to come first in 36 % of the replays that hit one side; it did in 27 % (target first 23.7 % vs stop first 65.1 %).",
+    "skipped": "time machine average R -0.194 is not above 0"
+   }
+  ],
+  "trades": [
+   {
+    "symbol": "MEESHO",
+    "qty": 36,
+    "entry": 228.0,
+    "entry_at": "10:10",
+    "stop": 225.6,
+    "target": 232.8,
+    "exit": 225.6,
+    "exit_at": "12:10",
+    "exit_reason": "stop",
+    "gross_inr": -86.4,
+    "charges_inr": 8.67,
+    "net_inr": -95.07,
+    "slippage_20bp_inr": 32.66,
+    "net_after_slippage_inr": -127.73
+   }
+  ],
+  "net_inr_ledger": -95.07,
+  "net_inr_after_slippage": -127.73,
+  "capital_used_inr": 8208.0
+ },
+ "benchmark": {
+  "nifty200_avg_open_to_close_pct_after_20bp": -0.447,
+  "up": 84,
+  "of": 200
+ },
+ "watchlist_open_to_close_pct": {
+  "TCS": -0.28,
+  "INFY": 0.598,
+  "MEESHO": -2.019,
+  "BHEL": -3.992,
+  "HCLTECH": 0.712,
+  "HINDUNILVR": -0.21,
+  "CANBK": -5.697,
+  "NESTLEIND": -7.92,
+  "ADANIENSOL": -0.817,
+  "MARUTI": 2.236
+ },
+ "hindsight_not_a_rule": {
+  "skipped_by_time_machine": [
+   {
+    "symbol": "INFY",
+    "entry": 1113.95,
+    "stop": 1105.15,
+    "target": 1131.55,
+    "exit": "flat-by",
+    "exit_price": 1109.699951171875,
+    "R_gross": -0.48
+   },
+   {
+    "symbol": "TCS",
+    "entry": 2366.3,
+    "stop": 2351.75,
+    "target": 2395.4,
+    "exit": "flat-by",
+    "exit_price": 2357.5,
+    "R_gross": -0.6
+   },
+   {
+    "symbol": "HCLTECH",
+    "entry": 1358.2,
+    "stop": 1340.8,
+    "target": 1393.0,
+    "exit": "flat-by",
+    "exit_price": 1369.699951171875,
+    "R_gross": 0.66
+   },
+   {
+    "symbol": "MARUTI",
+    "entry": 11248.0,
+    "stop": 11194.5,
+    "target": 11355.0,
+    "exit": "target",
+    "exit_price": 11355.0,
+    "R_gross": 2.0
+   },
+   {
+    "symbol": "ADANIENSOL",
+    "entry": 1353.7,
+    "stop": 1345.05,
+    "target": 1371.0,
+    "exit": "target",
+    "exit_price": 1371.0,
+    "R_gross": 2.0
+   }
+  ]
+ },
+ "one_day_is_one_sample": true
+}

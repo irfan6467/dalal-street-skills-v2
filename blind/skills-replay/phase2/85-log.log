@@ -1,0 +1,8 @@
+$ nse-broker/ticket.py log --now 2026-10-15 15:30
+(exit 0)
+2026-10-15T10:10:00+05:30  #1 approved  BUY 36 MEESHO (MIS intraday), LIMIT 228.00, valid today / stop-loss SL-M trigger 225.60 (a SELL placed after the fill) / target 232.80 / max loss about ₹95.07 if the stop fills at 225.60, charges included (it can fill worse in a fast market) / flat by 15:10 IST reply "yes"
+2026-10-15T10:10:00+05:30  #1 placed    BUY 36 MEESHO (MIS intraday), LIMIT 228.00, valid today / stop-loss SL-M trigger 225.60 (a SELL placed after the fill) / target 232.80 / max loss about ₹95.07 if the stop fills at 225.60, charges included (it can fill worse in a fast market) / flat by 15:10 IST max loss ₹95.07 id PAPER-20261015-2
+2026-10-15T10:10:00+05:30     filled    BUY 36 MEESHO at 228.00
+2026-10-15T12:10:00+05:30     filled    SELL 36 MEESHO at 225.60 net -₹95.07
+1 placed today.
+Realised today: -₹86.40 before charges, ₹8.67 charges, -₹95.07 net.

@@ -1,0 +1,78 @@
+{
+ "triggers": [
+  {
+   "symbol": "INFY",
+   "at": "09:45"
+  },
+  {
+   "symbol": "TCS",
+   "at": "09:50"
+  },
+  {
+   "symbol": "HCLTECH",
+   "at": "09:50"
+  },
+  {
+   "symbol": "MARUTI",
+   "at": "09:50"
+  },
+  {
+   "symbol": "MEESHO",
+   "at": "10:10"
+  },
+  {
+   "symbol": "ADANIENSOL",
+   "at": "10:20"
+  }
+ ],
+ "trades": [
+  {
+   "symbol": "INFY",
+   "trigger_close": "09:45",
+   "tm_avg_R": -0.375,
+   "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.81R, so it has to come first in 36 % of the replays that hit one side; it did in 8 % (target first 5.1 % vs stop first 54.9 %).",
+   "skipped": "time machine average R -0.375 is not above 0"
+  },
+  {
+   "symbol": "TCS",
+   "trigger_close": "09:50",
+   "tm_avg_R": -0.291,
+   "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.77R, so it has to come first in 36 % of the replays that hit one side; it did in 20 % (target first 15.0 % vs stop first 61.2 %).",
+   "skipped": "time machine average R -0.291 is not above 0"
+  },
+  {
+   "symbol": "HCLTECH",
+   "trigger_close": "09:50",
+   "tm_avg_R": -0.249,
+   "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.85R, so it has to come first in 35 % of the replays that hit one side; it did in 4 % (target first 1.3 % vs stop first 30.8 %).",
+   "skipped": "time machine average R -0.249 is not above 0"
+  },
+  {
+   "symbol": "MARUTI",
+   "trigger_close": "09:50",
+   "tm_avg_R": -0.38,
+   "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.73R, so it has to come first in 37 % of the replays that hit one side; it did in 18 % (target first 14.9 % vs stop first 67.7 %).",
+   "skipped": "time machine average R -0.380 is not above 0"
+  },
+  {
+   "symbol": "MEESHO",
+   "trigger_close": "10:10",
+   "tm_avg_R": 0.262,
+   "tm_verdict": "Leans toward the target: after charges the 2R target is worth 1.84R, so it has to come first in 35 % of the replays that hit one side; it did in 43 % (target first 30.5 % vs stop first 40.9 %).",
+   "risk": "PASS",
+   "plan": {
+    "entry": 228.0,
+    "stop": 225.6,
+    "target": 232.8,
+    "flat_by": "15:10"
+   }
+  },
+  {
+   "symbol": "ADANIENSOL",
+   "trigger_close": "10:20",
+   "tm_avg_R": -0.194,
+   "tm_verdict": "Leans toward the stop: after charges the 2R target is worth 1.78R, so it has to come first in 36 % of the replays that hit one side; it did in 27 % (target first 23.7 % vs stop first 65.1 %).",
+   "skipped": "time machine average R -0.194 is not above 0"
+  }
+ ]
+}

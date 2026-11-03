@@ -1,0 +1,7 @@
+$ nse-alerts/alerts.py add --from-plan --offline blind/skills-replay/.data/ws-day/cut/q-1010 --now 2026-10-15 10:10
+(exit 0)
+Added meesho-plan-stop: {"id": "meesho-plan-stop", "symbol": "MEESHO", "type": "stop", "price": 225.6, "note": "plan stop: opening-range midpoint", "date": "2026-10-15"}
+Added meesho-plan-target: {"id": "meesho-plan-target", "symbol": "MEESHO", "type": "target", "price": 232.8, "note": "plan target: 2R (two times the risk)", "date": "2026-10-15"}
+Added meesho-circuit: {"id": "meesho-circuit", "symbol": "MEESHO", "type": "circuit", "date": "2026-10-15"}
+Added meesho-flat-by: {"id": "meesho-flat-by", "symbol": "MEESHO", "type": "time", "at": "15:10", "label": "flat by", "before_close": true, "product": "MIS", "date": "2026-10-15"}
+Run alerts.py check every few minutes while the trade is open (a scheduled task or /loop). Free quotes are delayed; the stop order at the broker is what actually stops you out.

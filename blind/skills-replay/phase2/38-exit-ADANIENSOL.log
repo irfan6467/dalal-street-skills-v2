@@ -1,0 +1,18 @@
+$ nse-exit/exit.py plan --write --fo-lots blind/skills-replay/.data/ref/fo_mktlots.csv --now 2026-10-15 10:20
+(exit 0)
+Exit plan: ADANIENSOL long (NSE MIS), Thu 2026-10-15, opening-range breakout on 5-minute bars
+  Entry         ₹1,353.70 at 10:20 AM (bar 12)
+  Stop          ₹1,345.05  opening-range midpoint: (₹1,350.90 + ₹1,339.20) / 2 = ₹1,345.05
+  Target        ₹1,371.00  2R (two times the risk)
+  Risk a share  ₹8.65 (0.64% of the entry)
+  Reward:risk   2.0 before charges, 1.78 after
+  Charges       ₹39.03 at the stop, ₹39.47 at the target (57 shares, MIS round trip: brokerage, STT, exchange, SEBI, stamp duty, GST)
+  Flat by       14:55 IST, win or lose: intraday, no overnight hold
+  Square-off    15:00 IST: Shoonya (Finvasia) auto-squares-off open MIS F&O positions then, with a fee
+Set before the entry. If price hits the stop, you are out; never move it further away.
+A stop is a plan, not a guarantee: a gap or a fast market can fill past it.
+Note: Closing auction: ADANIENSOL is an F&O stock, so continuous trading ends at 15:15, not 15:30, and the auction takes no stop-loss orders. Be out by 14:55.
+Note: Shoonya (Finvasia)'s square-off time is not verified (cautious default used): check it with Shoonya (Finvasia) and set "squareoff" in nse/config.json
+Note: Flat-by lowered from 15:10 to 14:55: Shoonya (Finvasia) squares off MIS F&O stocks at 15:00, and the default leaves 5 minutes
+Wrote nse/plan.json.
+Next: /nse-timemachine replays it, then /nse-budget sizes it to your max loss. Nothing was placed.

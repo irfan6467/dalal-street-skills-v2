@@ -1,0 +1,4 @@
+$ nse-alerts/alerts.py check --offline blind/skills-replay/.data/ws-day/cut/q-1025 --now 2026-10-15 10:25
+(exit 1)
+NSE OPEN (2026-10-15 10:25 IST, regular session).
+Nothing hit. 4 rule(s) watched today, MEESHO ₹227.85.

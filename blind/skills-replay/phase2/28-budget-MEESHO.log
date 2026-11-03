@@ -1,0 +1,28 @@
+$ nse-budget/size.py --write --offline --fo-lots blind/skills-replay/.data/ref/fo_mktlots.csv --now 2026-10-15 10:10
+(exit 0)
+MEESHO buy (MIS, intraday), opening-range breakout, plan entry 228.00 at 10:10 AM
+Stop 225.60: opening-range midpoint. Target 232.80: 2R (two times the risk).
+Sized at ₹228.00 (the plan's entry). Risk ₹2.40 a share (entry 228.00 minus stop 225.60). Reward:risk 1.72 after charges.
+
+Limits (whole shares; the smallest one wins):
+  max loss      ₹500 max loss, risk 2.40 a share plus charges                    196 shares
+  position cap  33.33% of ₹25,000 = ₹8,332 / 228.00                               36 shares  <- binds
+  max order     ₹4,00,000 / 228.00                                              1754 shares
+  cash          budget ₹25,000 minus the ₹2,500 cash buffer = ₹22,500 / 228.00    98 shares
+
+Size: 36 shares of MEESHO = ₹8,208.00 order value, ₹8,208.00 margin at 1x leverage (check your broker's actual margin).
+Max loss at the stop: 36 x 2.40 = ₹86.40, plus charges ₹8.67 = ₹95.07.
+Charges (what the government and the broker take) if the stop fills: ₹8.67 = brokerage ₹4.90, STT ₹2.03, exchange ₹0.50, SEBI ₹0.02, stamp duty ₹0.25, GST ₹0.97.
+If the target fills: ₹172.80 before charges, charges ₹8.85 (5% of it), ₹163.95 after.
+A stop is an order, not a promise: in a fast market it can fill below 225.60.
+
+Proposed orders (broker-neutral, shown as Kite place_order fields; nothing has been placed):
+  BUY 36 MEESHO MIS, LIMIT 228.00, NSE, DAY
+  then SELL 36 MEESHO MIS, SL-M trigger 225.60 (placed after the entry fills)
+  target 232.80 (a LIMIT sell, or an alert: see nse-broker)
+Flat by 15:10 IST: anything still open then gets closed (Shoonya (Finvasia) auto-squares-off MIS at 15:15, with a fee; nse-alerts rings, nse-broker flatten).
+Note: Shoonya (Finvasia)'s square-off time is not verified (cautious default used): check it with Shoonya (Finvasia) and set "squareoff" in nse/config.json
+
+Next: nse-risk checks it, then nse-broker asks you yes or no.
+Education and tooling, not financial advice.
+Wrote 1 proposed order set to nse/orders.json

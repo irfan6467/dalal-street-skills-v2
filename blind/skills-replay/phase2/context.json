@@ -1,0 +1,64 @@
+{
+ "benchmark_nifty200_avg_pct": -0.447,
+ "benchmark_up": 84,
+ "benchmark_n": 200,
+ "watchlist_open_to_close_pct": {
+  "TCS": -0.28,
+  "INFY": 0.598,
+  "MEESHO": -2.019,
+  "BHEL": -3.992,
+  "HCLTECH": 0.712,
+  "HINDUNILVR": -0.21,
+  "CANBK": -5.697,
+  "NESTLEIND": -7.92,
+  "ADANIENSOL": -0.817,
+  "MARUTI": 2.236
+ },
+ "skipped_by_tm": [
+  {
+   "symbol": "INFY",
+   "entry": 1113.95,
+   "stop": 1105.15,
+   "target": 1131.55,
+   "exit": "flat-by",
+   "exit_price": 1109.699951171875,
+   "R_gross": -0.48
+  },
+  {
+   "symbol": "TCS",
+   "entry": 2366.3,
+   "stop": 2351.75,
+   "target": 2395.4,
+   "exit": "flat-by",
+   "exit_price": 2357.5,
+   "R_gross": -0.6
+  },
+  {
+   "symbol": "HCLTECH",
+   "entry": 1358.2,
+   "stop": 1340.8,
+   "target": 1393.0,
+   "exit": "flat-by",
+   "exit_price": 1369.699951171875,
+   "R_gross": 0.66
+  },
+  {
+   "symbol": "MARUTI",
+   "entry": 11248.0,
+   "stop": 11194.5,
+   "target": 11355.0,
+   "exit": "target",
+   "exit_price": 11355.0,
+   "R_gross": 2.0
+  },
+  {
+   "symbol": "ADANIENSOL",
+   "entry": 1353.7,
+   "stop": 1345.05,
+   "target": 1371.0,
+   "exit": "target",
+   "exit_price": 1371.0,
+   "R_gross": 2.0
+  }
+ ]
+}

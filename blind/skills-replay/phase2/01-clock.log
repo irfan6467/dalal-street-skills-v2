@@ -1,0 +1,7 @@
+$ nse-alerts/alerts.py clock --now 2026-10-15 09:00
+(exit 1)
+India 2026-10-15 09:00 (Thursday): NSE closed, pre-open: the market opens at 09:15.
+Today's session: 09:15 to 15:30 IST.
+Closing auction: F&O stocks stop continuous trading at 15:15, other stocks at 15:30 (the auction takes no stop-loss orders).
+Next open: 2026-10-15 09:15 IST.
+Diwali Muhurat trading on 2026-11-08: 14:20 to 15:30 IST (F&O stocks stop continuous trading at 15:15).

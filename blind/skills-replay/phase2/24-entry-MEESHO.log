@@ -1,0 +1,9 @@
+$ nse-entry/entry.py check MEESHO --offline blind/skills-replay/.data/ws-day/cut/MEESHO.NS-1010.json --write --fo-lots blind/skills-replay/.data/ref/fo_mktlots.csv --now 2026-10-15 10:10
+(exit 0)
+MEESHO.NS  Thu 2026-10-15 10:10 IST  opening-range breakout (15-minute range) on 5-minute bars (Yahoo, free, can lag), data to 10:10:00
+Opening range 9:15-9:30: high ₹227.87, low ₹223.39 (3 of 3 bars).
+TRIGGERED 10:10 AM at ₹228.00: the 10:05 bar (bar 10) closed above the range high ₹227.87 (+0.06%).
+Product MIS (intraday): it must be closed the same day, and nse-exit sets the flat-by time.
+This is the moment to get in, if you take the trade. Nothing was placed.
+Next: set the stop and target BEFORE you buy: /nse-exit (exit.py plan --from nse/entry.json).
+Wrote nse/entry.json (status triggered).

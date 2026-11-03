@@ -1,0 +1,762 @@
+{
+ "events": [
+  {
+   "n": 1,
+   "step": "clock",
+   "symbol": "",
+   "at": "09:00",
+   "exit": 1,
+   "log": "01-clock.log"
+  },
+  {
+   "n": 2,
+   "step": "entry-scan",
+   "symbol": "TCS",
+   "at": "15:30",
+   "exit": 0,
+   "log": "02-entry-scan-TCS.log"
+  },
+  {
+   "n": 3,
+   "step": "entry-scan",
+   "symbol": "INFY",
+   "at": "15:30",
+   "exit": 0,
+   "log": "03-entry-scan-INFY.log"
+  },
+  {
+   "n": 4,
+   "step": "entry-scan",
+   "symbol": "MEESHO",
+   "at": "15:30",
+   "exit": 0,
+   "log": "04-entry-scan-MEESHO.log"
+  },
+  {
+   "n": 5,
+   "step": "entry-scan",
+   "symbol": "BHEL",
+   "at": "15:30",
+   "exit": 1,
+   "log": "05-entry-scan-BHEL.log"
+  },
+  {
+   "n": 6,
+   "step": "entry-scan",
+   "symbol": "HCLTECH",
+   "at": "15:30",
+   "exit": 0,
+   "log": "06-entry-scan-HCLTECH.log"
+  },
+  {
+   "n": 7,
+   "step": "entry-scan",
+   "symbol": "HINDUNILVR",
+   "at": "15:30",
+   "exit": 1,
+   "log": "07-entry-scan-HINDUNILVR.log"
+  },
+  {
+   "n": 8,
+   "step": "entry-scan",
+   "symbol": "CANBK",
+   "at": "15:30",
+   "exit": 1,
+   "log": "08-entry-scan-CANBK.log"
+  },
+  {
+   "n": 9,
+   "step": "entry-scan",
+   "symbol": "NESTLEIND",
+   "at": "15:30",
+   "exit": 1,
+   "log": "09-entry-scan-NESTLEIND.log"
+  },
+  {
+   "n": 10,
+   "step": "entry-scan",
+   "symbol": "ADANIENSOL",
+   "at": "15:30",
+   "exit": 0,
+   "log": "10-entry-scan-ADANIENSOL.log"
+  },
+  {
+   "n": 11,
+   "step": "entry-scan",
+   "symbol": "MARUTI",
+   "at": "15:30",
+   "exit": 0,
+   "log": "11-entry-scan-MARUTI.log"
+  },
+  {
+   "n": 12,
+   "step": "entry",
+   "symbol": "INFY",
+   "at": "09:45",
+   "exit": 0,
+   "log": "12-entry-INFY.log"
+  },
+  {
+   "n": 13,
+   "step": "exit",
+   "symbol": "INFY",
+   "at": "09:45",
+   "exit": 0,
+   "log": "13-exit-INFY.log"
+  },
+  {
+   "n": 14,
+   "step": "timemachine",
+   "symbol": "INFY",
+   "at": "09:45",
+   "exit": 0,
+   "log": "14-timemachine-INFY.log"
+  },
+  {
+   "n": 15,
+   "step": "entry",
+   "symbol": "TCS",
+   "at": "09:50",
+   "exit": 0,
+   "log": "15-entry-TCS.log"
+  },
+  {
+   "n": 16,
+   "step": "exit",
+   "symbol": "TCS",
+   "at": "09:50",
+   "exit": 0,
+   "log": "16-exit-TCS.log"
+  },
+  {
+   "n": 17,
+   "step": "timemachine",
+   "symbol": "TCS",
+   "at": "09:50",
+   "exit": 0,
+   "log": "17-timemachine-TCS.log"
+  },
+  {
+   "n": 18,
+   "step": "entry",
+   "symbol": "HCLTECH",
+   "at": "09:50",
+   "exit": 0,
+   "log": "18-entry-HCLTECH.log"
+  },
+  {
+   "n": 19,
+   "step": "exit",
+   "symbol": "HCLTECH",
+   "at": "09:50",
+   "exit": 0,
+   "log": "19-exit-HCLTECH.log"
+  },
+  {
+   "n": 20,
+   "step": "timemachine",
+   "symbol": "HCLTECH",
+   "at": "09:50",
+   "exit": 0,
+   "log": "20-timemachine-HCLTECH.log"
+  },
+  {
+   "n": 21,
+   "step": "entry",
+   "symbol": "MARUTI",
+   "at": "09:50",
+   "exit": 0,
+   "log": "21-entry-MARUTI.log"
+  },
+  {
+   "n": 22,
+   "step": "exit",
+   "symbol": "MARUTI",
+   "at": "09:50",
+   "exit": 0,
+   "log": "22-exit-MARUTI.log"
+  },
+  {
+   "n": 23,
+   "step": "timemachine",
+   "symbol": "MARUTI",
+   "at": "09:50",
+   "exit": 0,
+   "log": "23-timemachine-MARUTI.log"
+  },
+  {
+   "n": 24,
+   "step": "entry",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "24-entry-MEESHO.log"
+  },
+  {
+   "n": 25,
+   "step": "exit",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "25-exit-MEESHO.log"
+  },
+  {
+   "n": 26,
+   "step": "timemachine",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "26-timemachine-MEESHO.log"
+  },
+  {
+   "n": 27,
+   "step": "quote",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "27-quote-MEESHO.log"
+  },
+  {
+   "n": 28,
+   "step": "budget",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "28-budget-MEESHO.log"
+  },
+  {
+   "n": 29,
+   "step": "risk",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "29-risk-MEESHO.log"
+  },
+  {
+   "n": 30,
+   "step": "ticket",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "30-ticket-MEESHO.log"
+  },
+  {
+   "n": 31,
+   "step": "approve",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "31-approve-MEESHO.log"
+  },
+  {
+   "n": 32,
+   "step": "alerts-add",
+   "symbol": "MEESHO",
+   "at": "10:10",
+   "exit": 0,
+   "log": "32-alerts-add-MEESHO.log"
+  },
+  {
+   "n": 33,
+   "step": "track",
+   "symbol": "",
+   "at": "10:15",
+   "exit": 0,
+   "log": "33-track.log"
+  },
+  {
+   "n": 34,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:15",
+   "exit": 1,
+   "log": "34-alerts-check.log"
+  },
+  {
+   "n": 35,
+   "step": "track",
+   "symbol": "",
+   "at": "10:20",
+   "exit": 0,
+   "log": "35-track.log"
+  },
+  {
+   "n": 36,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:20",
+   "exit": 1,
+   "log": "36-alerts-check.log"
+  },
+  {
+   "n": 37,
+   "step": "entry",
+   "symbol": "ADANIENSOL",
+   "at": "10:20",
+   "exit": 0,
+   "log": "37-entry-ADANIENSOL.log"
+  },
+  {
+   "n": 38,
+   "step": "exit",
+   "symbol": "ADANIENSOL",
+   "at": "10:20",
+   "exit": 0,
+   "log": "38-exit-ADANIENSOL.log"
+  },
+  {
+   "n": 39,
+   "step": "timemachine",
+   "symbol": "ADANIENSOL",
+   "at": "10:20",
+   "exit": 0,
+   "log": "39-timemachine-ADANIENSOL.log"
+  },
+  {
+   "n": 40,
+   "step": "track",
+   "symbol": "",
+   "at": "10:25",
+   "exit": 0,
+   "log": "40-track.log"
+  },
+  {
+   "n": 41,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:25",
+   "exit": 1,
+   "log": "41-alerts-check.log"
+  },
+  {
+   "n": 42,
+   "step": "track",
+   "symbol": "",
+   "at": "10:30",
+   "exit": 0,
+   "log": "42-track.log"
+  },
+  {
+   "n": 43,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:30",
+   "exit": 1,
+   "log": "43-alerts-check.log"
+  },
+  {
+   "n": 44,
+   "step": "track",
+   "symbol": "",
+   "at": "10:35",
+   "exit": 0,
+   "log": "44-track.log"
+  },
+  {
+   "n": 45,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:35",
+   "exit": 1,
+   "log": "45-alerts-check.log"
+  },
+  {
+   "n": 46,
+   "step": "track",
+   "symbol": "",
+   "at": "10:40",
+   "exit": 0,
+   "log": "46-track.log"
+  },
+  {
+   "n": 47,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:40",
+   "exit": 1,
+   "log": "47-alerts-check.log"
+  },
+  {
+   "n": 48,
+   "step": "track",
+   "symbol": "",
+   "at": "10:45",
+   "exit": 0,
+   "log": "48-track.log"
+  },
+  {
+   "n": 49,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:45",
+   "exit": 1,
+   "log": "49-alerts-check.log"
+  },
+  {
+   "n": 50,
+   "step": "track",
+   "symbol": "",
+   "at": "10:50",
+   "exit": 0,
+   "log": "50-track.log"
+  },
+  {
+   "n": 51,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:50",
+   "exit": 1,
+   "log": "51-alerts-check.log"
+  },
+  {
+   "n": 52,
+   "step": "track",
+   "symbol": "",
+   "at": "10:55",
+   "exit": 0,
+   "log": "52-track.log"
+  },
+  {
+   "n": 53,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "10:55",
+   "exit": 1,
+   "log": "53-alerts-check.log"
+  },
+  {
+   "n": 54,
+   "step": "track",
+   "symbol": "",
+   "at": "11:00",
+   "exit": 0,
+   "log": "54-track.log"
+  },
+  {
+   "n": 55,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:00",
+   "exit": 1,
+   "log": "55-alerts-check.log"
+  },
+  {
+   "n": 56,
+   "step": "track",
+   "symbol": "",
+   "at": "11:05",
+   "exit": 0,
+   "log": "56-track.log"
+  },
+  {
+   "n": 57,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:05",
+   "exit": 1,
+   "log": "57-alerts-check.log"
+  },
+  {
+   "n": 58,
+   "step": "track",
+   "symbol": "",
+   "at": "11:10",
+   "exit": 0,
+   "log": "58-track.log"
+  },
+  {
+   "n": 59,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:10",
+   "exit": 1,
+   "log": "59-alerts-check.log"
+  },
+  {
+   "n": 60,
+   "step": "track",
+   "symbol": "",
+   "at": "11:15",
+   "exit": 0,
+   "log": "60-track.log"
+  },
+  {
+   "n": 61,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:15",
+   "exit": 1,
+   "log": "61-alerts-check.log"
+  },
+  {
+   "n": 62,
+   "step": "track",
+   "symbol": "",
+   "at": "11:20",
+   "exit": 0,
+   "log": "62-track.log"
+  },
+  {
+   "n": 63,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:20",
+   "exit": 1,
+   "log": "63-alerts-check.log"
+  },
+  {
+   "n": 64,
+   "step": "track",
+   "symbol": "",
+   "at": "11:25",
+   "exit": 0,
+   "log": "64-track.log"
+  },
+  {
+   "n": 65,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:25",
+   "exit": 1,
+   "log": "65-alerts-check.log"
+  },
+  {
+   "n": 66,
+   "step": "track",
+   "symbol": "",
+   "at": "11:30",
+   "exit": 0,
+   "log": "66-track.log"
+  },
+  {
+   "n": 67,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:30",
+   "exit": 1,
+   "log": "67-alerts-check.log"
+  },
+  {
+   "n": 68,
+   "step": "track",
+   "symbol": "",
+   "at": "11:35",
+   "exit": 0,
+   "log": "68-track.log"
+  },
+  {
+   "n": 69,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:35",
+   "exit": 1,
+   "log": "69-alerts-check.log"
+  },
+  {
+   "n": 70,
+   "step": "track",
+   "symbol": "",
+   "at": "11:40",
+   "exit": 0,
+   "log": "70-track.log"
+  },
+  {
+   "n": 71,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:40",
+   "exit": 1,
+   "log": "71-alerts-check.log"
+  },
+  {
+   "n": 72,
+   "step": "track",
+   "symbol": "",
+   "at": "11:45",
+   "exit": 0,
+   "log": "72-track.log"
+  },
+  {
+   "n": 73,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:45",
+   "exit": 1,
+   "log": "73-alerts-check.log"
+  },
+  {
+   "n": 74,
+   "step": "track",
+   "symbol": "",
+   "at": "11:50",
+   "exit": 0,
+   "log": "74-track.log"
+  },
+  {
+   "n": 75,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:50",
+   "exit": 1,
+   "log": "75-alerts-check.log"
+  },
+  {
+   "n": 76,
+   "step": "track",
+   "symbol": "",
+   "at": "11:55",
+   "exit": 0,
+   "log": "76-track.log"
+  },
+  {
+   "n": 77,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "11:55",
+   "exit": 1,
+   "log": "77-alerts-check.log"
+  },
+  {
+   "n": 78,
+   "step": "track",
+   "symbol": "",
+   "at": "12:00",
+   "exit": 0,
+   "log": "78-track.log"
+  },
+  {
+   "n": 79,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "12:00",
+   "exit": 1,
+   "log": "79-alerts-check.log"
+  },
+  {
+   "n": 80,
+   "step": "track",
+   "symbol": "",
+   "at": "12:05",
+   "exit": 0,
+   "log": "80-track.log"
+  },
+  {
+   "n": 81,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "12:05",
+   "exit": 1,
+   "log": "81-alerts-check.log"
+  },
+  {
+   "n": 82,
+   "step": "track",
+   "symbol": "",
+   "at": "12:10",
+   "exit": 0,
+   "log": "82-track.log"
+  },
+  {
+   "n": 83,
+   "step": "alerts-check",
+   "symbol": "",
+   "at": "12:10",
+   "exit": 1,
+   "log": "83-alerts-check.log"
+  },
+  {
+   "n": 84,
+   "step": "track",
+   "symbol": "",
+   "at": "15:30",
+   "exit": 0,
+   "log": "84-track.log"
+  },
+  {
+   "n": 85,
+   "step": "log",
+   "symbol": "",
+   "at": "15:30",
+   "exit": 0,
+   "log": "85-log.log"
+  }
+ ],
+ "summary": {
+  "triggers": [
+   {
+    "symbol": "INFY",
+    "at": "09:45"
+   },
+   {
+    "symbol": "TCS",
+    "at": "09:50"
+   },
+   {
+    "symbol": "HCLTECH",
+    "at": "09:50"
+   },
+   {
+    "symbol": "MARUTI",
+    "at": "09:50"
+   },
+   {
+    "symbol": "MEESHO",
+    "at": "10:10"
+   },
+   {
+    "symbol": "ADANIENSOL",
+    "at": "10:20"
+   }
+  ],
+  "trades": [
+   {
+    "symbol": "INFY",
+    "trigger_close": "09:45",
+    "tm_avg_R": -0.375,
+    "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.81R, so it has to come first in 36 % of the replays that hit one side; it did in 8 % (target first 5.1 % vs stop first 54.9 %).",
+    "skipped": "time machine average R -0.375 is not above 0"
+   },
+   {
+    "symbol": "TCS",
+    "trigger_close": "09:50",
+    "tm_avg_R": -0.291,
+    "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.77R, so it has to come first in 36 % of the replays that hit one side; it did in 20 % (target first 15.0 % vs stop first 61.2 %).",
+    "skipped": "time machine average R -0.291 is not above 0"
+   },
+   {
+    "symbol": "HCLTECH",
+    "trigger_close": "09:50",
+    "tm_avg_R": -0.249,
+    "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.85R, so it has to come first in 35 % of the replays that hit one side; it did in 4 % (target first 1.3 % vs stop first 30.8 %).",
+    "skipped": "time machine average R -0.249 is not above 0"
+   },
+   {
+    "symbol": "MARUTI",
+    "trigger_close": "09:50",
+    "tm_avg_R": -0.38,
+    "tm_verdict": "Strongly toward the stop: after charges the 2R target is worth 1.73R, so it has to come first in 37 % of the replays that hit one side; it did in 18 % (target first 14.9 % vs stop first 67.7 %).",
+    "skipped": "time machine average R -0.380 is not above 0"
+   },
+   {
+    "symbol": "MEESHO",
+    "trigger_close": "10:10",
+    "tm_avg_R": 0.262,
+    "tm_verdict": "Leans toward the target: after charges the 2R target is worth 1.84R, so it has to come first in 35 % of the replays that hit one side; it did in 43 % (target first 30.5 % vs stop first 40.9 %).",
+    "risk": "PASS",
+    "plan": {
+     "entry": 228.0,
+     "stop": 225.6,
+     "target": 232.8,
+     "flat_by": "15:10"
+    }
+   },
+   {
+    "symbol": "ADANIENSOL",
+    "trigger_close": "10:20",
+    "tm_avg_R": -0.194,
+    "tm_verdict": "Leans toward the stop: after charges the 2R target is worth 1.78R, so it has to come first in 36 % of the replays that hit one side; it did in 27 % (target first 23.7 % vs stop first 65.1 %).",
+    "skipped": "time machine average R -0.194 is not above 0"
+   }
+  ]
+ }
+}

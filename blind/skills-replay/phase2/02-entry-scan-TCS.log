@@ -1,0 +1,56 @@
+$ nse-entry/entry.py check TCS --offline blind/skills-replay/.data/ws-day/cut/TCS.NS-1530.json --json --fo-lots blind/skills-replay/.data/ref/fo_mktlots.csv --now 2026-10-15 15:30
+(exit 0)
+{
+  "symbol": "TCS.NS",
+  "setup": "orb",
+  "side": "buy",
+  "date": "2026-10-15",
+  "interval": "5m",
+  "or_minutes": 15,
+  "now": "2026-10-15 15:30:00",
+  "status": "triggered",
+  "phase": "after-close",
+  "reason": "the 9:45 bar closed above the range high",
+  "opening_range": {
+    "high": 2366.0,
+    "low": 2337.5,
+    "minutes": 15,
+    "bars": 3,
+    "of": 3,
+    "complete": true,
+    "avg_volume": 220261
+  },
+  "level": 2366.0,
+  "trigger": {
+    "time": "9:50 AM",
+    "close_time": "09:50",
+    "bar_start": "09:45",
+    "bar_index": 6,
+    "price": 2366.3,
+    "close": 2366.300048828125,
+    "volume": 211465,
+    "volume_x": 0.96,
+    "pct_over": 0.01
+  },
+  "last": {
+    "bar_start": "15:10",
+    "close": 2355.2,
+    "vs_level_pct": -0.46
+  },
+  "forming": null,
+  "min_volume_x": null,
+  "prev_close": 2304.9,
+  "calendar_known": true,
+  "source": "yahoo",
+  "data_time": "2026-10-15 15:30:00",
+  "opens": "09:15",
+  "closes": "15:15",
+  "special_session": null,
+  "cas_stock": true,
+  "no_entries_before": "09:30",
+  "no_entries_after": "14:30",
+  "auction": "Closing auction: this is an F&O stock, so continuous trading ends at 15:15, not 15:30, and the auction takes no stop-loss orders; the last new entry is 14:30 (your no_entries_after 14:45 is capped by entry_buffer_min 45).",
+  "bars_closed": 70,
+  "minutes_since": 340,
+  "cas_note": null
+}

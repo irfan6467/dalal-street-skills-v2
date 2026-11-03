@@ -1,0 +1,3 @@
+$ nse-broker/ticket.py track --prices blind/skills-replay/.data/ws-day/no-prices.json --bars TCS=cut/TCS.NS-1130.json --bars INFY=cut/INFY.NS-1130.json --bars MEESHO=cut/MEESHO.NS-1130.json --bars BHEL=cut/BHEL.NS-1130.json --bars HCLTECH=cut/HCLTECH.NS-1130.json --bars HINDUNILVR=cut/HINDUNILVR.NS-1130.json --bars CANBK=cut/CANBK.NS-1130.json --bars NESTLEIND=cut/NESTLEIND.NS-1130.json --bars ADANIENSOL=cut/ADANIENSOL.NS-1130.json --bars MARUTI=cut/MARUTI.NS-1130.json --now 2026-10-15 11:30
+(exit 0)
+MEESHO MIS: stop 225.60 and target 232.80 not touched (the bars you gave, since the entry).
