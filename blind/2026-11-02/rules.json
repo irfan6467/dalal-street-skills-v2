@@ -1,0 +1,21 @@
+{
+  "test_day": "2026-11-02",
+  "history_from": "2025-09-01",
+  "history_to": "2026-11-01",
+  "capital_inr": 25000,
+  "max_loss_per_trade_inr": 500,
+  "max_positions": 3,
+  "position_cap_inr": 8333.33,
+  "slippage_bps": 20,
+  "max_gap_pct": 5.0,
+  "target_r": 2.0,
+  "universe": {"series": ["EQ", "BE"], "min_price": 20.0, "min_turnover_lacs_med20": 50.0},
+  "config": {"broker": "shoonya", "paper": true,
+             "charges": {"brokerage_pct_mis": 0.03, "brokerage_min_mis": 0, "brokerage_cap_mis": 5,
+                         "brokerage_pct_cnc": 0, "brokerage_min_cnc": 0, "brokerage_cap_cnc": 0,
+                         "dp_charge_cnc_sell": 10.62}},
+  "set_a_momentum": {"params": {"atr_stop": 3.0, "breakout_days": 252, "exit_days": 10, "vol_mult": 1.5},
+                     "params_hash": "981319a2c38f", "stop": "min(signal_low, entry - atr_stop*ATR14)"},
+  "set_b_breakout": {"lookback": 20, "min_up_pct": 2.0, "vol_mult": 2.0, "min_close_in_range": 0.75,
+                     "min_deliv_pct": 30.0, "atr_mult": 1.5, "stop": "max(signal_low, entry - atr_mult*ATR14)"}
+}

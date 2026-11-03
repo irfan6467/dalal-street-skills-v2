@@ -9,3 +9,4 @@ Thumbs.db
 .idea/
 
 # daily cloud job: scratch only, outputs live in reports/ and journal/
+blind/*/.data/
