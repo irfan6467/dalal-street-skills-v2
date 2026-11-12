@@ -1653,34 +1653,63 @@ def bhav_date(data):
     return None
 
 
-def fetch_bhav(start, end, folder=BHAV_CACHE, pause=0.6, fetch=None, progress=None):
+NO_SESSION = "no-session.txt"       # in the bhav folder: past days NSE is known to have no session for
+
+
+def _no_session(folder):
+    try:
+        with open(os.path.join(folder, NO_SESSION), encoding="utf-8") as fh:
+            return {ln.strip() for ln in fh if ln.strip()}
+    except OSError:
+        return set()
+
+
+def fetch_bhav(start, end, folder=BHAV_CACHE, pause=0.6, fetch=None, progress=None, today=None):
+    """Every calendar day from start to end, weekends included: NSE also trades on some Saturdays and Sundays
+    (Budget day, Diwali Muhurat, special sessions). A weekday-only loop loses those sessions, and the next
+    day's PREV_CLOSE then reads as a split for every stock that moved (4,613 false adjustments on 2023-26).
+    A day without a session answers 404 (weekends) or with the last session's file (holidays): nothing is
+    saved, and a past day answered that way is remembered in no-session.txt and not asked for again."""
     os.makedirs(folder, exist_ok=True)
+    today = today or to_ist(utc_now()).date()
+    known = _no_session(folder)
+    learned = []
     got = skipped = 0
     d = start
     while d <= end:
-        if d.weekday() < 5:
-            name = "sec_bhavdata_full_%s.csv" % d.strftime("%d%m%Y")
-            path = os.path.join(folder, name)
-            if not os.path.exists(path):
-                data = None
-                for u in BHAV_URLS:
-                    try:
-                        data = (fetch or _http_bytes)(u % d.strftime("%d%m%Y"))
-                        break
-                    except (urllib.error.HTTPError, urllib.error.URLError, OSError):
-                        continue
-                if data and b"SYMBOL" in data[:200] and bhav_date(data) == d:
-                    with open(path, "wb") as fh:
-                        fh.write(data)
-                    got += 1
-                    if pause:
-                        time.sleep(pause)
-                else:
-                    # holiday (NSE answers with the last session's file under the holiday's name), or not published
-                    skipped += 1
+        key = d.strftime("%d%m%Y")
+        path = os.path.join(folder, "sec_bhavdata_full_%s.csv" % key)
+        if not os.path.exists(path) and d.isoformat() not in known:
+            data, not_found = None, False
+            for u in BHAV_URLS:
+                try:
+                    data = (fetch or _http_bytes)(u % key)
+                    break
+                except urllib.error.HTTPError as e:
+                    not_found = not_found or e.code == 404
+                    continue
+                except (urllib.error.URLError, OSError):
+                    continue
+            is_bhav = bool(data) and b"SYMBOL" in data[:200]
+            if is_bhav and bhav_date(data) == d:
+                with open(path, "wb") as fh:
+                    fh.write(data)
+                got += 1
+            else:
+                skipped += 1
+                # no session for sure: a 404, or another day's file under this day's name. Anything else
+                # (no answer, an error page) is unknown and is asked again next time.
+                if d < today and ((is_bhav and bhav_date(data) is not None) or (data is None and not_found)):
+                    learned.append(d.isoformat())
+            if pause and data:
+                time.sleep(pause)
         d += datetime.timedelta(days=1)
+    if learned:
+        with open(os.path.join(folder, NO_SESSION), "a", encoding="utf-8", newline="\n") as fh:
+            fh.write("".join(x + "\n" for x in learned))
     if progress:
-        progress("bhavcopies: %d downloaded, %d days with none (holidays or not reachable), in %s" % (got, skipped, folder))
+        progress("bhavcopies: %d downloaded, %d days with none (weekends, holidays or not reachable), in %s"
+                 % (got, skipped, folder))
     return got, skipped
 
 

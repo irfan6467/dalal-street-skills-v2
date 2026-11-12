@@ -297,18 +297,72 @@ class TestHolidayFiles(Tmp):
             self.assertEqual(len({b["d"] for b in bars}), 40, sym)
             self.assertFalse(any("ca" in b for b in bars), sym)          # no split invented from a copy
 
-    def test_the_fetcher_does_not_save_a_copy(self):
-        served = {d.strftime("%d%m%Y"): (HEAD + "\n" + "\n".join(self.mk[d]) + "\n").encode() for d in self.days}
-        hol = self.days[20]                                   # say session 20 was a holiday: NSE serves 19
-        served[hol.strftime("%d%m%Y")] = served[self.days[19].strftime("%d%m%Y")]
+    def nse(self, served, calls=None):
+        """NSE as seen on 2026-11-12: a session's file, another day's file on a holiday, 404 on a plain weekend."""
+        import urllib.error
 
         def fetch(url):
-            return served[url.rsplit("_", 1)[1][:8]]
-        got, skipped = bt.fetch_bhav(self.days[18], self.days[21], "fresh", pause=0, fetch=fetch)
-        self.assertEqual((got, skipped), (3, 1))
+            key = url.rsplit("_", 1)[1][:8]
+            if calls is not None:
+                calls.append(key)
+            if key not in served:
+                raise urllib.error.HTTPError(url, 404, "Not Found", None, None)
+            return served[key]
+        return fetch
+
+    def served(self):
+        return {d.strftime("%d%m%Y"): (HEAD + "\n" + "\n".join(self.mk[d]) + "\n").encode() for d in self.days}
+
+    def test_the_fetcher_does_not_save_a_copy(self):
+        served = self.served()
+        hol = self.days[20]                                   # say session 20 was a holiday: NSE serves 19
+        served[hol.strftime("%d%m%Y")] = served[self.days[19].strftime("%d%m%Y")]
+        got, skipped = bt.fetch_bhav(self.days[18], self.days[21], "fresh", pause=0, fetch=self.nse(served),
+                                     today=datetime.date(2030, 1, 1))
+        weekend_days = sum(1 for k in range((self.days[21] - self.days[18]).days + 1)
+                           if (self.days[18] + datetime.timedelta(days=k)).weekday() >= 5)
+        self.assertEqual((got, skipped), (3, 1 + weekend_days))
         self.assertFalse(os.path.exists(os.path.join("fresh", "sec_bhavdata_full_%s.csv" % hol.strftime("%d%m%Y"))))
         self.assertEqual(bt.bhav_date(served[self.days[19].strftime("%d%m%Y")]), self.days[19])
         self.assertIsNone(bt.bhav_date(b"<html>not a bhavcopy</html>"))
+
+    def test_a_weekend_session_is_fetched(self):
+        """Budget Saturdays, Muhurat Sundays and special sessions are real sessions: six were missing from
+        2023-26 because the loop skipped weekends, and each read as a split the next day."""
+        served = self.served()
+        k = next(i for i in range(len(self.days) - 1) if (self.days[i + 1] - self.days[i]).days == 3)
+        fri, sat, sun = self.days[k], self.days[k] + datetime.timedelta(days=1), self.days[k] + datetime.timedelta(days=2)
+        rows = [r.replace(fri.strftime("%d-%b-%Y"), sat.strftime("%d-%b-%Y")) for r in self.mk[fri]]
+        served[sat.strftime("%d%m%Y")] = (HEAD + "\n" + "\n".join(rows) + "\n").encode()
+        got, skipped = bt.fetch_bhav(fri, self.days[k + 1], "wk", pause=0, fetch=self.nse(served),
+                                     today=datetime.date(2030, 1, 1))
+        self.assertEqual((got, skipped), (3, 1))                              # Fri, Sat, Mon; Sunday has none
+        self.assertTrue(os.path.exists(os.path.join("wk", "sec_bhavdata_full_%s.csv" % sat.strftime("%d%m%Y"))))
+        _, days = bt.load_daily("wk")
+        self.assertEqual(days, [fri, sat, self.days[k + 1]])
+        with open(os.path.join("wk", bt.NO_SESSION)) as fh:
+            self.assertEqual(fh.read().split(), [sun.isoformat()])
+
+    def test_days_without_a_session_are_asked_once_and_only_when_past(self):
+        served = self.served()
+        hol = self.days[20]
+        served[hol.strftime("%d%m%Y")] = served[self.days[19].strftime("%d%m%Y")]
+        calls = []
+        a, b = self.days[18], self.days[21]
+        bt.fetch_bhav(a, b, "nc", pause=0, fetch=self.nse(served, calls), today=datetime.date(2030, 1, 1))
+        first = len(calls)
+        bt.fetch_bhav(a, b, "nc", pause=0, fetch=self.nse(served, calls), today=datetime.date(2030, 1, 1))
+        self.assertEqual(len(calls), first)                    # nothing asked twice
+        # a day that is not over is never written off: its file may simply not be out yet
+        calls = []
+        bt.fetch_bhav(b, b + datetime.timedelta(days=1), "nc2", pause=0, fetch=self.nse({}, calls), today=b)
+        self.assertFalse(os.path.exists(os.path.join("nc2", bt.NO_SESSION)))
+        # a network failure or an error page is unknown, not "no session"
+        def down(url):
+            raise OSError("no network")
+        bt.fetch_bhav(a, a, "nc3", pause=0, fetch=down, today=datetime.date(2030, 1, 1))
+        bt.fetch_bhav(a, a, "nc3", pause=0, fetch=lambda url: b"<html>busy</html>", today=datetime.date(2030, 1, 1))
+        self.assertFalse(os.path.exists(os.path.join("nc3", bt.NO_SESSION)))
 
 
 if __name__ == "__main__":
