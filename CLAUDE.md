@@ -69,7 +69,7 @@ sessions. **Momentum NO EDGE** (−0.160R per entry day, 672 out-of-sample trade
 (−0.402R, 2,641 trades); the ORB the skills trade by default, replayed on 4,140 triggers: −0.75R a trade (+0.06R
 before costs; costs 0.81R because the midpoint stop is 0.69% away and a round trip costs 0.5%). The time machine
 gate and the scanner watchlist did not help (forecast-result correlation 0.11). A ₹25,000 account lost in every
-variant. 20 shortcomings with fixes are in the report; **none is fixed yet**. Most urgent:
+variant. 22 shortcomings with fixes are in the report; **none is fixed yet**. Most urgent:
 - **`fetch_bhav` skips weekends**: six real sessions were missing (Budget Sat 1 Feb 2025, Muhurat Sundays, special
   Saturdays) -> 4,613 false split adjustments. They were added by hand to the cloud cache for this run only; the
   3 Nov runs and the daily cloud job lack them.
