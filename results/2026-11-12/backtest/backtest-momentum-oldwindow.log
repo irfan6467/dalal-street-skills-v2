@@ -1,0 +1,28 @@
+fold 1/5  test 2025-10-29..2026-01-28  params {'atr_stop': 3.0, 'breakout_days': 252, 'exit_days': 20, 'vol_mult': 2.5}  IS 214 trades -0.223R  OOS 63 trades -0.379R
+fold 2/5  test 2026-01-29..2026-04-28  params {'atr_stop': 3.0, 'breakout_days': 252, 'exit_days': 10, 'vol_mult': 1.5}  IS 376 trades -0.101R  OOS 114 trades 0.087R
+fold 3/5  test 2026-04-29..2026-07-28  params {'atr_stop': 2.0, 'breakout_days': 252, 'exit_days': 20, 'vol_mult': 1.5}  IS 450 trades 0.006R  OOS 116 trades 0.141R
+fold 4/5  test 2026-07-29..2026-10-28  params {'atr_stop': 2.0, 'breakout_days': 252, 'exit_days': 20, 'vol_mult': 1.5}  IS 477 trades -0.004R  OOS 160 trades -0.233R
+fold 5/5  test 2026-10-29..2026-11-11  params {'atr_stop': 2.0, 'breakout_days': 252, 'exit_days': 10, 'vol_mult': 2.5}  IS 310 trades -0.034R  OOS 3 trades -1.068R
+MOMENTUM  walk-forward 2024-10-29..2026-11-11  (5 windows: 12 months train, 3 test)
+costs: slippage 20.0 bp/side, ₹8,333 per trade, charges for Shoonya (Finvasia)
+
+VERDICT: NO EDGE
+  out-of-sample average is -0.163R per entry day after charges
+
+Out-of-sample only (456 trades, 172 entry days):
+  avg -0.084R net  (-0.042R before charges)   win rate 29%   profit factor 0.878
+  per entry day -0.163R, 95% interval -0.3943 to 0.0597, t -1.428
+  max drawdown 43.6R   worst losing streak 16   net -₹8,011 after ₹12,756 charges
+  in-sample (chosen params) averaged -0.071R: the gap to out-of-sample is the overfit
+
+win  test window             params                             trades    avg R
+1    2025-10-29..2026-01-28  atr=3.0 brk=252 exit=20 vol=2.5        63   -0.379
+2    2026-01-29..2026-04-28  atr=3.0 brk=252 exit=10 vol=1.5       114    0.087
+3    2026-04-29..2026-07-28  atr=2.0 brk=252 exit=20 vol=1.5       116    0.141
+4    2026-07-29..2026-10-28  atr=2.0 brk=252 exit=20 vol=1.5       160   -0.233
+5    2026-10-29..2026-11-11  atr=2.0 brk=252 exit=10 vol=2.5         3   -1.068
+
+Frozen params (last window) atr=2.0 brk=252 exit=10 vol=2.5  hash 458d56c24af4
+NOTE: you have now run momentum 4 times (96 parameter variants in all). Every rerun after looking at results is another chance to fit noise: trust the first honest run, and let paper trading decide.
+
+run momentum-20261112-102157 saved in nse/backtest (all out-of-sample trades included)

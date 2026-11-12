@@ -1,0 +1,340 @@
+{
+ "triggers": 4420,
+ "days": 39,
+ "too_dear_for_one_share": 280,
+ "all": {
+  "n": 4140,
+  "days": 39,
+  "avg_r_net": -0.747,
+  "avg_r_before_costs": 0.061,
+  "per_day_avg_r": -0.858,
+  "per_day_t": -13.14,
+  "win_rate": 0.306,
+  "avg_risk_pct": 0.772,
+  "exits": {
+   "stop": 1873,
+   "flat": 1471,
+   "target": 796
+  }
+ },
+ "time_machine": {
+  "passed (avg R > 0)": {
+   "n": 424,
+   "days": 38,
+   "avg_r_net": -0.585,
+   "avg_r_before_costs": 0.069,
+   "per_day_avg_r": -0.619,
+   "per_day_t": -7.13,
+   "win_rate": 0.314,
+   "avg_risk_pct": 0.928,
+   "exits": {
+    "flat": 166,
+    "stop": 184,
+    "target": 74
+   }
+  },
+  "rejected": {
+   "n": 3716,
+   "days": 39,
+   "avg_r_net": -0.765,
+   "avg_r_before_costs": 0.06,
+   "per_day_avg_r": -0.886,
+   "per_day_t": -13.23,
+   "win_rate": 0.305,
+   "avg_risk_pct": 0.755,
+   "exits": {
+    "stop": 1689,
+    "target": 722,
+    "flat": 1305
+   }
+  },
+  "pass_rate": 0.102,
+  "correlation_forecast_vs_result": 0.113,
+  "avg_forecast_r": -0.174,
+  "avg_result_r": -0.747,
+  "by_forecast_fifth": [
+   {
+    "forecast_avg_r": -0.357,
+    "result_avg_r": -1.015,
+    "result_before_costs": 0.037,
+    "n": 828
+   },
+   {
+    "forecast_avg_r": -0.251,
+    "result_avg_r": -0.782,
+    "result_before_costs": 0.045,
+    "n": 828
+   },
+   {
+    "forecast_avg_r": -0.183,
+    "result_avg_r": -0.729,
+    "result_before_costs": 0.064,
+    "n": 828
+   },
+   {
+    "forecast_avg_r": -0.108,
+    "result_avg_r": -0.628,
+    "result_before_costs": 0.085,
+    "n": 828
+   },
+   {
+    "forecast_avg_r": 0.027,
+    "result_avg_r": -0.579,
+    "result_before_costs": 0.073,
+    "n": 828
+   }
+  ]
+ },
+ "scanner_watchlist": {
+  "in top 10": {
+   "n": 187,
+   "days": 37,
+   "avg_r_net": -0.741,
+   "avg_r_before_costs": 0.024,
+   "per_day_avg_r": -0.802,
+   "per_day_t": -6.36,
+   "win_rate": 0.316,
+   "avg_risk_pct": 0.853,
+   "exits": {
+    "flat": 64,
+    "stop": 87,
+    "target": 36
+   }
+  },
+  "not in it": {
+   "n": 3953,
+   "days": 39,
+   "avg_r_net": -0.747,
+   "avg_r_before_costs": 0.062,
+   "per_day_avg_r": -0.862,
+   "per_day_t": -13.03,
+   "win_rate": 0.305,
+   "avg_risk_pct": 0.769,
+   "exits": {
+    "stop": 1786,
+    "flat": 1407,
+    "target": 760
+   }
+  }
+ },
+ "by_trigger_time": {
+  "09:35-09:55": {
+   "n": 2077,
+   "days": 38,
+   "avg_r_net": -0.612,
+   "avg_r_before_costs": 0.174,
+   "per_day_avg_r": -0.759,
+   "per_day_t": -9.06,
+   "win_rate": 0.374,
+   "avg_risk_pct": 0.807,
+   "exits": {
+    "stop": 958,
+    "flat": 613,
+    "target": 506
+   }
+  },
+  "10:00-10:55": {
+   "n": 1126,
+   "days": 39,
+   "avg_r_net": -0.909,
+   "avg_r_before_costs": -0.081,
+   "per_day_avg_r": -0.957,
+   "per_day_t": -10.08,
+   "win_rate": 0.266,
+   "avg_risk_pct": 0.745,
+   "exits": {
+    "stop": 587,
+    "target": 190,
+    "flat": 349
+   }
+  },
+  "11:00-12:55": {
+   "n": 660,
+   "days": 39,
+   "avg_r_net": -0.865,
+   "avg_r_before_costs": -0.017,
+   "per_day_avg_r": -0.856,
+   "per_day_t": -9.07,
+   "win_rate": 0.227,
+   "avg_risk_pct": 0.715,
+   "exits": {
+    "flat": 304,
+    "stop": 271,
+    "target": 85
+   }
+  },
+  "13:00 on": {
+   "n": 277,
+   "days": 33,
+   "avg_r_net": -0.812,
+   "avg_r_before_costs": -0.026,
+   "per_day_avg_r": -0.859,
+   "per_day_t": -11.88,
+   "win_rate": 0.144,
+   "avg_risk_pct": 0.76,
+   "exits": {
+    "stop": 57,
+    "flat": 205,
+    "target": 15
+   }
+  }
+ },
+ "by_stop_distance": {
+  "0.3-0.5%": {
+   "n": 826,
+   "days": 39,
+   "avg_r_net": -1.281,
+   "avg_r_before_costs": -0.033,
+   "per_day_avg_r": -1.346,
+   "per_day_t": -18.72,
+   "win_rate": 0.278,
+   "avg_risk_pct": 0.414,
+   "exits": {
+    "stop": 505,
+    "target": 212,
+    "flat": 109
+   },
+   "cost_in_r": 1.249
+  },
+  "0.5-1%": {
+   "n": 2362,
+   "days": 39,
+   "avg_r_net": -0.661,
+   "avg_r_before_costs": 0.079,
+   "per_day_avg_r": -0.757,
+   "per_day_t": -12.79,
+   "win_rate": 0.303,
+   "avg_risk_pct": 0.711,
+   "exits": {
+    "flat": 853,
+    "stop": 1051,
+    "target": 458
+   },
+   "cost_in_r": 0.739
+  },
+  "over 1%": {
+   "n": 835,
+   "days": 39,
+   "avg_r_net": -0.278,
+   "avg_r_before_costs": 0.114,
+   "per_day_avg_r": -0.392,
+   "per_day_t": -5.69,
+   "win_rate": 0.36,
+   "avg_risk_pct": 1.373,
+   "exits": {
+    "stop": 242,
+    "flat": 500,
+    "target": 93
+   },
+   "cost_in_r": 0.392
+  },
+  "under 0.3%": {
+   "n": 117,
+   "days": 31,
+   "avg_r_net": -2.051,
+   "avg_r_before_costs": -0.025,
+   "per_day_avg_r": -1.73,
+   "per_day_t": -7.49,
+   "win_rate": 0.162,
+   "avg_risk_pct": 0.256,
+   "exits": {
+    "stop": 75,
+    "target": 33,
+    "flat": 9
+   },
+   "cost_in_r": 2.026
+  }
+ },
+ "account_25000": {
+  "A all Nifty 200, no gate": {
+   "trades": 117,
+   "days": 39,
+   "net_inr": -3148.0,
+   "avg_r": -0.744,
+   "win_rate": 0.333,
+   "max_drawdown_inr": 3148.0,
+   "pct_of_capital": -12.6,
+   "ties": {
+    "orderings_of_same-minute_triggers": 200,
+    "net_inr": {
+     "p5": -4475.0,
+     "median": -3340.0,
+     "p95": -2342.0
+    },
+    "profitable_share": 0.0,
+    "trades_median": 117
+   }
+  },
+  "B all Nifty 200, time machine gate": {
+   "trades": 113,
+   "days": 39,
+   "net_inr": -2070.0,
+   "avg_r": -0.404,
+   "win_rate": 0.372,
+   "max_drawdown_inr": 2810.0,
+   "pct_of_capital": -8.3,
+   "ties": {
+    "orderings_of_same-minute_triggers": 200,
+    "net_inr": {
+     "p5": -3036.0,
+     "median": -2437.0,
+     "p95": -1668.0
+    },
+    "profitable_share": 0.0,
+    "trades_median": 113
+   }
+  },
+  "C scanner top 10, no gate": {
+   "trades": 103,
+   "days": 37,
+   "net_inr": -3006.0,
+   "avg_r": -0.651,
+   "win_rate": 0.359,
+   "max_drawdown_inr": 3006.0,
+   "pct_of_capital": -12.0
+  },
+  "D scanner top 10 + time machine (the 15 Oct chain)": {
+   "trades": 20,
+   "days": 37,
+   "net_inr": -606.0,
+   "avg_r": -0.72,
+   "win_rate": 0.25,
+   "max_drawdown_inr": 821.0,
+   "pct_of_capital": -2.4
+  }
+ },
+ "slippage_sensitivity_avg_r_net": {
+  "all triggers": {
+   "n": 4140,
+   "0bp": -0.109,
+   "2bp": -0.173,
+   "5bp": -0.268,
+   "10bp": -0.428,
+   "20bp": -0.747
+  },
+  "09:35-09:55 triggers": {
+   "n": 2077,
+   "0bp": 0.009,
+   "2bp": -0.053,
+   "5bp": -0.146,
+   "10bp": -0.302,
+   "20bp": -0.612
+  },
+  "stop over 1% away": {
+   "n": 835,
+   "0bp": 0.032,
+   "2bp": 0.001,
+   "5bp": -0.046,
+   "10bp": -0.123,
+   "20bp": -0.278
+  },
+  "09:35-09:55 and stop over 1%": {
+   "n": 483,
+   "0bp": 0.127,
+   "2bp": 0.097,
+   "5bp": 0.051,
+   "10bp": -0.025,
+   "20bp": -0.178
+  }
+ }
+}

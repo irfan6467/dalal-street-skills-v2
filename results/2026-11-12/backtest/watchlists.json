@@ -1,0 +1,1925 @@
+{
+ "2026-09-15": {
+  "signal_day": "2026-09-11",
+  "union": 32,
+  "top10": [
+   "PAYTM",
+   "BSE",
+   "LICHSGFIN",
+   "INDUSTOWER",
+   "MARUTI",
+   "YESBANK",
+   "KEI",
+   "GODREJPROP",
+   "LAURUSLABS",
+   "M&M"
+  ],
+  "setups": {
+   "PAYTM": [
+    "breakout_20d"
+   ],
+   "BSE": [
+    "reclaim_ma20"
+   ],
+   "LICHSGFIN": [
+    "bull_flag"
+   ],
+   "INDUSTOWER": [
+    "reclaim_ma20"
+   ],
+   "MARUTI": [
+    "oversold"
+   ],
+   "YESBANK": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "KEI": [
+    "oversold"
+   ],
+   "GODREJPROP": [
+    "oversold"
+   ],
+   "LAURUSLABS": [
+    "breakout_20d"
+   ],
+   "M&M": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-09-16": {
+  "signal_day": "2026-09-15",
+  "union": 45,
+  "top10": [
+   "HDFCBANK",
+   "SBIN",
+   "M&M",
+   "TMPV",
+   "SHRIRAMFIN",
+   "KALYANKJIL",
+   "INDIGO",
+   "DABUR",
+   "ULTRACEMCO",
+   "MARUTI"
+  ],
+  "setups": {
+   "HDFCBANK": [
+    "reclaim_ma20"
+   ],
+   "SBIN": [
+    "oversold"
+   ],
+   "M&M": [
+    "oversold"
+   ],
+   "TMPV": [
+    "oversold_bounce"
+   ],
+   "SHRIRAMFIN": [
+    "oversold"
+   ],
+   "KALYANKJIL": [
+    "reclaim_ma20"
+   ],
+   "INDIGO": [
+    "oversold"
+   ],
+   "DABUR": [
+    "oversold_bounce"
+   ],
+   "ULTRACEMCO": [
+    "oversold"
+   ],
+   "MARUTI": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-09-17": {
+  "signal_day": "2026-09-16",
+  "union": 57,
+  "top10": [
+   "GROWW",
+   "PATANJALI",
+   "SBIN",
+   "M&M",
+   "SHRIRAMFIN",
+   "KOTAKBANK",
+   "MARUTI",
+   "POLICYBZR",
+   "PREMIERENE",
+   "SUZLON"
+  ],
+  "setups": {
+   "GROWW": [
+    "delivery"
+   ],
+   "PATANJALI": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "SBIN": [
+    "oversold_bounce"
+   ],
+   "M&M": [
+    "oversold_bounce"
+   ],
+   "SHRIRAMFIN": [
+    "oversold"
+   ],
+   "KOTAKBANK": [
+    "reclaim_ma20"
+   ],
+   "MARUTI": [
+    "oversold"
+   ],
+   "POLICYBZR": [
+    "reclaim_ma20"
+   ],
+   "PREMIERENE": [
+    "oversold"
+   ],
+   "SUZLON": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-09-18": {
+  "signal_day": "2026-09-17",
+  "union": 50,
+  "top10": [
+   "TATASTEEL",
+   "HDFCLIFE",
+   "SHRIRAMFIN",
+   "TECHM",
+   "TMPV",
+   "BHEL",
+   "ITC",
+   "MAZDOCK",
+   "APARINDS",
+   "SBILIFE"
+  ],
+  "setups": {
+   "TATASTEEL": [
+    "reclaim_ma20"
+   ],
+   "HDFCLIFE": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "SHRIRAMFIN": [
+    "oversold_bounce"
+   ],
+   "TECHM": [
+    "delivery"
+   ],
+   "TMPV": [
+    "reclaim_ma20"
+   ],
+   "BHEL": [
+    "reclaim_ma20"
+   ],
+   "ITC": [
+    "reclaim_ma20"
+   ],
+   "MAZDOCK": [
+    "oversold"
+   ],
+   "APARINDS": [
+    "reclaim_ma20"
+   ],
+   "SBILIFE": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-09-21": {
+  "signal_day": "2026-09-18",
+  "union": 95,
+  "top10": [
+   "HDFCBANK",
+   "BHARTIARTL",
+   "ATGL",
+   "INFY",
+   "LENSKART",
+   "MEESHO",
+   "M&M",
+   "PAYTM",
+   "HINDALCO",
+   "MARUTI"
+  ],
+  "setups": {
+   "HDFCBANK": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "BHARTIARTL": [
+    "delivery",
+    "reclaim_ma20"
+   ],
+   "ATGL": [
+    "breakout_20d",
+    "oversold_bounce",
+    "reclaim_ma20"
+   ],
+   "INFY": [
+    "delivery"
+   ],
+   "LENSKART": [
+    "breakout_20d"
+   ],
+   "MEESHO": [
+    "delivery",
+    "reclaim_ma20"
+   ],
+   "M&M": [
+    "delivery"
+   ],
+   "PAYTM": [
+    "breakout_20d"
+   ],
+   "HINDALCO": [
+    "delivery"
+   ],
+   "MARUTI": [
+    "delivery",
+    "oversold"
+   ]
+  }
+ },
+ "2026-09-22": {
+  "signal_day": "2026-09-21",
+  "union": 28,
+  "top10": [
+   "LENSKART",
+   "HDFCBANK",
+   "PATANJALI",
+   "ETERNAL",
+   "LAURUSLABS",
+   "MARUTI",
+   "MANKIND",
+   "DMART",
+   "MEESHO",
+   "ITC"
+  ],
+  "setups": {
+   "LENSKART": [
+    "delivery"
+   ],
+   "HDFCBANK": [
+    "breakout_20d"
+   ],
+   "PATANJALI": [
+    "breakout_20d"
+   ],
+   "ETERNAL": [
+    "breakout_20d"
+   ],
+   "LAURUSLABS": [
+    "breakout_20d"
+   ],
+   "MARUTI": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "MANKIND": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "DMART": [
+    "reclaim_ma20"
+   ],
+   "MEESHO": [
+    "breakout_20d"
+   ],
+   "ITC": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-09-23": {
+  "signal_day": "2026-09-22",
+  "union": 26,
+  "top10": [
+   "MEESHO",
+   "SWIGGY",
+   "ETERNAL",
+   "PATANJALI",
+   "INDIGO",
+   "DRREDDY",
+   "DLF",
+   "MARUTI",
+   "ADANIENT",
+   "HINDPETRO"
+  ],
+  "setups": {
+   "MEESHO": [
+    "breakout_20d"
+   ],
+   "SWIGGY": [
+    "reclaim_ma20"
+   ],
+   "ETERNAL": [
+    "breakout_20d"
+   ],
+   "PATANJALI": [
+    "breakout_20d"
+   ],
+   "INDIGO": [
+    "reclaim_ma20"
+   ],
+   "DRREDDY": [
+    "breakout_20d"
+   ],
+   "DLF": [
+    "delivery",
+    "reclaim_ma20"
+   ],
+   "MARUTI": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "ADANIENT": [
+    "reclaim_ma20"
+   ],
+   "HINDPETRO": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-09-24": {
+  "signal_day": "2026-09-23",
+  "union": 44,
+  "top10": [
+   "M&M",
+   "TATASTEEL",
+   "MCX",
+   "ETERNAL",
+   "IDFCFIRSTB",
+   "TMCV",
+   "HINDALCO",
+   "VAML",
+   "DIVISLAB",
+   "POLICYBZR"
+  ],
+  "setups": {
+   "M&M": [
+    "oversold"
+   ],
+   "TATASTEEL": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "MCX": [
+    "reclaim_ma20"
+   ],
+   "ETERNAL": [
+    "breakout_20d"
+   ],
+   "IDFCFIRSTB": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "TMCV": [
+    "delivery"
+   ],
+   "HINDALCO": [
+    "reclaim_ma20"
+   ],
+   "VAML": [
+    "reclaim_ma20"
+   ],
+   "DIVISLAB": [
+    "breakout_20d"
+   ],
+   "POLICYBZR": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-09-25": {
+  "signal_day": "2026-09-24",
+  "union": 21,
+  "top10": [
+   "POLICYBZR",
+   "MCX",
+   "SBIN",
+   "M&M",
+   "SUZLON",
+   "MARUTI",
+   "ICICIGI",
+   "MOTHERSON",
+   "ADANIGREEN",
+   "BAJAJFINSV"
+  ],
+  "setups": {
+   "POLICYBZR": [
+    "oversold"
+   ],
+   "MCX": [
+    "breakout_20d"
+   ],
+   "SBIN": [
+    "delivery"
+   ],
+   "M&M": [
+    "oversold"
+   ],
+   "SUZLON": [
+    "oversold"
+   ],
+   "MARUTI": [
+    "oversold"
+   ],
+   "ICICIGI": [
+    "reclaim_ma20"
+   ],
+   "MOTHERSON": [
+    "delivery"
+   ],
+   "ADANIGREEN": [
+    "delivery"
+   ],
+   "BAJAJFINSV": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-09-28": {
+  "signal_day": "2026-09-25",
+  "union": 34,
+  "top10": [
+   "POLICYBZR",
+   "ICICIBANK",
+   "M&M",
+   "CHOLAFIN",
+   "LICI",
+   "MARUTI",
+   "TRENT",
+   "BAJAJFINSV",
+   "ZYDUSLIFE",
+   "MOTHERSON"
+  ],
+  "setups": {
+   "POLICYBZR": [
+    "oversold"
+   ],
+   "ICICIBANK": [
+    "oversold"
+   ],
+   "M&M": [
+    "oversold_bounce"
+   ],
+   "CHOLAFIN": [
+    "oversold"
+   ],
+   "LICI": [
+    "reclaim_ma20"
+   ],
+   "MARUTI": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "TRENT": [
+    "oversold"
+   ],
+   "BAJAJFINSV": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "ZYDUSLIFE": [
+    "breakout_20d"
+   ],
+   "MOTHERSON": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-09-29": {
+  "signal_day": "2026-09-28",
+  "union": 31,
+  "top10": [
+   "POLICYBZR",
+   "ICICIBANK",
+   "ZYDUSLIFE",
+   "DRREDDY",
+   "TMPV",
+   "JIOFIN",
+   "MARUTI",
+   "PFC",
+   "EICHERMOT",
+   "SUZLON"
+  ],
+  "setups": {
+   "POLICYBZR": [
+    "oversold"
+   ],
+   "ICICIBANK": [
+    "oversold"
+   ],
+   "ZYDUSLIFE": [
+    "breakout_20d"
+   ],
+   "DRREDDY": [
+    "breakout_20d"
+   ],
+   "TMPV": [
+    "oversold"
+   ],
+   "JIOFIN": [
+    "oversold"
+   ],
+   "MARUTI": [
+    "oversold"
+   ],
+   "PFC": [
+    "oversold"
+   ],
+   "EICHERMOT": [
+    "oversold"
+   ],
+   "SUZLON": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-09-30": {
+  "signal_day": "2026-09-29",
+  "union": 62,
+  "top10": [
+   "BSE",
+   "RELIANCE",
+   "WIPRO",
+   "SBIN",
+   "VAML",
+   "POLICYBZR",
+   "ICICIBANK",
+   "INDHOTEL",
+   "IDEA",
+   "POLYCAB"
+  ],
+  "setups": {
+   "BSE": [
+    "delivery"
+   ],
+   "RELIANCE": [
+    "oversold"
+   ],
+   "WIPRO": [
+    "delivery",
+    "oversold"
+   ],
+   "SBIN": [
+    "delivery"
+   ],
+   "VAML": [
+    "reclaim_ma20"
+   ],
+   "POLICYBZR": [
+    "oversold"
+   ],
+   "ICICIBANK": [
+    "oversold"
+   ],
+   "INDHOTEL": [
+    "delivery"
+   ],
+   "IDEA": [
+    "delivery"
+   ],
+   "POLYCAB": [
+    "delivery"
+   ]
+  }
+ },
+ "2026-10-01": {
+  "signal_day": "2026-09-30",
+  "union": 57,
+  "top10": [
+   "RELIANCE",
+   "ICICIBANK",
+   "KOTAKBANK",
+   "MAXHEALTH",
+   "POLICYBZR",
+   "TCS",
+   "M&M",
+   "MCX",
+   "TATASTEEL",
+   "MARUTI"
+  ],
+  "setups": {
+   "RELIANCE": [
+    "oversold_bounce"
+   ],
+   "ICICIBANK": [
+    "oversold_bounce"
+   ],
+   "KOTAKBANK": [
+    "delivery",
+    "reclaim_ma20"
+   ],
+   "MAXHEALTH": [
+    "oversold"
+   ],
+   "POLICYBZR": [
+    "oversold"
+   ],
+   "TCS": [
+    "oversold_bounce"
+   ],
+   "M&M": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "MCX": [
+    "reclaim_ma20"
+   ],
+   "TATASTEEL": [
+    "delivery"
+   ],
+   "MARUTI": [
+    "oversold_bounce"
+   ]
+  }
+ },
+ "2026-10-05": {
+  "signal_day": "2026-10-01",
+  "union": 52,
+  "top10": [
+   "HDFCBANK",
+   "RELIANCE",
+   "M&M",
+   "BAJAJ-AUTO",
+   "POLICYBZR",
+   "MARUTI",
+   "ADANIGREEN",
+   "JIOFIN",
+   "EICHERMOT",
+   "ENRIN"
+  ],
+  "setups": {
+   "HDFCBANK": [
+    "reclaim_ma20"
+   ],
+   "RELIANCE": [
+    "oversold"
+   ],
+   "M&M": [
+    "oversold"
+   ],
+   "BAJAJ-AUTO": [
+    "oversold"
+   ],
+   "POLICYBZR": [
+    "oversold"
+   ],
+   "MARUTI": [
+    "oversold"
+   ],
+   "ADANIGREEN": [
+    "delivery"
+   ],
+   "JIOFIN": [
+    "oversold"
+   ],
+   "EICHERMOT": [
+    "oversold"
+   ],
+   "ENRIN": [
+    "breakout_20d"
+   ]
+  }
+ },
+ "2026-10-06": {
+  "signal_day": "2026-10-05",
+  "union": 61,
+  "top10": [
+   "RELIANCE",
+   "POLICYBZR",
+   "ITC",
+   "M&M",
+   "MARUTI",
+   "KALYANKJIL",
+   "APOLLOHOSP",
+   "COFORGE",
+   "NYKAA",
+   "LGEINDIA"
+  ],
+  "setups": {
+   "RELIANCE": [
+    "oversold_bounce"
+   ],
+   "POLICYBZR": [
+    "oversold"
+   ],
+   "ITC": [
+    "reclaim_ma20"
+   ],
+   "M&M": [
+    "oversold"
+   ],
+   "MARUTI": [
+    "delivery",
+    "oversold",
+    "oversold_bounce"
+   ],
+   "KALYANKJIL": [
+    "oversold_bounce"
+   ],
+   "APOLLOHOSP": [
+    "oversold"
+   ],
+   "COFORGE": [
+    "reclaim_ma20"
+   ],
+   "NYKAA": [
+    "reclaim_ma20"
+   ],
+   "LGEINDIA": [
+    "breakout_20d"
+   ]
+  }
+ },
+ "2026-10-07": {
+  "signal_day": "2026-10-06",
+  "union": 63,
+  "top10": [
+   "BSE",
+   "TRENT",
+   "KOTAKBANK",
+   "BHEL",
+   "AXISBANK",
+   "ETERNAL",
+   "APOLLOHOSP",
+   "POLICYBZR",
+   "GROWW",
+   "M&M"
+  ],
+  "setups": {
+   "BSE": [
+    "reclaim_ma20"
+   ],
+   "TRENT": [
+    "breakout_20d",
+    "oversold_bounce",
+    "reclaim_ma20"
+   ],
+   "KOTAKBANK": [
+    "breakout_20d"
+   ],
+   "BHEL": [
+    "breakout_20d"
+   ],
+   "AXISBANK": [
+    "reclaim_ma20"
+   ],
+   "ETERNAL": [
+    "reclaim_ma20"
+   ],
+   "APOLLOHOSP": [
+    "oversold"
+   ],
+   "POLICYBZR": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "GROWW": [
+    "reclaim_ma20"
+   ],
+   "M&M": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-10-08": {
+  "signal_day": "2026-10-07",
+  "union": 42,
+  "top10": [
+   "BHARTIARTL",
+   "ICICIBANK",
+   "KOTAKBANK",
+   "TITAN",
+   "M&M",
+   "ADANIGREEN",
+   "INDIGO",
+   "MARUTI",
+   "PFC",
+   "BAJAJ-AUTO"
+  ],
+  "setups": {
+   "BHARTIARTL": [
+    "reclaim_ma20"
+   ],
+   "ICICIBANK": [
+    "reclaim_ma20"
+   ],
+   "KOTAKBANK": [
+    "breakout_20d"
+   ],
+   "TITAN": [
+    "oversold"
+   ],
+   "M&M": [
+    "oversold"
+   ],
+   "ADANIGREEN": [
+    "breakout_20d"
+   ],
+   "INDIGO": [
+    "delivery"
+   ],
+   "MARUTI": [
+    "oversold"
+   ],
+   "PFC": [
+    "oversold_bounce"
+   ],
+   "BAJAJ-AUTO": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-10-09": {
+  "signal_day": "2026-10-08",
+  "union": 53,
+  "top10": [
+   "M&M",
+   "SBIN",
+   "APOLLOHOSP",
+   "TITAN",
+   "SHRIRAMFIN",
+   "GMRAIRPORT",
+   "BEL",
+   "MARUTI",
+   "TVSMOTOR",
+   "POWERGRID"
+  ],
+  "setups": {
+   "M&M": [
+    "oversold"
+   ],
+   "SBIN": [
+    "oversold"
+   ],
+   "APOLLOHOSP": [
+    "oversold"
+   ],
+   "TITAN": [
+    "oversold"
+   ],
+   "SHRIRAMFIN": [
+    "oversold"
+   ],
+   "GMRAIRPORT": [
+    "delivery"
+   ],
+   "BEL": [
+    "oversold"
+   ],
+   "MARUTI": [
+    "oversold"
+   ],
+   "TVSMOTOR": [
+    "oversold"
+   ],
+   "POWERGRID": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-10-12": {
+  "signal_day": "2026-10-09",
+  "union": 77,
+  "top10": [
+   "TCS",
+   "ADANIPORTS",
+   "KOTAKBANK",
+   "APOLLOHOSP",
+   "ITC",
+   "INDIGO",
+   "AXISBANK",
+   "BEL",
+   "GMRAIRPORT",
+   "SBIN"
+  ],
+  "setups": {
+   "TCS": [
+    "reclaim_ma20"
+   ],
+   "ADANIPORTS": [
+    "delivery"
+   ],
+   "KOTAKBANK": [
+    "breakout_20d"
+   ],
+   "APOLLOHOSP": [
+    "oversold_bounce"
+   ],
+   "ITC": [
+    "reclaim_ma20"
+   ],
+   "INDIGO": [
+    "delivery"
+   ],
+   "AXISBANK": [
+    "breakout_20d"
+   ],
+   "BEL": [
+    "oversold_bounce"
+   ],
+   "GMRAIRPORT": [
+    "delivery"
+   ],
+   "SBIN": [
+    "oversold_bounce"
+   ]
+  }
+ },
+ "2026-10-13": {
+  "signal_day": "2026-10-12",
+  "union": 36,
+  "top10": [
+   "ADANIPORTS",
+   "DMART",
+   "KOTAKBANK",
+   "SUZLON",
+   "M&M",
+   "INDUSINDBK",
+   "DIVISLAB",
+   "TITAN",
+   "BAJAJ-AUTO",
+   "POLICYBZR"
+  ],
+  "setups": {
+   "ADANIPORTS": [
+    "delivery"
+   ],
+   "DMART": [
+    "oversold"
+   ],
+   "KOTAKBANK": [
+    "breakout_20d"
+   ],
+   "SUZLON": [
+    "oversold_bounce"
+   ],
+   "M&M": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "INDUSINDBK": [
+    "delivery",
+    "oversold"
+   ],
+   "DIVISLAB": [
+    "reclaim_ma20"
+   ],
+   "TITAN": [
+    "oversold"
+   ],
+   "BAJAJ-AUTO": [
+    "oversold_bounce"
+   ],
+   "POLICYBZR": [
+    "oversold",
+    "oversold_bounce"
+   ]
+  }
+ },
+ "2026-10-14": {
+  "signal_day": "2026-10-13",
+  "union": 60,
+  "top10": [
+   "HCLTECH",
+   "TCS",
+   "INFY",
+   "BHARTIARTL",
+   "MARUTI",
+   "SHRIRAMFIN",
+   "M&M",
+   "COFORGE",
+   "AXISBANK",
+   "PFC"
+  ],
+  "setups": {
+   "HCLTECH": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "TCS": [
+    "breakout_20d"
+   ],
+   "INFY": [
+    "reclaim_ma20"
+   ],
+   "BHARTIARTL": [
+    "reclaim_ma20"
+   ],
+   "MARUTI": [
+    "oversold"
+   ],
+   "SHRIRAMFIN": [
+    "reclaim_ma20"
+   ],
+   "M&M": [
+    "oversold_bounce"
+   ],
+   "COFORGE": [
+    "breakout_20d"
+   ],
+   "AXISBANK": [
+    "breakout_20d"
+   ],
+   "PFC": [
+    "delivery"
+   ]
+  }
+ },
+ "2026-10-15": {
+  "signal_day": "2026-10-14",
+  "union": 42,
+  "top10": [
+   "TCS",
+   "INFY",
+   "MEESHO",
+   "BHEL",
+   "HCLTECH",
+   "HINDUNILVR",
+   "CANBK",
+   "NESTLEIND",
+   "ADANIENSOL",
+   "MARUTI"
+  ],
+  "setups": {
+   "TCS": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "INFY": [
+    "breakout_20d"
+   ],
+   "MEESHO": [
+    "delivery"
+   ],
+   "BHEL": [
+    "breakout_20d"
+   ],
+   "HCLTECH": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "HINDUNILVR": [
+    "delivery"
+   ],
+   "CANBK": [
+    "reclaim_ma20"
+   ],
+   "NESTLEIND": [
+    "reclaim_ma20"
+   ],
+   "ADANIENSOL": [
+    "delivery",
+    "reclaim_ma20"
+   ],
+   "MARUTI": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-10-16": {
+  "signal_day": "2026-10-15",
+  "union": 44,
+  "top10": [
+   "RELIANCE",
+   "HDFCBANK",
+   "ICICIBANK",
+   "TCS",
+   "BHARTIARTL",
+   "INFY",
+   "BSE",
+   "KOTAKBANK",
+   "TECHM",
+   "YESBANK"
+  ],
+  "setups": {
+   "RELIANCE": [
+    "reclaim_ma20"
+   ],
+   "HDFCBANK": [
+    "reclaim_ma20"
+   ],
+   "ICICIBANK": [
+    "breakout_20d"
+   ],
+   "TCS": [
+    "breakout_20d"
+   ],
+   "BHARTIARTL": [
+    "reclaim_ma20"
+   ],
+   "INFY": [
+    "breakout_20d"
+   ],
+   "BSE": [
+    "breakout_20d"
+   ],
+   "KOTAKBANK": [
+    "breakout_20d"
+   ],
+   "TECHM": [
+    "breakout_20d"
+   ],
+   "YESBANK": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-10-19": {
+  "signal_day": "2026-10-16",
+  "union": 44,
+  "top10": [
+   "BHARTIARTL",
+   "TECHM",
+   "TCS",
+   "INFY",
+   "ICICIBANK",
+   "WIPRO",
+   "AXISBANK",
+   "GROWW",
+   "FEDERALBNK",
+   "HCLTECH"
+  ],
+  "setups": {
+   "BHARTIARTL": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "TECHM": [
+    "breakout_20d"
+   ],
+   "TCS": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "INFY": [
+    "breakout_20d"
+   ],
+   "ICICIBANK": [
+    "breakout_20d"
+   ],
+   "WIPRO": [
+    "breakout_20d"
+   ],
+   "AXISBANK": [
+    "breakout_20d"
+   ],
+   "GROWW": [
+    "breakout_20d"
+   ],
+   "FEDERALBNK": [
+    "breakout_20d"
+   ],
+   "HCLTECH": [
+    "breakout_20d"
+   ]
+  }
+ },
+ "2026-10-21": {
+  "signal_day": "2026-10-19",
+  "union": 23,
+  "top10": [
+   "SBIN",
+   "FEDERALBNK",
+   "PNB",
+   "UNIONBANK",
+   "JSWSTEEL",
+   "ABB",
+   "CANBK",
+   "YESBANK",
+   "BANKBARODA",
+   "BANKINDIA"
+  ],
+  "setups": {
+   "SBIN": [
+    "reclaim_ma20"
+   ],
+   "FEDERALBNK": [
+    "breakout_20d"
+   ],
+   "PNB": [
+    "breakout_20d"
+   ],
+   "UNIONBANK": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "JSWSTEEL": [
+    "reclaim_ma20"
+   ],
+   "ABB": [
+    "reclaim_ma20"
+   ],
+   "CANBK": [
+    "reclaim_ma20"
+   ],
+   "YESBANK": [
+    "oversold"
+   ],
+   "BANKBARODA": [
+    "reclaim_ma20"
+   ],
+   "BANKINDIA": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-10-22": {
+  "signal_day": "2026-10-21",
+  "union": 46,
+  "top10": [
+   "INFY",
+   "TCS",
+   "TECHM",
+   "WIPRO",
+   "IDEA",
+   "LTM",
+   "HCLTECH",
+   "DIXON",
+   "PERSISTENT",
+   "VMM"
+  ],
+  "setups": {
+   "INFY": [
+    "breakout_20d"
+   ],
+   "TCS": [
+    "breakout_20d"
+   ],
+   "TECHM": [
+    "breakout_20d"
+   ],
+   "WIPRO": [
+    "breakout_20d"
+   ],
+   "IDEA": [
+    "oversold"
+   ],
+   "LTM": [
+    "delivery"
+   ],
+   "HCLTECH": [
+    "breakout_20d"
+   ],
+   "DIXON": [
+    "oversold"
+   ],
+   "PERSISTENT": [
+    "bull_flag"
+   ],
+   "VMM": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-10-23": {
+  "signal_day": "2026-10-22",
+  "union": 54,
+  "top10": [
+   "ICICIBANK",
+   "INDHOTEL",
+   "KEI",
+   "WIPRO",
+   "COFORGE",
+   "BSE",
+   "IDEA",
+   "POWERINDIA",
+   "SWIGGY",
+   "SBIN"
+  ],
+  "setups": {
+   "ICICIBANK": [
+    "breakout_20d"
+   ],
+   "INDHOTEL": [
+    "breakout_20d"
+   ],
+   "KEI": [
+    "oversold"
+   ],
+   "WIPRO": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "COFORGE": [
+    "bull_flag"
+   ],
+   "BSE": [
+    "reclaim_ma20"
+   ],
+   "IDEA": [
+    "oversold"
+   ],
+   "POWERINDIA": [
+    "oversold"
+   ],
+   "SWIGGY": [
+    "oversold"
+   ],
+   "SBIN": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-10-26": {
+  "signal_day": "2026-10-23",
+  "union": 68,
+  "top10": [
+   "INFY",
+   "SWIGGY",
+   "TCS",
+   "COFORGE",
+   "PERSISTENT",
+   "BSE",
+   "HCLTECH",
+   "POWERINDIA",
+   "IDEA",
+   "GVT&D"
+  ],
+  "setups": {
+   "INFY": [
+    "bull_flag"
+   ],
+   "SWIGGY": [
+    "oversold"
+   ],
+   "TCS": [
+    "breakout_20d",
+    "bull_flag"
+   ],
+   "COFORGE": [
+    "bull_flag"
+   ],
+   "PERSISTENT": [
+    "bull_flag"
+   ],
+   "BSE": [
+    "bull_flag"
+   ],
+   "HCLTECH": [
+    "bull_flag"
+   ],
+   "POWERINDIA": [
+    "oversold"
+   ],
+   "IDEA": [
+    "oversold"
+   ],
+   "GVT&D": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-10-27": {
+  "signal_day": "2026-10-26",
+  "union": 94,
+  "top10": [
+   "INFY",
+   "BSE",
+   "DRREDDY",
+   "ICICIBANK",
+   "TCS",
+   "SWIGGY",
+   "ETERNAL",
+   "SHRIRAMFIN",
+   "COFORGE",
+   "RELIANCE"
+  ],
+  "setups": {
+   "INFY": [
+    "bull_flag"
+   ],
+   "BSE": [
+    "bull_flag",
+    "reclaim_ma20"
+   ],
+   "DRREDDY": [
+    "breakout_20d"
+   ],
+   "ICICIBANK": [
+    "breakout_20d"
+   ],
+   "TCS": [
+    "breakout_20d",
+    "bull_flag"
+   ],
+   "SWIGGY": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "ETERNAL": [
+    "reclaim_ma20"
+   ],
+   "SHRIRAMFIN": [
+    "oversold"
+   ],
+   "COFORGE": [
+    "breakout_20d"
+   ],
+   "RELIANCE": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-10-28": {
+  "signal_day": "2026-10-27",
+  "union": 88,
+  "top10": [
+   "BHARTIARTL",
+   "INFY",
+   "BSE",
+   "TCS",
+   "DIVISLAB",
+   "MANKIND",
+   "COFORGE",
+   "TATACONSUM",
+   "INDHOTEL",
+   "MAZDOCK"
+  ],
+  "setups": {
+   "BHARTIARTL": [
+    "breakout_20d"
+   ],
+   "INFY": [
+    "bull_flag"
+   ],
+   "BSE": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "TCS": [
+    "bull_flag"
+   ],
+   "DIVISLAB": [
+    "reclaim_ma20"
+   ],
+   "MANKIND": [
+    "reclaim_ma20"
+   ],
+   "COFORGE": [
+    "breakout_20d"
+   ],
+   "TATACONSUM": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "INDHOTEL": [
+    "breakout_20d"
+   ],
+   "MAZDOCK": [
+    "oversold"
+   ]
+  }
+ },
+ "2026-10-29": {
+  "signal_day": "2026-10-28",
+  "union": 58,
+  "top10": [
+   "LT",
+   "INFY",
+   "BSE",
+   "TCS",
+   "APOLLOHOSP",
+   "MAXHEALTH",
+   "TVSMOTOR",
+   "SHRIRAMFIN",
+   "PATANJALI",
+   "TECHM"
+  ],
+  "setups": {
+   "LT": [
+    "breakout_20d",
+    "reclaim_ma20"
+   ],
+   "INFY": [
+    "bull_flag"
+   ],
+   "BSE": [
+    "breakout_20d"
+   ],
+   "TCS": [
+    "bull_flag"
+   ],
+   "APOLLOHOSP": [
+    "reclaim_ma20"
+   ],
+   "MAXHEALTH": [
+    "delivery"
+   ],
+   "TVSMOTOR": [
+    "breakout_20d"
+   ],
+   "SHRIRAMFIN": [
+    "oversold",
+    "oversold_bounce"
+   ],
+   "PATANJALI": [
+    "reclaim_ma20"
+   ],
+   "TECHM": [
+    "bull_flag"
+   ]
+  }
+ },
+ "2026-10-30": {
+  "signal_day": "2026-10-29",
+  "union": 74,
+  "top10": [
+   "KOTAKBANK",
+   "INFY",
+   "ADANIPORTS",
+   "ETERNAL",
+   "BSE",
+   "TCS",
+   "TVSMOTOR",
+   "SBIN",
+   "JSWENERGY",
+   "CHOLAFIN"
+  ],
+  "setups": {
+   "KOTAKBANK": [
+    "breakout_20d"
+   ],
+   "INFY": [
+    "bull_flag"
+   ],
+   "ADANIPORTS": [
+    "breakout_20d"
+   ],
+   "ETERNAL": [
+    "breakout_20d"
+   ],
+   "BSE": [
+    "breakout_20d"
+   ],
+   "TCS": [
+    "bull_flag"
+   ],
+   "TVSMOTOR": [
+    "breakout_20d"
+   ],
+   "SBIN": [
+    "reclaim_ma20"
+   ],
+   "JSWENERGY": [
+    "breakout_20d"
+   ],
+   "CHOLAFIN": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-11-02": {
+  "signal_day": "2026-10-30",
+  "union": 50,
+  "top10": [
+   "LAURUSLABS",
+   "INFY",
+   "TRENT",
+   "ETERNAL",
+   "COFORGE",
+   "SUZLON",
+   "DIVISLAB",
+   "BSE",
+   "KOTAKBANK",
+   "SUNPHARMA"
+  ],
+  "setups": {
+   "LAURUSLABS": [
+    "breakout_20d"
+   ],
+   "INFY": [
+    "breakout_20d"
+   ],
+   "TRENT": [
+    "breakout_20d"
+   ],
+   "ETERNAL": [
+    "breakout_20d"
+   ],
+   "COFORGE": [
+    "breakout_20d"
+   ],
+   "SUZLON": [
+    "oversold"
+   ],
+   "DIVISLAB": [
+    "breakout_20d"
+   ],
+   "BSE": [
+    "breakout_20d"
+   ],
+   "KOTAKBANK": [
+    "breakout_20d"
+   ],
+   "SUNPHARMA": [
+    "reclaim_ma20"
+   ]
+  }
+ },
+ "2026-11-03": {
+  "signal_day": "2026-11-02",
+  "union": 87,
+  "top10": [
+   "RELIANCE",
+   "DIXON",
+   "BHARTIARTL",
+   "SBIN",
+   "DIVISLAB",
+   "POLICYBZR",
+   "LT",
+   "COFORGE",
+   "TCS",
+   "SHRIRAMFIN"
+  ],
+  "setups": {
+   "RELIANCE": [
+    "breakout_20d",
+    "delivery",
+    "reclaim_ma20"
+   ],
+   "DIXON": [
+    "oversold_bounce",
+    "reclaim_ma20"
+   ],
+   "BHARTIARTL": [
+    "breakout_20d"
+   ],
+   "SBIN": [
+    "breakout_20d"
+   ],
+   "DIVISLAB": [
+    "breakout_20d"
+   ],
+   "POLICYBZR": [
+    "oversold"
+   ],
+   "LT": [
+    "breakout_20d"
+   ],
+   "COFORGE": [
+    "breakout_20d"
+   ],
+   "TCS": [
+    "bull_flag"
+   ],
+   "SHRIRAMFIN": [
+    "oversold_bounce"
+   ]
+  }
+ },
+ "2026-11-04": {
+  "signal_day": "2026-11-03",
+  "union": 84,
+  "top10": [
+   "RELIANCE",
+   "BHARTIARTL",
+   "HDFCBANK",
+   "ICICIBANK",
+   "BSE",
+   "MCX",
+   "MARICO",
+   "GROWW",
+   "SOLARINDS",
+   "TCS"
+  ],
+  "setups": {
+   "RELIANCE": [
+    "breakout_20d"
+   ],
+   "BHARTIARTL": [
+    "breakout_20d"
+   ],
+   "HDFCBANK": [
+    "reclaim_ma20"
+   ],
+   "ICICIBANK": [
+    "breakout_20d"
+   ],
+   "BSE": [
+    "breakout_20d"
+   ],
+   "MCX": [
+    "breakout_20d"
+   ],
+   "MARICO": [
+    "breakout_20d"
+   ],
+   "GROWW": [
+    "breakout_20d"
+   ],
+   "SOLARINDS": [
+    "reclaim_ma20"
+   ],
+   "TCS": [
+    "bull_flag"
+   ]
+  }
+ },
+ "2026-11-05": {
+  "signal_day": "2026-11-04",
+  "union": 112,
+  "top10": [
+   "HDFCBANK",
+   "RELIANCE",
+   "BHARTIARTL",
+   "BAJFINANCE",
+   "ITC",
+   "M&M",
+   "BEL",
+   "ADANIPORTS",
+   "BHEL",
+   "MARUTI"
+  ],
+  "setups": {
+   "HDFCBANK": [
+    "breakout_20d"
+   ],
+   "RELIANCE": [
+    "breakout_20d"
+   ],
+   "BHARTIARTL": [
+    "breakout_20d"
+   ],
+   "BAJFINANCE": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "ITC": [
+    "breakout_20d"
+   ],
+   "M&M": [
+    "breakout_20d"
+   ],
+   "BEL": [
+    "breakout_20d"
+   ],
+   "ADANIPORTS": [
+    "breakout_20d"
+   ],
+   "BHEL": [
+    "reclaim_ma20"
+   ],
+   "MARUTI": [
+    "breakout_20d"
+   ]
+  }
+ },
+ "2026-11-06": {
+  "signal_day": "2026-11-05",
+  "union": 116,
+  "top10": [
+   "ICICIBANK",
+   "HDFCBANK",
+   "BSE",
+   "BAJFINANCE",
+   "M&M",
+   "RELIANCE",
+   "SBIN",
+   "PIIND",
+   "LENSKART",
+   "GROWW"
+  ],
+  "setups": {
+   "ICICIBANK": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "HDFCBANK": [
+    "breakout_20d"
+   ],
+   "BSE": [
+    "breakout_20d"
+   ],
+   "BAJFINANCE": [
+    "breakout_20d",
+    "delivery"
+   ],
+   "M&M": [
+    "breakout_20d"
+   ],
+   "RELIANCE": [
+    "breakout_20d"
+   ],
+   "SBIN": [
+    "breakout_20d"
+   ],
+   "PIIND": [
+    "oversold"
+   ],
+   "LENSKART": [
+    "breakout_20d"
+   ],
+   "GROWW": [
+    "breakout_20d"
+   ]
+  }
+ },
+ "2026-11-09": {
+  "signal_day": "2026-11-08",
+  "union": 41,
+  "top10": [
+   "DIVISLAB",
+   "RELIANCE",
+   "TATASTEEL",
+   "MCX",
+   "ASHOKLEY",
+   "MOTILALOFS",
+   "SUNPHARMA",
+   "KALYANKJIL",
+   "ETERNAL",
+   "KOTAKBANK"
+  ],
+  "setups": {
+   "DIVISLAB": [
+    "breakout_20d"
+   ],
+   "RELIANCE": [
+    "breakout_20d"
+   ],
+   "TATASTEEL": [
+    "breakout_20d"
+   ],
+   "MCX": [
+    "breakout_20d"
+   ],
+   "ASHOKLEY": [
+    "breakout_20d"
+   ],
+   "MOTILALOFS": [
+    "breakout_20d"
+   ],
+   "SUNPHARMA": [
+    "breakout_20d"
+   ],
+   "KALYANKJIL": [
+    "breakout_20d"
+   ],
+   "ETERNAL": [
+    "breakout_20d"
+   ],
+   "KOTAKBANK": [
+    "breakout_20d"
+   ]
+  }
+ },
+ "2026-11-11": {
+  "signal_day": "2026-11-09",
+  "union": 74,
+  "top10": [
+   "HDFCBANK",
+   "ICICIBANK",
+   "DIVISLAB",
+   "RELIANCE",
+   "SBIN",
+   "LT",
+   "BHARTIARTL",
+   "BSE",
+   "LAURUSLABS",
+   "HINDALCO"
+  ],
+  "setups": {
+   "HDFCBANK": [
+    "breakout_20d"
+   ],
+   "ICICIBANK": [
+    "breakout_20d"
+   ],
+   "DIVISLAB": [
+    "breakout_20d"
+   ],
+   "RELIANCE": [
+    "breakout_20d"
+   ],
+   "SBIN": [
+    "breakout_20d"
+   ],
+   "LT": [
+    "breakout_20d"
+   ],
+   "BHARTIARTL": [
+    "bull_flag"
+   ],
+   "BSE": [
+    "breakout_20d"
+   ],
+   "LAURUSLABS": [
+    "breakout_20d"
+   ],
+   "HINDALCO": [
+    "breakout_20d"
+   ]
+  }
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "broker": "shoonya",
+ "paper": true,
+ "budget": 25000,
+ "max_loss_per_trade_inr": 500,
+ "max_daily_loss_inr": 3000,
+ "max_trades_per_day": 3,
+ "max_position_pct": 33.33,
+ "mis_leverage": 1,
+ "charges": {
+  "brokerage_pct_mis": 0.03,
+  "brokerage_min_mis": 0,
+  "brokerage_cap_mis": 5,
+  "brokerage_pct_cnc": 0,
+  "brokerage_min_cnc": 0,
+  "brokerage_cap_cnc": 0,
+  "dp_charge_cnc_sell": 10.62
+ },
+ "data": {
+  "provider": "yahoo",
+  "allow_yahoo_fallback": false
+ }
+}

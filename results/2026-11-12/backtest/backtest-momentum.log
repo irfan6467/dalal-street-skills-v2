@@ -1,0 +1,34 @@
+fold 1/8  test 2025-02-01..2025-04-30  params {'atr_stop': 3.0, 'breakout_days': 126, 'exit_days': 20, 'vol_mult': 2.5}  IS 520 trades -0.198R  OOS 36 trades -0.176R
+fold 2/8  test 2025-05-01..2025-07-31  params {'atr_stop': 3.0, 'breakout_days': 126, 'exit_days': 20, 'vol_mult': 2.5}  IS 425 trades -0.182R  OOS 120 trades -0.069R
+fold 3/8  test 2025-08-01..2025-10-31  params {'atr_stop': 3.0, 'breakout_days': 252, 'exit_days': 20, 'vol_mult': 2.5}  IS 254 trades -0.309R  OOS 62 trades -0.202R
+fold 4/8  test 2025-11-01..2026-01-31  params {'atr_stop': 3.0, 'breakout_days': 252, 'exit_days': 20, 'vol_mult': 2.5}  IS 212 trades -0.201R  OOS 65 trades -0.453R
+fold 5/8  test 2026-02-01..2026-04-30  params {'atr_stop': 3.0, 'breakout_days': 252, 'exit_days': 10, 'vol_mult': 1.5}  IS 379 trades -0.102R  OOS 112 trades 0.090R
+fold 6/8  test 2026-05-01..2026-07-31  params {'atr_stop': 2.0, 'breakout_days': 252, 'exit_days': 20, 'vol_mult': 1.5}  IS 451 trades -0.001R  OOS 122 trades 0.185R
+fold 7/8  test 2026-08-01..2026-10-31  params {'atr_stop': 2.0, 'breakout_days': 252, 'exit_days': 20, 'vol_mult': 1.5}  IS 477 trades 0.022R  OOS 154 trades -0.288R
+fold 8/8  test 2026-11-01..2026-11-11  params {'atr_stop': 2.0, 'breakout_days': 252, 'exit_days': 10, 'vol_mult': 2.5}  IS 308 trades -0.043R  OOS 1 trades -1.061R
+MOMENTUM  walk-forward 2024-02-01..2026-11-11  (8 windows: 12 months train, 3 test)
+costs: slippage 20.0 bp/side, ₹8,333 per trade, charges for Shoonya (Finvasia)
+
+VERDICT: NO EDGE
+  out-of-sample average is -0.160R per entry day after charges
+
+Out-of-sample only (672 trades, 272 entry days):
+  avg -0.103R net  (-0.063R before charges)   win rate 33%   profit factor 0.847
+  per entry day -0.160R, 95% interval -0.322 to 0.0134, t -1.868
+  max drawdown 83.2R   worst losing streak 23   net -₹35,953 after ₹18,831 charges
+  in-sample (chosen params) averaged -0.127R: the gap to out-of-sample is the overfit
+
+win  test window             params                             trades    avg R
+1    2025-02-01..2025-04-30  atr=3.0 brk=126 exit=20 vol=2.5        36   -0.176
+2    2025-05-01..2025-07-31  atr=3.0 brk=126 exit=20 vol=2.5       120   -0.069
+3    2025-08-01..2025-10-31  atr=3.0 brk=252 exit=20 vol=2.5        62   -0.202
+4    2025-11-01..2026-01-31  atr=3.0 brk=252 exit=20 vol=2.5        65   -0.453
+5    2026-02-01..2026-04-30  atr=3.0 brk=252 exit=10 vol=1.5       112    0.090
+6    2026-05-01..2026-07-31  atr=2.0 brk=252 exit=20 vol=1.5       122    0.185
+7    2026-08-01..2026-10-31  atr=2.0 brk=252 exit=20 vol=1.5       154   -0.288
+8    2026-11-01..2026-11-11  atr=2.0 brk=252 exit=10 vol=2.5         1   -1.061
+
+Frozen params (last window) atr=2.0 brk=252 exit=10 vol=2.5  hash 458d56c24af4
+NOTE: you have now run momentum 3 times (72 parameter variants in all). Every rerun after looking at results is another chance to fit noise: trust the first honest run, and let paper trading decide.
+
+run momentum-20261112-101608 saved in nse/backtest (all out-of-sample trades included)

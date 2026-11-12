@@ -1,0 +1,253 @@
+{
+ "strategy": "orb",
+ "period": [
+  "2026-08-17",
+  "2026-11-11"
+ ],
+ "folds": [
+  {
+   "fold": 1,
+   "test": [
+    "2026-09-14",
+    "2026-09-27"
+   ],
+   "params": {
+    "or_minutes": 30,
+    "stop_at": "or_low",
+    "target_r": 2.0,
+    "vol_mult": 1.5
+   },
+   "oos_trades": 563,
+   "oos_day_avg_r": -0.48989288288415295,
+   "train_trades_exiting_in_test": 0,
+   "train_trades": 1224
+  },
+  {
+   "fold": 2,
+   "test": [
+    "2026-09-28",
+    "2026-10-11"
+   ],
+   "params": {
+    "or_minutes": 30,
+    "stop_at": "or_low",
+    "target_r": 1.5,
+    "vol_mult": 1.5
+   },
+   "oos_trades": 526,
+   "oos_day_avg_r": -0.5395463998851584,
+   "train_trades_exiting_in_test": 0,
+   "train_trades": 1197
+  },
+  {
+   "fold": 3,
+   "test": [
+    "2026-10-12",
+    "2026-10-25"
+   ],
+   "params": {
+    "or_minutes": 30,
+    "stop_at": "or_low",
+    "target_r": 1.5,
+    "vol_mult": 1.5
+   },
+   "oos_trades": 536,
+   "oos_day_avg_r": -0.46354245590508497,
+   "train_trades_exiting_in_test": 0,
+   "train_trades": 1089
+  },
+  {
+   "fold": 4,
+   "test": [
+    "2026-10-26",
+    "2026-11-08"
+   ],
+   "params": {
+    "or_minutes": 30,
+    "stop_at": "or_low",
+    "target_r": 1.5,
+    "vol_mult": 1.5
+   },
+   "oos_trades": 851,
+   "oos_day_avg_r": -0.16365464437033642,
+   "train_trades_exiting_in_test": 0,
+   "train_trades": 1062
+  },
+  {
+   "fold": 5,
+   "test": [
+    "2026-11-09",
+    "2026-11-11"
+   ],
+   "params": {
+    "or_minutes": 30,
+    "stop_at": "or_low",
+    "target_r": 0,
+    "vol_mult": 1.0
+   },
+   "oos_trades": 165,
+   "oos_day_avg_r": -0.29392960743182495,
+   "train_trades_exiting_in_test": 0,
+   "train_trades": 1622
+  }
+ ],
+ "tool": {
+  "oos_trades": 2641,
+  "day_avg_r": -0.4016,
+  "avg_r": -0.3294,
+  "ci95": [
+   -0.4926,
+   -0.3202
+  ],
+  "profit_factor": 0.29
+ },
+ "reproduces_the_tool_run": true,
+ "leak": {
+  "train_trades_exiting_inside_test": 0,
+  "train_trades": 6194,
+  "purged": {
+   "oos_trades": 2641,
+   "day_avg_r": -0.4016,
+   "ci95": [
+    -0.4926,
+    -0.3202
+   ],
+   "folds_with_other_params": 0,
+   "verdict": "NO EDGE"
+  }
+ },
+ "variants_over_all_test_windows": {
+  "positive": 0,
+  "of": 24,
+  "best": {
+   "params": {
+    "or_minutes": 30,
+    "stop_at": "or_low",
+    "target_r": 0,
+    "vol_mult": 1.5
+   },
+   "trades": 2619,
+   "day_avg_r": -0.4005608447567627,
+   "avg_r": -0.32632264222985874
+  },
+  "median_day_avg_r": -0.5069913239406628,
+  "worst": {
+   "params": {
+    "or_minutes": 15,
+    "stop_at": "or_mid",
+    "target_r": 2.0,
+    "vol_mult": 1.0
+   },
+   "trades": 3546,
+   "day_avg_r": -0.6223513881195303,
+   "avg_r": -0.5290679921037789
+  }
+ },
+ "costs": {
+  "trades": 2641,
+  "before_costs_inr": 4869.0,
+  "slippage_inr": 80033.0,
+  "charges_inr": 21262.0,
+  "net_inr": -96426.0,
+  "avg_r_before_costs": -0.0012927442268266848,
+  "avg_r_net": -0.3293593864346707,
+  "avg_cost_in_r": 0.3280661746557487,
+  "avg_cost_pct_of_position": 0.5053104795563189,
+  "avg_risk_pct_of_position": 1.753517247620378,
+  "avg_risk_inr": 133.16064748201438,
+  "share_risk_over_500": 0.0,
+  "avg_r_net_by_slippage": {
+   "0bp": -0.0858,
+   "5bp": -0.1542,
+   "10bp": -0.2171,
+   "20bp": -0.3294
+  }
+ },
+ "breakdowns": {
+  "by_exit": {
+   "flat": {
+    "n": 2085,
+    "share_pct": 78.9,
+    "avg_r": -0.194
+   },
+   "stop": {
+    "n": 469,
+    "share_pct": 17.8,
+    "avg_r": -1.237
+   },
+   "target": {
+    "n": 87,
+    "share_pct": 3.3,
+    "avg_r": 1.318
+   }
+  },
+  "by_price": {
+   "500-2000": {
+    "n": 1088,
+    "avg_r": -0.32
+   },
+   "2000+": {
+    "n": 605,
+    "avg_r": -0.338
+   },
+   "100-500": {
+    "n": 840,
+    "avg_r": -0.33
+   },
+   "under 100": {
+    "n": 108,
+    "avg_r": -0.369
+   }
+  },
+  "by_stop_distance": {
+   "2-5%": {
+    "n": 740,
+    "avg_r_net": -0.147,
+    "avg_r_before_charges": -0.104
+   },
+   "1-2%": {
+    "n": 1692,
+    "avg_r_net": -0.363,
+    "avg_r_before_charges": -0.289
+   },
+   "0.5-1%": {
+    "n": 206,
+    "avg_r_net": -0.713,
+    "avg_r_before_charges": -0.587
+   },
+   "5-10%": {
+    "n": 3,
+    "avg_r_net": -0.096,
+    "avg_r_before_charges": -0.076
+   }
+  },
+  "concentration": {
+   "best_10_share_of_all_winning_r": 0.057,
+   "avg_r_without_best_10": -0.3383,
+   "win_rate": 0.281,
+   "avg_win_r": 0.479,
+   "avg_loss_r": -0.645
+  },
+  "signals_per_entry_day": {
+   "entry_days": 39,
+   "median": 72,
+   "p90": 106,
+   "max": 122,
+   "days_over_3": 39
+  },
+  "calendar_days_held": {
+   "median": 0,
+   "p90": 0
+  }
+ },
+ "account_25000": {
+  "net_inr": -4779.0,
+  "taken": 117,
+  "of": 2641,
+  "max_drawdown_inr": 5198.0,
+  "skipped": {
+   "3 trades already today": 2524
+  },
+  "rule": "first 3 triggers by clock time each day"
+ }
+}

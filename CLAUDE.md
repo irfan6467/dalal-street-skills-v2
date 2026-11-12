@@ -62,8 +62,24 @@ no trades (the news gate dropped all 10 in Q2 season). Shadow run (gate removed,
 Nifty 200 averaged −0.45%. Momentum walk-forward on de-duplicated history to 14 Oct: **NO EDGE** again
 (−0.143R per entry day). See `RESULT.md` there.
 
-Next: fix the nse-alerts stop comparison; offer to schedule `scripts/cloud/run_daily.sh` as a weekday cloud
-scheduled task (~18:30 IST).
+## Done: backtest and shortcomings review, 12 Nov 2026 (`results/2026-11-12/REPORT.md`)
+
+₹25,000, ₹8,333 a trade, 20 bp slippage (unchanged). NSE daily files from Jan 2023, Nifty 200 5-minute bars for 60
+sessions. **Momentum NO EDGE** (−0.160R per entry day, 672 out-of-sample trades, 8 windows); **ORB NO EDGE**
+(−0.402R, 2,641 trades); the ORB the skills trade by default, replayed on 4,140 triggers: −0.75R a trade (+0.06R
+before costs; costs 0.81R because the midpoint stop is 0.69% away and a round trip costs 0.5%). The time machine
+gate and the scanner watchlist did not help (forecast-result correlation 0.11). A ₹25,000 account lost in every
+variant. 20 shortcomings with fixes are in the report; **none is fixed yet**. Most urgent:
+- **`fetch_bhav` skips weekends**: six real sessions were missing (Budget Sat 1 Feb 2025, Muhurat Sundays, special
+  Saturdays) -> 4,613 false split adjustments. They were added by hand to the cloud cache for this run only; the
+  3 Nov runs and the daily cloud job lack them.
+- Slippage is modelled only in nse-backtest; exit, budget, risk and time machine ignore it.
+- The walk-forward trains on trades that exit inside the test window; no warm-up check; no account mode.
+`results/2026-11-12/tools/` has `harness.py` (diagnostics, account simulation), `live_chain.py` (the skills' ORB
+rules + time machine on every trigger), `watchlists.py`, `live_report.py`.
+
+Next: ask Irfan which fixes to make (weekend fetch first); fix the nse-alerts stop comparison; offer to schedule
+`scripts/cloud/run_daily.sh` as a weekday cloud scheduled task (~18:30 IST).
 
 Build notes: `_shared/build/build.py` regenerates size.py, check.py, ticket.py, backtest.py and copies
 `_shared/shoonya_feed.py` into every skill; edit the templates in `_shared/`, never the generated copies.

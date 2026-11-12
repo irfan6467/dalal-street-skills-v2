@@ -1,0 +1,27 @@
+fold 1/5  test 2026-09-14..2026-09-27  params {'or_minutes': 30, 'stop_at': 'or_low', 'target_r': 2.0, 'vol_mult': 1.5}  IS 1224 trades -0.442R  OOS 563 trades -0.396R
+fold 2/5  test 2026-09-28..2026-10-11  params {'or_minutes': 30, 'stop_at': 'or_low', 'target_r': 1.5, 'vol_mult': 1.5}  IS 1197 trades -0.412R  OOS 526 trades -0.459R
+fold 3/5  test 2026-10-12..2026-10-25  params {'or_minutes': 30, 'stop_at': 'or_low', 'target_r': 1.5, 'vol_mult': 1.5}  IS 1089 trades -0.421R  OOS 536 trades -0.417R
+fold 4/5  test 2026-10-26..2026-11-08  params {'or_minutes': 30, 'stop_at': 'or_low', 'target_r': 1.5, 'vol_mult': 1.5}  IS 1062 trades -0.438R  OOS 851 trades -0.148R
+fold 5/5  test 2026-11-09..2026-11-11  params {'or_minutes': 30, 'stop_at': 'or_low', 'target_r': 0, 'vol_mult': 1.0}  IS 1622 trades -0.238R  OOS 165 trades -0.338R
+ORB  walk-forward 2026-08-17..2026-11-11  (5 windows: 4 weeks train, 2 test)
+costs: slippage 20.0 bp/side, ₹8,333 per trade, charges for Shoonya (Finvasia)
+
+VERDICT: NO EDGE
+  out-of-sample average is -0.402R per entry day after charges
+
+Out-of-sample only (2641 trades, 39 entry days):
+  avg -0.329R net  (-0.261R before charges)   win rate 28%   profit factor 0.29
+  per entry day -0.402R, 95% interval -0.4926 to -0.3202, t -8.804
+  max drawdown 869.9R   worst losing streak 22   net -₹96,426 after ₹21,262 charges
+  in-sample (chosen params) averaged -0.390R: the gap to out-of-sample is the overfit
+
+win  test window             params                             trades    avg R
+1    2026-09-14..2026-09-27  or=30 stop=or_low tgt=2.0 vol=1.5     563   -0.396
+2    2026-09-28..2026-10-11  or=30 stop=or_low tgt=1.5 vol=1.5     526   -0.459
+3    2026-10-12..2026-10-25  or=30 stop=or_low tgt=1.5 vol=1.5     536   -0.417
+4    2026-10-26..2026-11-08  or=30 stop=or_low tgt=1.5 vol=1.5     851   -0.148
+5    2026-11-09..2026-11-11  or=30 stop=or_low tgt=0 vol=1.0       165   -0.338
+
+Frozen params (last window) or=30 stop=or_low tgt=0 vol=1.0  hash 652b706bf063
+
+run orb-20261112-100033 saved in nse/backtest (all out-of-sample trades included)
